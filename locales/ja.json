@@ -16,6 +16,10 @@
       "placeholder": "メールアドレス",
       "success": "ご登録ありがとうございます！"
     },
+    "store_policy": {
+      "read_full": "Read our full {{ title }}",
+      "empty": "This policy hasn’t been written yet. Add it under Settings > Policies to show it here."
+    },
     "filter": "フィルター",
     "payment_methods": "決済方法",
     "contact_form": {
@@ -165,6 +169,7 @@
     "taxes_included": "税込。",
     "product_badge_sold_out": "売り切れ",
     "product_badge_sale": "セール",
+    "product_badge_new": "New",
     "search_input_label": "検索",
     "search_input_placeholder": "検索",
     "search_results": "検索結果",

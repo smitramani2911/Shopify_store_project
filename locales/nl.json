@@ -16,6 +16,10 @@
       "placeholder": "E-mailadres",
       "success": "Bedankt dat je abonnee bent geworden!"
     },
+    "store_policy": {
+      "read_full": "Read our full {{ title }}",
+      "empty": "This policy hasn’t been written yet. Add it under Settings > Policies to show it here."
+    },
     "filter": "Filter",
     "payment_methods": "Betaalmethoden",
     "contact_form": {
@@ -165,6 +169,7 @@
     "taxes_included": "Belastingen inbegrepen.",
     "product_badge_sold_out": "Uitverkocht",
     "product_badge_sale": "Uitverkoop",
+    "product_badge_new": "New",
     "search_input_label": "Zoeken",
     "search_input_placeholder": "Zoekopdracht",
     "search_results": "Zoekresultaten",

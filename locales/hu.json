@@ -16,6 +16,10 @@
       "placeholder": "E-mail-cím",
       "success": "Köszönjük feliratkozást!"
     },
+    "store_policy": {
+      "read_full": "Read our full {{ title }}",
+      "empty": "This policy hasn’t been written yet. Add it under Settings > Policies to show it here."
+    },
     "filter": "Szűrés",
     "payment_methods": "Fizetési módok",
     "contact_form": {
@@ -165,6 +169,7 @@
     "taxes_included": "Tartalmazza az adókat.",
     "product_badge_sold_out": "Elfogyott",
     "product_badge_sale": "Akciós",
+    "product_badge_new": "New",
     "grid_view": {
       "default_view": "Alapértelmezett",
       "grid_fieldset": "Oszloprács",

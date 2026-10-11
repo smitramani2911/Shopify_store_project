@@ -16,6 +16,10 @@
       "placeholder": "E-mailová adresa",
       "success": "Ďakujeme, že ste sa prihlásili na odber správ."
     },
+    "store_policy": {
+      "read_full": "Read our full {{ title }}",
+      "empty": "This policy hasn’t been written yet. Add it under Settings > Policies to show it here."
+    },
     "filter": "Filtrovať",
     "payment_methods": "Spôsoby platby",
     "contact_form": {
@@ -169,6 +173,7 @@
     "taxes_included": "Vrátane daní.",
     "product_badge_sold_out": "Vypredané",
     "product_badge_sale": "Zľava",
+    "product_badge_new": "New",
     "search_input_label": "Vyhľadať",
     "search_input_placeholder": "Vyhľadať",
     "search_results": "Výsledky vyhľadávania",

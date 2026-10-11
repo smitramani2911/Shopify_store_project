@@ -16,6 +16,10 @@
       "placeholder": "Adresse e-mail",
       "success": "Merci de vous être abonné(e) !"
     },
+    "store_policy": {
+      "read_full": "Read our full {{ title }}",
+      "empty": "This policy hasn’t been written yet. Add it under Settings > Policies to show it here."
+    },
     "filter": "Filtrer",
     "payment_methods": "Moyens de paiement",
     "contact_form": {
@@ -166,6 +170,7 @@
     "taxes_included": "Taxes incluses.",
     "product_badge_sold_out": "Épuisé",
     "product_badge_sale": "Promotion",
+    "product_badge_new": "New",
     "grid_view": {
       "default_view": "Par défaut",
       "grid_fieldset": "Grille de colonnes",

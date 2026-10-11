@@ -16,6 +16,10 @@
       "placeholder": "Adresă de e-mail",
       "success": "Mulțumim pentru că te-ai abonat!"
     },
+    "store_policy": {
+      "read_full": "Read our full {{ title }}",
+      "empty": "This policy hasn’t been written yet. Add it under Settings > Policies to show it here."
+    },
     "filter": "Filtrează",
     "contact_form": {
       "name": "Nume",
@@ -167,6 +171,7 @@
     "taxes_included": "Impozite incluse.",
     "product_badge_sold_out": "Stoc epuizat",
     "product_badge_sale": "Promoție",
+    "product_badge_new": "New",
     "grid_view": {
       "default_view": "Implicit",
       "grid_fieldset": "Grilă de coloane",

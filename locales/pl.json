@@ -16,6 +16,10 @@
       "placeholder": "Adres e-mail",
       "success": "Dziękujemy za subskrypcję!"
     },
+    "store_policy": {
+      "read_full": "Read our full {{ title }}",
+      "empty": "This policy hasn’t been written yet. Add it under Settings > Policies to show it here."
+    },
     "filter": "Filtr",
     "payment_methods": "Metody płatności",
     "contact_form": {
@@ -169,6 +173,7 @@
     "taxes_included": "Z wliczonymi podatkami.",
     "product_badge_sold_out": "Wyprzedane",
     "product_badge_sale": "W promocji",
+    "product_badge_new": "New",
     "search_input_label": "Szukaj",
     "search_input_placeholder": "Szukaj",
     "search_results": "Wyniki wyszukiwania",

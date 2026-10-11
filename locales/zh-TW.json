@@ -16,6 +16,10 @@
       "placeholder": "電子郵件地址",
       "success": "感謝您的訂閱！"
     },
+    "store_policy": {
+      "read_full": "Read our full {{ title }}",
+      "empty": "This policy hasn’t been written yet. Add it under Settings > Policies to show it here."
+    },
     "filter": "篩選條件",
     "payment_methods": "付款方式",
     "contact_form": {
@@ -165,6 +169,7 @@
     "taxes_included": "已包含稅額。",
     "product_badge_sold_out": "售罄",
     "product_badge_sale": "特賣",
+    "product_badge_new": "New",
     "search_input_label": "搜尋",
     "search_input_placeholder": "搜尋",
     "search_results": "搜尋結果",

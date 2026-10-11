@@ -26,7 +26,7 @@
         {{ block_settings.page.content }}
       </div>
     {%- endif -%}
-  {%- else -%}
+  {%- elsif request.design_mode -%}
     <h2 class="page-title">{{ 'content.page_placeholder_title' | t }}</h2>
     <div class="rte">
       {{ 'content.page_placeholder_content' | t }}

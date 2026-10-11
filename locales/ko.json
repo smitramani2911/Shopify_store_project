@@ -16,6 +16,10 @@
       "placeholder": "이메일 주소",
       "success": "가입해 주셔서 감사합니다!"
     },
+    "store_policy": {
+      "read_full": "Read our full {{ title }}",
+      "empty": "This policy hasn’t been written yet. Add it under Settings > Policies to show it here."
+    },
     "filter": "필터",
     "payment_methods": "결제 방법",
     "contact_form": {
@@ -165,6 +169,7 @@
     "taxes_included": "세금이 포함된 가격입니다.",
     "product_badge_sold_out": "품절",
     "product_badge_sale": "판매",
+    "product_badge_new": "New",
     "search_input_label": "검색",
     "search_input_placeholder": "검색",
     "search_results": "검색 결과",

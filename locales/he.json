@@ -127,6 +127,10 @@
       "placeholder": "כתובת דוא\"ל",
       "success": "תודה על ההרשמה!"
     },
+    "store_policy": {
+      "read_full": "Read our full {{ title }}",
+      "empty": "This policy hasn’t been written yet. Add it under Settings > Policies to show it here."
+    },
     "filter": "מסנן",
     "load_video": "טעינת הסרטון: {{ description }}",
     "sold_out": "אזל מהמלאי",
@@ -226,6 +230,7 @@
     "product_total": "סך הכול למוצרים",
     "product_badge_sold_out": "אזל מהמלאי",
     "product_badge_sale": "מבצע",
+    "product_badge_new": "New",
     "product_card_placeholder": "כותרת מוצר",
     "placeholder_image": "תמונת מציין מקום",
     "quantity": "כמות",

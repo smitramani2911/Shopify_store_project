@@ -16,6 +16,10 @@
       "placeholder": "E-posta adresi",
       "success": "Abone olduğunuz için teşekkür ederiz!"
     },
+    "store_policy": {
+      "read_full": "Read our full {{ title }}",
+      "empty": "This policy hasn’t been written yet. Add it under Settings > Policies to show it here."
+    },
     "filter": "Filtrele",
     "payment_methods": "Ödeme yöntemleri",
     "contact_form": {
@@ -165,6 +169,7 @@
     "taxes_included": "Vergiler dahildir.",
     "product_badge_sold_out": "Tükendi",
     "product_badge_sale": "İndirimde",
+    "product_badge_new": "New",
     "search_input_label": "Ara",
     "search_input_placeholder": "Ara",
     "search_results": "Arama sonuçları",

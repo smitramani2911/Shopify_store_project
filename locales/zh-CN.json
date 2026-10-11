@@ -16,6 +16,10 @@
       "placeholder": "电子邮件地址",
       "success": "感谢您的订阅！"
     },
+    "store_policy": {
+      "read_full": "Read our full {{ title }}",
+      "empty": "This policy hasn’t been written yet. Add it under Settings > Policies to show it here."
+    },
     "filter": "筛选条件",
     "payment_methods": "付款方式",
     "contact_form": {
@@ -165,6 +169,7 @@
     "taxes_included": "已含税费。",
     "product_badge_sold_out": "售罄",
     "product_badge_sale": "促销",
+    "product_badge_new": "New",
     "grid_view": {
       "default_view": "默认",
       "grid_fieldset": "列网格",

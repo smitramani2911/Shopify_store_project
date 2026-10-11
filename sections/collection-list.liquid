@@ -19,8 +19,15 @@
   if section.settings.background_color != blank
     render 'contrast-override', background_color: section.settings.background_color, section_id: section.id
   endif
+
+  # On the storefront, an unconfigured list can hide the section instead of showing placeholder cards.
+  assign hide_empty_list = false
+  if section.settings.hide_when_empty and request.design_mode != true and section.settings.collection_list == blank
+    assign hide_empty_list = true
+  endif
 %}
 
+{% unless hide_empty_list %}
 <div
   class="section-background{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
 ></div>
@@ -78,6 +85,7 @@
     test_id: 'collections-list-grid'
   %}
 </div>
+{% endunless %}
 
 {% schema %}
 {
@@ -123,6 +131,13 @@
       "type": "collection_list",
       "id": "collection_list",
       "label": "t:settings.collection_list"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_when_empty",
+      "label": "t:settings.hide_when_empty",
+      "info": "t:info.hide_when_empty",
+      "default": false
     },
     {
       "type": "header",

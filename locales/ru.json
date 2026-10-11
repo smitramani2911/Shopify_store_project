@@ -16,6 +16,10 @@
       "placeholder": "Адрес электронной почты",
       "success": "Спасибо, что подписались!"
     },
+    "store_policy": {
+      "read_full": "Read our full {{ title }}",
+      "empty": "This policy hasn’t been written yet. Add it under Settings > Policies to show it here."
+    },
     "filter": "Фильтровать",
     "payment_methods": "Способы оплаты",
     "contact_form": {
@@ -169,6 +173,7 @@
     "taxes_included": "Налоги включены.",
     "product_badge_sold_out": "Распродано",
     "product_badge_sale": "Распродажа",
+    "product_badge_new": "New",
     "search_input_label": "Поиск",
     "search_input_placeholder": "Поиск",
     "search_results": "Результаты поиска",

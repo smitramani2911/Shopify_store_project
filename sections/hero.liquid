@@ -11,6 +11,12 @@
   assign has_only_video = false
   assign has_only_video_mobile = false
 
+  # A hero with an opaque custom background and no media is a typographic hero: skip the placeholder artwork.
+  assign show_media_placeholder = true
+  if section.settings.background_color != blank and section.settings.background_color.alpha != 0
+    assign show_media_placeholder = false
+  endif
+
   # Desktop media checks
   # For each media slot, check if the media is not blank and the media type matches the slot
   # Need to check both (1) media picker is not blank AND (2) section.setting.media_type because user can toggle between different media types to display, but choosing "Image" doesn't clear a saved "Video" in the theme editor.
@@ -326,7 +332,7 @@
   {{ media_slot_1 }}
   {{ media_slot_2 }}
 
-  {% if media_count == 0 %}
+  {% if media_count == 0 and show_media_placeholder %}
     {{ 'hero-apparel-1' | placeholder_svg_tag: 'hero__media' }}
   {%- endif -%}
 {% endcapture %}
@@ -358,7 +364,7 @@
         sizes: sizes
     }}
   {% endif %}
-  {% if media_count == 0 %}
+  {% if media_count == 0 and show_media_placeholder %}
     {{ 'hero-apparel-1' | placeholder_svg_tag: 'hero__media' }}
   {% endif %}
 {% endcapture %}

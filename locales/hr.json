@@ -16,6 +16,10 @@
       "placeholder": "Adresa e-pošte",
       "success": "Hvala što ste se pretplatili!"
     },
+    "store_policy": {
+      "read_full": "Read our full {{ title }}",
+      "empty": "This policy hasn’t been written yet. Add it under Settings > Policies to show it here."
+    },
     "filter": "Filtriraj",
     "payment_methods": "Načini plaćanja",
     "contact_form": {
@@ -167,6 +171,7 @@
     "taxes_included": "Porezi su uključeni.",
     "product_badge_sold_out": "Rasprodano",
     "product_badge_sale": "Sniženje",
+    "product_badge_new": "New",
     "search_input_label": "Traži",
     "search_input_placeholder": "Pretraživanje",
     "search_results": "Rezultati pretraživanja",

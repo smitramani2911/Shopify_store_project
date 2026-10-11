@@ -179,11 +179,14 @@
       {% render 'overlay', settings: block_settings %}
     {%- endif -%}
 
+    {% comment %} Placeholder artwork is an editor aid; the storefront keeps the sized wrapper (and any background color) only. {% endcomment %}
     <div class="resource-image__image">
-      {% if content_type == 'articles' %}
-        {{ placeholder_name | placeholder_svg_tag: 'blog-placeholder-svg' }}
-      {% else %}
-        {{ placeholder_name | placeholder_svg_tag }}
+      {% if request.design_mode %}
+        {% if content_type == 'articles' %}
+          {{ placeholder_name | placeholder_svg_tag: 'blog-placeholder-svg' }}
+        {% else %}
+          {{ placeholder_name | placeholder_svg_tag }}
+        {% endif %}
       {% endif %}
     </div>
   </div>

@@ -16,6 +16,10 @@
       "placeholder": "Indirizzo email",
       "success": "Grazie per l'iscrizione!"
     },
+    "store_policy": {
+      "read_full": "Read our full {{ title }}",
+      "empty": "This policy hasn’t been written yet. Add it under Settings > Policies to show it here."
+    },
     "filter": "Filtro",
     "payment_methods": "Metodi di pagamento",
     "contact_form": {
@@ -167,6 +171,7 @@
     "taxes_included": "Imposte incluse.",
     "product_badge_sold_out": "Esaurito",
     "product_badge_sale": "In offerta",
+    "product_badge_new": "New",
     "search_input_label": "Ricerca",
     "search_input_placeholder": "Ricerca",
     "search_results": "Risultati della ricerca",

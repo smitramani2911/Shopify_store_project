@@ -16,6 +16,10 @@
       "placeholder": "E-postadress",
       "success": "Tack för att du prenumererar!"
     },
+    "store_policy": {
+      "read_full": "Read our full {{ title }}",
+      "empty": "This policy hasn’t been written yet. Add it under Settings > Policies to show it here."
+    },
     "filter": "Filter",
     "payment_methods": "Betalningsmetoder",
     "contact_form": {
@@ -165,6 +169,7 @@
     "taxes_included": "Skatter ingår.",
     "product_badge_sold_out": "Slutsåld",
     "product_badge_sale": "Rea",
+    "product_badge_new": "New",
     "search_input_label": "Sökning",
     "search_input_placeholder": "Sök",
     "search_results": "Sökresultat",

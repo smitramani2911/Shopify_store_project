@@ -16,6 +16,10 @@
       "placeholder": "Διεύθυνση email",
       "success": "Ευχαριστούμε για την εγγραφή!"
     },
+    "store_policy": {
+      "read_full": "Read our full {{ title }}",
+      "empty": "This policy hasn’t been written yet. Add it under Settings > Policies to show it here."
+    },
     "filter": "Φιλτράρισμα",
     "payment_methods": "Μέθοδοι πληρωμής",
     "contact_form": {
@@ -165,6 +169,7 @@
     "taxes_included": "Οι φόροι συμπεριλαμβάνονται.",
     "product_badge_sold_out": "Εξαντλήθηκε",
     "product_badge_sale": "Έκπτωση",
+    "product_badge_new": "New",
     "search_input_label": "Αναζήτηση",
     "search_input_placeholder": "Αναζήτηση",
     "search_results": "Αποτελέσματα αναζήτησης",

@@ -17,7 +17,11 @@
   assign has_badges = false
   assign badge_position = null
   if product != blank
-    if product.available == false or product.compare_at_price > product.price
+    capture badge_type
+      render 'product-badge-type', product: product
+    endcapture
+    assign badge_type = badge_type | strip
+    if badge_type != blank
       assign has_badges = true
       assign badge_position = settings.badge_position
     endif

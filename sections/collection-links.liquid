@@ -3,6 +3,12 @@
 {% liquid
   assign collection_list = section.settings.collection_list
 
+  # On the storefront, an unconfigured list can hide the section instead of showing placeholder links.
+  assign hide_empty_list = false
+  if section.settings.hide_when_empty and request.design_mode != true and collection_list == blank
+    assign hide_empty_list = true
+  endif
+
   if collection_list == blank
     assign limit = 4
 
@@ -15,6 +21,8 @@
 
   assign active_collection = collection_list | find: 'id', collection.id | default: collection_list.first
 %}
+
+{% unless hide_empty_list %}
 
 <script
   src="{{ 'collection-links.js' | asset_url }}"
@@ -101,6 +109,7 @@
     {% endcase %}
   </collection-links-component>
 </div>
+{% endunless %}
 
 {% stylesheet %}
   collection-links-component {
@@ -208,6 +217,13 @@
       "type": "collection_list",
       "id": "collection_list",
       "label": "t:settings.collection_list"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_when_empty",
+      "label": "t:settings.hide_when_empty",
+      "info": "t:info.hide_when_empty",
+      "default": false
     },
     {
       "type": "header",

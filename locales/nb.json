@@ -16,6 +16,10 @@
       "placeholder": "E-postadresse",
       "success": "Takk for at du abonnerer!"
     },
+    "store_policy": {
+      "read_full": "Read our full {{ title }}",
+      "empty": "This policy hasn’t been written yet. Add it under Settings > Policies to show it here."
+    },
     "filter": "Filter",
     "payment_methods": "Betalingsmåter",
     "contact_form": {
@@ -165,6 +169,7 @@
     "taxes_included": "Avgifter inkludert.",
     "product_badge_sold_out": "Utsolgt",
     "product_badge_sale": "Salg",
+    "product_badge_new": "New",
     "search_input_label": "Søk",
     "search_input_placeholder": "Søk",
     "search_results": "Søkeresultater",

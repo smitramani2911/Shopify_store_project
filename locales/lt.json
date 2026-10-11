@@ -16,6 +16,10 @@
       "placeholder": "El. pašto adresas",
       "success": "Dėkojame, kad prenumeruojate!"
     },
+    "store_policy": {
+      "read_full": "Read our full {{ title }}",
+      "empty": "This policy hasn’t been written yet. Add it under Settings > Policies to show it here."
+    },
     "filter": "Filtruoti",
     "payment_methods": "Mokėjimo būdai",
     "contact_form": {
@@ -169,6 +173,7 @@
     "taxes_included": "Mokesčiai įtraukti.",
     "product_badge_sold_out": "Išparduota",
     "product_badge_sale": "Išpardavimas",
+    "product_badge_new": "New",
     "search_input_label": "Ieškoti",
     "search_input_placeholder": "Ieškoti",
     "search_results": "Paieškos rezultatai",

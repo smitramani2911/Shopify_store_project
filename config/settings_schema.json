@@ -26,6 +26,12 @@
         "info": "t:content.inverse_logo_info"
       },
       {
+        "type": "text",
+        "id": "logo_text",
+        "label": "t:settings.logo_text",
+        "info": "t:info.logo_text"
+      },
+      {
         "type": "range",
         "id": "logo_height",
         "label": "t:settings.desktop_height",
@@ -66,6 +72,13 @@
           "background": "#ffffff",
           "foreground": "#000000"
         }
+      },
+      {
+        "type": "color",
+        "id": "color_accent",
+        "label": "t:settings.accent_color",
+        "info": "t:info.accent_color",
+        "default": "#ccff33"
       }
     ]
   },
@@ -1235,6 +1248,38 @@
         "id": "badge_sold_out_text_color",
         "label": "t:settings.badge_sold_out_text_color",
         "default": "{{ settings.color_palette.foreground }}"
+      },
+      {
+        "type": "checkbox",
+        "id": "badge_new_enabled",
+        "label": "t:settings.badge_new_enabled",
+        "default": false
+      },
+      {
+        "type": "range",
+        "id": "badge_new_days",
+        "label": "t:settings.badge_new_days",
+        "info": "t:info.badge_new_days",
+        "min": 7,
+        "max": 90,
+        "step": 1,
+        "unit": "d",
+        "default": 30,
+        "visible_if": "{{ settings.badge_new_enabled }}"
+      },
+      {
+        "type": "color",
+        "id": "badge_new_background_color",
+        "label": "t:settings.badge_new_background_color",
+        "default": "{{ settings.color_palette.foreground }}",
+        "visible_if": "{{ settings.badge_new_enabled }}"
+      },
+      {
+        "type": "color",
+        "id": "badge_new_text_color",
+        "label": "t:settings.badge_new_text_color",
+        "default": "{{ settings.color_palette.background }}",
+        "visible_if": "{{ settings.badge_new_enabled }}"
       },
       {
         "type": "header",

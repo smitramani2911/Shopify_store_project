@@ -1,6 +1,16 @@
 
 {% assign block_settings = block.settings %}
 
+{% comment %}
+  Rows whose blocks render nothing on the storefront (for example a policy that has not been written yet)
+  are skipped entirely; the editor keeps them so merchants can still configure them.
+{% endcomment %}
+{% capture accordion_row_content %}
+  {% content_for 'blocks' %}
+{% endcapture %}
+{% assign accordion_row_content = accordion_row_content | strip %}
+
+{% if accordion_row_content != blank or request.design_mode %}
 {% capture accordion_row_children %}
   <details
     class="details"
@@ -27,7 +37,7 @@
     </summary>
 
     <div class="details-content">
-      {% content_for 'blocks' %}
+      {{ accordion_row_content }}
     </div>
   </details>
 {% endcapture %}
@@ -36,6 +46,7 @@
   open_by_default_on_desktop: block_settings.open_by_default,
   open_by_default_on_mobile: block_settings.open_by_default
 %}
+{% endif %}
 
 {% schema %}
 {

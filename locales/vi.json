@@ -16,6 +16,10 @@
       "placeholder": "Địa chỉ email",
       "success": "Cảm ơn bạn đã đăng ký!"
     },
+    "store_policy": {
+      "read_full": "Read our full {{ title }}",
+      "empty": "This policy hasn’t been written yet. Add it under Settings > Policies to show it here."
+    },
     "filter": "Bộ lọc",
     "payment_methods": "Phương thức thanh toán",
     "contact_form": {
@@ -165,6 +169,7 @@
     "taxes_included": "Đã bao gồm thuế.",
     "product_badge_sold_out": "Đã bán hết",
     "product_badge_sale": "Giảm giá",
+    "product_badge_new": "New",
     "search_input_label": "Tìm kiếm",
     "search_input_placeholder": "Tìm kiếm",
     "search_results": "Kết quả tìm kiếm",

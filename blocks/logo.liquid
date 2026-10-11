@@ -3,6 +3,7 @@
 {% liquid
   assign block_settings = block.settings
   assign image = settings.logo
+  assign logo_text = settings.logo_text | default: shop.name
 
   if block_settings.inverse and settings.logo_inverse
     assign image = settings.logo_inverse
@@ -37,7 +38,7 @@
       {% if image %}
         --logo-width: {{ image.width | times: 1.00 | divided_by: image.height | times: block_settings.pixel_height }}px;
       {% else %}
-        --logo-width: {{ shop.name.size | times: 0.65 }}em;
+        --logo-width: {{ logo_text.size | times: 0.65 }}em;
         --logo-height: {{ block_settings.pixel_height }}px;
       {% endif %}
     {% endif %}
@@ -50,7 +51,7 @@
         {% if image %}
           --logo-width-mobile: {{ image.width | times: 1.00 | divided_by: image.height | times: block_settings.pixel_height_mobile }}px;
           {% else %}
-            --logo-width-mobile: {{ shop.name.size | times: 0.65 }}em;
+            --logo-width-mobile: {{ logo_text.size | times: 0.65 }}em;
             --logo-height-mobile: {{ block_settings.pixel_height_mobile }}px;
         {% endif %}
       {% endif %}
@@ -64,7 +65,7 @@
       {{ logo_image }}
     </div>
   {% else %}
-    {% render 'jumbo-text', text: shop.name %}
+    {% render 'jumbo-text', text: logo_text %}
   {% endif %}
 </div>
 

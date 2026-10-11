@@ -21,6 +21,7 @@
   endif
 
   assign alt_text_fallback = 'accessibility.home_logo_alt' | t: store_name: shop.name
+  assign wordmark_text = settings.logo_text | default: shop.name
 %}
 
 {% comment %}
@@ -51,21 +52,27 @@
     assign inverse_logo_style = '--header-logo-image-width: ' | append: inverse_logo_width | append: 'px;' | append: '--header-logo-image-width-mobile: ' | append: inverse_logo_width_mobile | append: 'px; --header-logo-image-height: ' | append: settings.logo_height | append: 'px; --header-logo-image-height-mobile: ' | append: settings.logo_height_mobile | append: 'px;'
   %}
 
-  <span
-    {% if use_inverse_logo %}
-      class="header-logo__solid-header-image-container"
-    {% endif %}
-    data-testid="header-logo"
-  >
-    {% render 'image',
-      image: settings.logo,
-      class: 'header-logo__image',
-      height: settings.logo_height,
-      alt_text_fallback: alt_text_fallback,
-      text_fallback: shop.name,
-      style: logo_style
-    %}
-  </span>
+  {% if settings.logo == blank and inverse_logo == blank %}
+    <span data-testid="header-logo">
+      {% render 'wordmark', text: wordmark_text, class: 'header-logo__wordmark' %}
+    </span>
+  {% else %}
+    <span
+      {% if use_inverse_logo %}
+        class="header-logo__solid-header-image-container"
+      {% endif %}
+      data-testid="header-logo"
+    >
+      {% render 'image',
+        image: settings.logo,
+        class: 'header-logo__image',
+        height: settings.logo_height,
+        alt_text_fallback: alt_text_fallback,
+        text_fallback: wordmark_text,
+        style: logo_style
+      %}
+    </span>
+  {% endif %}
 
   {% if use_inverse_logo %}
     <span
@@ -77,7 +84,7 @@
         class: 'header-logo__image',
         height: settings.logo_height,
         alt_text_fallback: alt_text_fallback,
-        text_fallback: shop.name,
+        text_fallback: wordmark_text,
         style: inverse_logo_style
       %}
     </span>
@@ -120,6 +127,10 @@
     &:hover {
       text-decoration: none;
     }
+  }
+
+  .header-logo__wordmark {
+    --wordmark-size: clamp(1.125rem, 0.95rem + 0.6vw, 1.5rem);
   }
 
   .header-logo__image {

@@ -1,0 +1,52 @@
+{%- doc -%}
+  Renders the text wordmark used wherever a logo image would appear but none is uploaded.
+  The text is set in the heading font with an accent mark, so the brand reads consistently
+  on light and dark surfaces: the text follows the active foreground color and the mark uses
+  the theme accent color.
+
+  @param {string} text - The wordmark text, usually `settings.logo_text` or the shop name
+  @param {string} [class] - Additional classes for the wrapper
+  @param {string} [size] - CSS length for the wordmark size; defaults to `--wordmark-size` from the caller
+
+  @example
+  {% render 'wordmark', text: settings.logo_text | default: shop.name, class: 'header-logo__wordmark' %}
+{%- enddoc -%}
+
+<span
+  class="wordmark{% if class != blank %} {{ class }}{% endif %}"
+  {% if size != blank %}
+    style="--wordmark-size: {{ size }};"
+  {% endif %}
+>
+  <span class="wordmark__text">{{ text | escape }}</span>
+  <span
+    class="wordmark__mark"
+    aria-hidden="true"
+  ></span>
+</span>
+
+{% stylesheet %}
+  .wordmark {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.16em;
+    font-family: var(--font-heading--family);
+    font-style: var(--font-heading--style);
+    font-weight: var(--font-heading--weight);
+    font-size: var(--wordmark-size, 1.5rem);
+    line-height: 1;
+    letter-spacing: -0.045em;
+    text-transform: uppercase;
+    color: var(--color-foreground);
+    white-space: nowrap;
+  }
+
+  .wordmark__mark {
+    display: inline-block;
+    flex: none;
+    width: 0.3em;
+    height: 0.3em;
+    background: var(--color-accent, currentcolor);
+    transform: translateY(-0.04em);
+  }
+{% endstylesheet %}

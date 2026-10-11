@@ -37,7 +37,8 @@
       | image_tag: width: width, widths: widths, sizes: sizes, loading: loading, alt: alt
     }}
   </image-block>
-{% else %}
+{% elsif request.design_mode %}
+  {% comment %} Placeholder artwork is an editor aid only; the storefront renders nothing without an image. {% endcomment %}
   <image-block
     ratio="{{ block_settings.ratio }}"
     height="{{ block_settings.height }}"

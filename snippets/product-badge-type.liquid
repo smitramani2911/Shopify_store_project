@@ -1,0 +1,42 @@
+{%- doc -%}
+  Outputs the badge a product card should show: `sold_out`, `sale`, `new`, or nothing.
+
+  Sold out wins over sale, and sale wins over new. The "new" badge is data-backed: it only
+  applies when the theme's new-badge setting is on and the product was created within
+  `settings.badge_new_days` days or carries the `new` tag.
+
+  @param {object} product - The product to evaluate
+
+  @example
+  {% capture badge_type %}{% render 'product-badge-type', product: product %}{% endcapture %}
+  {% assign badge_type = badge_type | strip %}
+{%- enddoc -%}
+
+{%- liquid
+  if product != blank
+    if product.available == false
+      echo 'sold_out'
+    elsif product.compare_at_price > product.price
+      echo 'sale'
+    elsif settings.badge_new_enabled
+      assign is_new = false
+
+      if product.tags contains 'new' or product.tags contains 'New'
+        assign is_new = true
+      else
+        assign now_seconds = 'now' | date: '%s' | plus: 0
+        assign created_seconds = product.created_at | date: '%s' | plus: 0
+        assign max_age_seconds = settings.badge_new_days | times: 86400
+        assign age_seconds = now_seconds | minus: created_seconds
+
+        if age_seconds <= max_age_seconds
+          assign is_new = true
+        endif
+      endif
+
+      if is_new
+        echo 'new'
+      endif
+    endif
+  endif
+-%}

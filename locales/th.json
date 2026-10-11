@@ -16,6 +16,10 @@
       "placeholder": "อีเมล",
       "success": "ขอขอบคุณที่สมัครรับข้อมูล"
     },
+    "store_policy": {
+      "read_full": "Read our full {{ title }}",
+      "empty": "This policy hasn’t been written yet. Add it under Settings > Policies to show it here."
+    },
     "filter": "ตัวกรอง",
     "payment_methods": "วิธีการชำระเงิน",
     "contact_form": {
@@ -165,6 +169,7 @@
     "taxes_included": "รวมภาษีแล้ว",
     "product_badge_sold_out": "ขายหมดแล้ว",
     "product_badge_sale": "ลดราคา",
+    "product_badge_new": "New",
     "search_input_label": "การค้นหา",
     "search_input_placeholder": "ค้นหา",
     "search_results": "ผลลัพธ์การค้นหา",

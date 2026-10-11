@@ -175,6 +175,8 @@
     --palette-lightest-rgb: {{ palette_lightest.rgb }};
     --palette-darkest: {{ palette_darkest }};
     --palette-darkest-rgb: {{ palette_darkest.rgb }};
+    --color-accent: {{ settings.color_accent }};
+    --color-accent-rgb: {{ settings.color_accent.rgb }};
     {% render 'brightness-opacities', background: settings.page_background_color %}
 
     --color-primary-button-text: rgb({{ settings.palette_primary_button_text.rgba }});

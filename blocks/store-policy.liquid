@@ -1,0 +1,230 @@
+{%- doc -%}
+  Renders one of the store's legal policies (Settings > Policies in the Shopify admin) as a
+  short excerpt or in full, with an optional link to the policy page. This keeps shipping and
+  returns information on product pages, FAQs and footers sourced from the real policies
+  instead of duplicated copy.
+
+  Settings are read from `block.settings`: `policy`, `display`, `excerpt_words`, `show_link`,
+  `text_color` and padding. On the storefront the block renders nothing when the selected
+  policy is empty; the theme editor shows a hint instead.
+
+  @example
+  {% content_for 'block', type: 'store-policy', id: 'shipping-policy' %}
+{%- enddoc -%}
+
+{% liquid
+  assign block_settings = block.settings
+
+  case block_settings.policy
+    when 'refund_policy'
+      assign policy = shop.refund_policy
+    when 'privacy_policy'
+      assign policy = shop.privacy_policy
+    when 'terms_of_service'
+      assign policy = shop.terms_of_service
+    when 'subscription_policy'
+      assign policy = shop.subscription_policy
+    else
+      assign policy = shop.shipping_policy
+  endcase
+
+  assign policy_title = policy.title | downcase
+%}
+
+{% if policy.body != blank %}
+  <div
+    class="store-policy spacing-style"
+    style="
+      {% render 'spacing-style', settings: block_settings %}
+      {% if block_settings.text_color != blank %}
+        --color: {{ block_settings.text_color }};
+        --color-rgb: {{ block_settings.text_color.rgb }};
+      {% endif %}
+    "
+    {{ block.shopify_attributes }}
+  >
+    {% if block_settings.display == 'full' %}
+      <div class="store-policy__body rte">
+        {{ policy.body }}
+      </div>
+    {% else %}
+      <p class="store-policy__body">
+        {{ policy.body | strip_html | truncatewords: block_settings.excerpt_words }}
+      </p>
+    {% endif %}
+
+    {% if block_settings.show_link %}
+      <a
+        class="store-policy__link link"
+        href="{{ policy.url }}"
+      >
+        {{ 'blocks.store_policy.read_full' | t: title: policy_title }}
+      </a>
+    {% endif %}
+  </div>
+{% elsif request.design_mode %}
+  <div
+    class="store-policy store-policy--empty spacing-style"
+    style="{% render 'spacing-style', settings: block_settings %}"
+    {{ block.shopify_attributes }}
+  >
+    <p class="store-policy__body">{{ 'blocks.store_policy.empty' | t }}</p>
+  </div>
+{% endif %}
+
+{% stylesheet %}
+  .store-policy {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-xs);
+    width: 100%;
+    max-width: var(--max-width--body-normal);
+    color: var(--color, inherit);
+  }
+
+  .store-policy__body {
+    margin: 0;
+  }
+
+  .store-policy__link {
+    color: currentcolor;
+    width: fit-content;
+  }
+
+  .store-policy--empty {
+    color: var(--color-foreground-muted);
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:names.store_policy",
+  "tag": null,
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "t:content.manage_policies"
+    },
+    {
+      "type": "select",
+      "id": "policy",
+      "label": "t:settings.policy",
+      "options": [
+        {
+          "value": "shipping_policy",
+          "label": "t:options.shipping_policy"
+        },
+        {
+          "value": "refund_policy",
+          "label": "t:options.refund_policy"
+        },
+        {
+          "value": "privacy_policy",
+          "label": "t:options.privacy_policy"
+        },
+        {
+          "value": "terms_of_service",
+          "label": "t:options.terms_of_service"
+        },
+        {
+          "value": "subscription_policy",
+          "label": "t:options.subscription_policy"
+        }
+      ],
+      "default": "shipping_policy"
+    },
+    {
+      "type": "select",
+      "id": "display",
+      "label": "t:settings.display",
+      "options": [
+        {
+          "value": "excerpt",
+          "label": "t:options.excerpt"
+        },
+        {
+          "value": "full",
+          "label": "t:options.full_text"
+        }
+      ],
+      "default": "excerpt"
+    },
+    {
+      "type": "range",
+      "id": "excerpt_words",
+      "label": "t:settings.excerpt_length",
+      "min": 15,
+      "max": 120,
+      "step": 5,
+      "default": 45,
+      "visible_if": "{{ block.settings.display == 'excerpt' }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_link",
+      "label": "t:settings.show_policy_link",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "t:settings.text_color",
+      "placeholder": "t:settings.default"
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start",
+      "label": "t:settings.left",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end",
+      "label": "t:settings.right",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:names.store_policy",
+      "category": "t:categories.text",
+      "settings": {
+        "policy": "shipping_policy",
+        "display": "excerpt"
+      }
+    }
+  ]
+}
+{% endschema %}

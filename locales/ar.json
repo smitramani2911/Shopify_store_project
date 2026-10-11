@@ -131,6 +131,10 @@
       "placeholder": "عنوان البريد الإلكتروني",
       "success": "شكرًا لاشتراكك!"
     },
+    "store_policy": {
+      "read_full": "Read our full {{ title }}",
+      "empty": "This policy hasn’t been written yet. Add it under Settings > Policies to show it here."
+    },
     "filter": "تصفية",
     "load_video": "تحميل الفيديو: {{ description }}",
     "sold_out": "نفد المخزون",
@@ -232,6 +236,7 @@
     "product_total": "إجمالي المنتج",
     "product_badge_sold_out": "نفد المخزون",
     "product_badge_sale": "تخفيض",
+    "product_badge_new": "New",
     "product_card_placeholder": "عنوان المنتج",
     "placeholder_image": "صورة عنصر نائب",
     "quantity": "الكمية",
