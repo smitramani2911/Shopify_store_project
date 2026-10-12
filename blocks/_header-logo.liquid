@@ -20,8 +20,8 @@
     endif
   endif
 
-  assign alt_text_fallback = 'accessibility.home_logo_alt' | t: store_name: shop.name
   assign wordmark_text = settings.logo_text | default: shop.name
+  assign alt_text_fallback = 'accessibility.home_logo_alt' | t: store_name: wordmark_text
 %}
 
 {% comment %}

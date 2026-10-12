@@ -130,6 +130,7 @@
       "collections": "Collections"
     },
     "contact_form": {
+      "inquiry_type": "Inquiry type",
       "name": "Name",
       "email": "Email",
       "phone": "Phone",
@@ -173,9 +174,41 @@
     }
   },
   "content": {
+    "catalog_unavailable": {
+      "eyebrow": "Not in this store",
+      "title": "This item isn’t available here",
+      "text": "The page you opened isn’t part of the SNEAKROW sneaker catalogue."
+    },
+    "demo_products": {
+      "badge": "Demo product — preview only",
+      "banner_label": "Preview mode",
+      "banner_text": "Products marked DEMO are placeholders for design review. They are not for sale and can’t be added to the cart.",
+      "not_for_sale": "Preview only · not for sale",
+      "card_label": "Demo product, preview only: {{ title }}",
+      "image_alt": "Illustrative sneaker photo for a demo product",
+      "brand_name": "Demo brand {{ letter }}",
+      "brand_tag": "Demo",
+      "category_lifestyle": "Lifestyle",
+      "category_running": "Running",
+      "category_basketball": "Basketball",
+      "category_retro": "Retro",
+      "title_1": "Everyday Leather Low",
+      "title_2": "Canvas Plimsoll",
+      "title_3": "Court Canvas High-Top",
+      "title_4": "Night Run Trainer",
+      "title_5": "Canvas Slip-On",
+      "title_6": "Red Canvas High-Top",
+      "title_7": "Navy Canvas Low",
+      "title_8": "Street Canvas Low"
+    },
+    "category_tile_preview": "Preview · collection not set up yet",
+    "confidence_item_preview": "Preview · page or policy not published yet",
     "collection_empty_title": "No pairs here yet",
     "collection_empty_text": "This collection doesn't have any products right now. New pairs are added regularly, so check back soon.",
     "bundled_photo_alt": {
+      "everyday": "Sneakers on a city street",
+      "classic": "Classic low-top sneakers with a retro feel",
+      "performance": "Runner in motion wearing training shoes",
       "street": "White canvas sneakers on dark asphalt beside a yellow road marking",
       "wire": "Pairs of sneakers hanging from a cable between city buildings",
       "lifestyle": "Looking down at a pair of canvas sneakers",

@@ -40,8 +40,24 @@
   endif
 
   assign render_section = true
-  if brand_total == 0 and layout == 'row' and request.design_mode != true
+  if brand_total == 0 and layout == 'row' and request.design_mode != true and settings.demo_mode != true
     assign render_section = false
+  endif
+
+  assign view_all_state = 'missing'
+  if section.settings.view_all_link != blank
+    capture view_all_state
+      render 'link-state', url: section.settings.view_all_link
+    endcapture
+    assign view_all_state = view_all_state | strip
+  endif
+
+  assign empty_link_state = 'missing'
+  if section.settings.empty_link != blank
+    capture empty_link_state
+      render 'link-state', url: section.settings.empty_link
+    endcapture
+    assign empty_link_state = empty_link_state | strip
   endif
 
   if render_section and section.settings.background_color != blank
@@ -76,7 +92,7 @@
               <p class="brand-list__count">{{ 'content.brand_list_count' | t: count: brand_total }}</p>
             {% endif %}
           </div>
-          {% if layout == 'row' and section.settings.view_all_label != blank and section.settings.view_all_link != blank %}
+          {% if layout == 'row' and section.settings.view_all_label != blank and view_all_state == 'live' %}
             <a
               class="brand-list__view-all"
               href="{{ section.settings.view_all_link }}"
@@ -115,7 +131,18 @@
                 </a>
               </li>
             {% else %}
-              {% if request.design_mode %}
+              {% if settings.demo_mode %}
+                {% comment %} Demo preview: the fictional brands used by the demo product cards, clearly labelled. {% endcomment %}
+                {% assign demo_letters = 'A,B,C,D,E,F' | split: ',' %}
+                {% for letter in demo_letters limit: limit %}
+                  <li class="brand-list__item">
+                    <span class="brand-list__link brand-list__link--demo">
+                      {{ 'content.demo_products.brand_name' | t: letter: letter }}
+                      <span class="brand-list__demo-tag">{{ 'content.demo_products.brand_tag' | t }}</span>
+                    </span>
+                  </li>
+                {% endfor %}
+              {% elsif request.design_mode %}
                 {% for i in (1..6) %}
                   <li class="brand-list__item">
                     <span class="brand-list__link brand-list__link--placeholder">
@@ -201,7 +228,7 @@
         {% else %}
           <div class="brand-list__empty">
             <p>{{ 'content.brand_list_empty' | t }}</p>
-            {% if section.settings.empty_link != blank %}
+            {% if empty_link_state == 'live' %}
               <a
                 class="button"
                 href="{{ section.settings.empty_link }}"
@@ -320,6 +347,20 @@
   a.brand-list__link:hover {
     background-color: var(--color-foreground);
     color: var(--color-background);
+  }
+
+  .brand-list__link--demo {
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .brand-list__demo-tag {
+    padding: 0.15rem 0.35rem;
+    font-family: var(--font-body--family);
+    font-size: 0.5625rem;
+    letter-spacing: 0.08em;
+    color: var(--color-accent, #c7ff35);
+    background-color: #111;
   }
 
   .brand-list__link--placeholder {

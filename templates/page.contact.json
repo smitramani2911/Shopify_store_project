@@ -171,6 +171,7 @@
         "form": {
           "type": "contact-form",
           "settings": {
+            "inquiry_types": "Order question, Sizing and fit, Returns and exchanges, Product question, Something else",
             "width": "custom",
             "custom_width": 50,
             "width_mobile": "custom",

@@ -20,19 +20,41 @@
         assign item_url = shop.refund_policy.url
       endif
     when 'custom'
-      assign item_url = block.settings.custom_link
+      if block.settings.custom_link != blank
+        capture custom_link_state
+          render 'link-state', url: block.settings.custom_link
+        endcapture
+        if custom_link_state contains 'live'
+          assign item_url = block.settings.custom_link
+        endif
+      endif
   endcase
 %}
 
-{% if item_url != blank or request.design_mode %}
+{% liquid
+  # Without a published destination the item is hidden on the storefront. In the theme editor and in demo
+  # preview mode it renders as a labelled, non-clickable preview instead of a dead link.
+  assign item_preview = false
+  if item_url == blank
+    if request.design_mode or settings.demo_mode
+      assign item_preview = true
+    endif
+  endif
+%}
+
+{% if item_url != blank or item_preview %}
   <li
-    class="confidence-item"
+    class="confidence-item{% if item_preview %} confidence-item--preview{% endif %}"
     {{ block.shopify_attributes }}
   >
-    <a
-      class="confidence-item__link"
-      href="{{ item_url | default: '#' }}"
-    >
+    {% if item_preview %}
+      <div class="confidence-item__link">
+    {% else %}
+      <a
+        class="confidence-item__link"
+        href="{{ item_url }}"
+      >
+    {% endif %}
       {% if block.settings.icon != 'none' %}
         <span class="confidence-item__icon">
           {% render 'icon-or-image', icon: block.settings.icon, image_upload: blank, width: 28, class_name: 'confidence-item__svg' %}
@@ -45,14 +67,20 @@
         {% if block.settings.text != blank %}
           <span class="confidence-item__text">{{ block.settings.text | escape }}</span>
         {% endif %}
-        {% if item_label != blank %}
+        {% if item_preview %}
+          <span class="confidence-item__preview-note">{{ 'content.confidence_item_preview' | t }}</span>
+        {% elsif item_label != blank %}
           <span class="confidence-item__cta">
             {{- item_label | escape }}
             <span aria-hidden="true">&rarr;</span>
           </span>
         {% endif %}
       </span>
-    </a>
+    {% if item_preview %}
+      </div>
+    {% else %}
+      </a>
+    {% endif %}
   </li>
 {% endif %}
 
@@ -70,6 +98,18 @@
     padding-block: var(--gap-lg, 1.25rem);
     color: var(--color-foreground);
     text-decoration: none;
+  }
+
+  .confidence-item__preview-note {
+    justify-self: start;
+    margin-block-start: 0.25rem;
+    padding: 0.2rem 0.4rem;
+    font-size: 0.625rem;
+    line-height: 1.3;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-accent, #c7ff35);
+    background-color: #111;
   }
 
   .confidence-item__icon {

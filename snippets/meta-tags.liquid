@@ -2,6 +2,7 @@
   Renders all meta tags for the page including Open Graph, Twitter Cards, and SEO tags.
 
   @param {object} [product] - The product object, available on product pages for price meta tags.
+  @param {boolean} [page_blocked] - True when the page is outside the storefront catalogue (snippets/catalog-page-state)
 {% enddoc %}
 
 <meta charset="utf-8">
@@ -19,10 +20,24 @@
 >
 
 {%- liquid
-  assign og_title = page_title | default: shop.name
+  # SNEAKROW: the brand name comes from the wordmark setting, so a shared store's own name stays out of titles.
+  assign brand_name = settings.logo_text | default: shop.name
+  assign title_text = page_title
+  assign description_text = page_description
+  if page_blocked
+    assign title_text = 'content.catalog_unavailable.title' | t
+    assign description_text = blank
+  elsif request.page_type == 'index' and page_title == shop.name
+    # The store's default home title is just its name; use the brand name instead.
+    assign title_text = brand_name
+  elsif request.page_type == 'search' and settings.catalog_product_types != blank and search.performed
+    # Shopify's search title includes a whole-store result count; leave it out while the catalogue guard is on.
+    assign title_text = 'blocks.breadcrumbs.search' | t | append: ': ' | append: search.terms
+  endif
+  assign og_title = title_text | default: brand_name
   assign og_url = canonical_url | default: request.origin
   assign og_type = 'website'
-  assign og_description = page_description | default: shop.description | default: shop.name
+  assign og_description = description_text | default: brand_name
 
   if request.page_type == 'product'
     assign og_type = 'product'
@@ -35,7 +50,7 @@
 
 <meta
   property="og:site_name"
-  content="{{ shop.name }}"
+  content="{{ brand_name | escape }}"
 >
 <meta
   property="og:url"
@@ -54,7 +69,29 @@
   content="{{ og_description | escape }}"
 >
 
-{%- if page_image -%}
+{%- if page_blocked -%}
+  {%- comment -%}
+    Shopify injects the page's own image when a theme outputs no og:image, so blocked pages declare a
+    neutral SNEAKROW photo instead.
+  {%- endcomment -%}
+  {%- assign blocked_share_image = 'sneakrow-photo-street-1200.jpg' | asset_url -%}
+  <meta
+    property="og:image"
+    content="https:{{ blocked_share_image }}"
+  >
+  <meta
+    property="og:image:secure_url"
+    content="https:{{ blocked_share_image }}"
+  >
+  <meta
+    property="og:image:width"
+    content="1200"
+  >
+  <meta
+    property="og:image:height"
+    content="800"
+  >
+{%- elsif page_image -%}
   <meta
     property="og:image"
     content="http:{{ page_image | image_url }}"
@@ -73,7 +110,7 @@
   >
 {%- endif -%}
 
-{%- if request.page_type == 'product' -%}
+{%- if request.page_type == 'product' and page_blocked != true -%}
   <meta
     property="og:price:amount"
     content="{{ product.price | money_without_currency | strip_html }}"
@@ -104,20 +141,27 @@
 >
 
 <title>
-  {{ page_title }}
-  {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
+  {{ title_text }}
+  {%- if current_tags and page_blocked != true %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
   {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
-  {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+  {%- unless title_text contains brand_name %} &ndash; {{ brand_name }}{% endunless -%}
 </title>
+
+{%- if page_blocked -%}
+  <meta
+    name="robots"
+    content="noindex"
+  >
+{%- endif -%}
 
 <link
   rel="canonical"
   href="{{ canonical_url }}"
 >
 
-{% if page_description %}
+{% if description_text %}
   <meta
     name="description"
-    content="{{ page_description | escape }}"
+    content="{{ description_text | escape }}"
   >
 {% endif %}

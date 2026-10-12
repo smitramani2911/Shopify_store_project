@@ -78,7 +78,7 @@
         "id": "color_accent",
         "label": "t:settings.accent_color",
         "info": "t:info.accent_color",
-        "default": "#ccff33"
+        "default": "#c7ff35"
       }
     ]
   },
@@ -2159,6 +2159,37 @@
           }
         ],
         "default": "equal-width-buttons"
+      }
+    ]
+  },
+  {
+    "name": "t:names.demo_preview",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "t:content.demo_preview_info"
+      },
+      {
+        "type": "checkbox",
+        "id": "demo_mode",
+        "label": "t:settings.demo_mode",
+        "info": "t:info.demo_mode",
+        "default": false
+      }
+    ]
+  },
+  {
+    "name": "t:names.catalogue",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "t:content.catalogue_info"
+      },
+      {
+        "type": "text",
+        "id": "catalog_product_types",
+        "label": "t:settings.catalog_product_types",
+        "info": "t:info.catalog_product_types"
       }
     ]
   }

@@ -61,8 +61,15 @@
       {% endif %}
 
       {% paginate collection.products by products_per_page %}
+        {% comment %} SNEAKROW: products outside the storefront catalogue (see snippets/catalog-guard) are not rendered. {% endcomment %}
+        {% assign visible_count = 0 %}
         {% capture children %}
           {% for product in collection.products %}
+            {% capture guard_state %}{% render 'catalog-guard', product: product %}{% endcapture %}
+            {% unless guard_state contains 'allowed' %}
+              {% continue %}
+            {% endunless %}
+            {% assign visible_count = visible_count | plus: 1 %}
             <li
               id="{{ section.id }}-{{ product.id }}"
               class="product-grid__item product-grid__item--{{ forloop.index0 }}"
@@ -84,6 +91,7 @@
           section: section,
           children: children,
           products: collection.products,
+          visible_count: visible_count,
           paginate: paginate,
           enable_infinite_scroll: section.settings.enable_infinite_scroll
         %}

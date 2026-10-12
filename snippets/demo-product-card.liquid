@@ -1,0 +1,182 @@
+{%- doc -%}
+  Renders one preview-only demo sneaker card. Demo cards stand in for real products while a collection is
+  empty and Theme settings > Demo preview > "Show demo products" is on. They are labelled
+  "DEMO PRODUCT — PREVIEW ONLY", show no price, are not links and have no add-to-cart control, so they can
+  never reach the cart or checkout. Images are illustrative CC0 photos (see ASSET-MANIFEST.md), not photos of
+  products for sale.
+
+  @param {number} index - 1-based position; the demo catalogue repeats every 8 items
+  @param {string} [sizes] - The sizes attribute for the image, defaults to a 4-column grid
+
+  @example
+  {% render 'demo-product-card', index: 3 %}
+{%- enddoc -%}
+
+{%- liquid
+  assign demo_number = index | minus: 1 | modulo: 8 | plus: 1
+  assign sizes = sizes | default: '(min-width: 990px) 25vw, 50vw'
+
+  case demo_number
+    when 1
+      assign demo_title = 'content.demo_products.title_1' | t
+      assign demo_brand = 'content.demo_products.brand_name' | t: letter: 'A'
+      assign demo_category = 'content.demo_products.category_lifestyle' | t
+      assign demo_colors = '#f4f4f2|#ffffff'
+    when 2
+      assign demo_title = 'content.demo_products.title_2' | t
+      assign demo_brand = 'content.demo_products.brand_name' | t: letter: 'B'
+      assign demo_category = 'content.demo_products.category_retro' | t
+      assign demo_colors = '#2a2622|#e9e1cf'
+    when 3
+      assign demo_title = 'content.demo_products.title_3' | t
+      assign demo_brand = 'content.demo_products.brand_name' | t: letter: 'C'
+      assign demo_category = 'content.demo_products.category_basketball' | t
+      assign demo_colors = '#e8dcc0|#3b2f25'
+    when 4
+      assign demo_title = 'content.demo_products.title_4' | t
+      assign demo_brand = 'content.demo_products.brand_name' | t: letter: 'D'
+      assign demo_category = 'content.demo_products.category_running' | t
+      assign demo_colors = '#1d1d1d|#5a5a5a'
+    when 5
+      assign demo_title = 'content.demo_products.title_5' | t
+      assign demo_brand = 'content.demo_products.brand_name' | t: letter: 'E'
+      assign demo_category = 'content.demo_products.category_lifestyle' | t
+      assign demo_colors = '#6b6b45|#c9b38a'
+    when 6
+      assign demo_title = 'content.demo_products.title_6' | t
+      assign demo_brand = 'content.demo_products.brand_name' | t: letter: 'F'
+      assign demo_category = 'content.demo_products.category_lifestyle' | t
+      assign demo_colors = '#c8322f|#f2f2ee'
+    when 7
+      assign demo_title = 'content.demo_products.title_7' | t
+      assign demo_brand = 'content.demo_products.brand_name' | t: letter: 'E'
+      assign demo_category = 'content.demo_products.category_retro' | t
+      assign demo_colors = '#1f2f4f|#f2f2ee'
+    else
+      assign demo_title = 'content.demo_products.title_8' | t
+      assign demo_brand = 'content.demo_products.brand_name' | t: letter: 'A'
+      assign demo_category = 'content.demo_products.category_lifestyle' | t
+      assign demo_colors = '#f2f2ee|#1a1a1a'
+  endcase
+
+  assign demo_image = 'sneakrow-demo-' | append: demo_number
+  assign color_list = demo_colors | split: '|'
+-%}
+
+<article
+  class="demo-card"
+  aria-label="{{ 'content.demo_products.card_label' | t: title: demo_title }}"
+  data-demo-product="{{ demo_number }}"
+>
+  <div class="demo-card__media">
+    <img
+      src="{{ demo_image | append: '-720.jpg' | asset_url }}"
+      srcset="{{ demo_image | append: '-480.jpg' | asset_url }} 480w, {{ demo_image | append: '-720.jpg' | asset_url }} 720w"
+      sizes="{{ sizes }}"
+      width="720"
+      height="720"
+      alt="{{ 'content.demo_products.image_alt' | t }}"
+      loading="lazy"
+      class="demo-card__image"
+    >
+    <span class="demo-card__badge">{{ 'content.demo_products.badge' | t }}</span>
+  </div>
+  <div class="demo-card__body">
+    <p class="demo-card__vendor">{{ demo_brand }} · {{ demo_category }}</p>
+    <p
+      class="demo-card__title"
+      role="heading"
+      aria-level="3"
+    >
+      {{ demo_title }}
+    </p>
+    <p class="demo-card__note">{{ 'content.demo_products.not_for_sale' | t }}</p>
+    <div
+      class="demo-card__swatches"
+      aria-hidden="true"
+    >
+      {%- for color in color_list -%}
+        <span
+          class="demo-card__swatch"
+          style="--swatch: {{ color }};"
+        ></span>
+      {%- endfor -%}
+    </div>
+  </div>
+</article>
+
+{% stylesheet %}
+  .demo-card {
+    display: grid;
+    gap: 0.6rem;
+    min-width: 0;
+  }
+
+  .demo-card__media {
+    position: relative;
+    aspect-ratio: 1;
+    overflow: hidden;
+    background-color: rgb(var(--color-foreground-rgb) / var(--opacity-5, 0.05));
+  }
+
+  .demo-card__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .demo-card__badge {
+    position: absolute;
+    inset: 0.5rem auto auto 0.5rem;
+    max-width: calc(100% - 1rem);
+    padding: 0.3rem 0.45rem;
+    font-family: var(--font-accent--family);
+    font-weight: var(--font-accent--weight);
+    font-size: 0.625rem;
+    line-height: 1.2;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-accent, #c7ff35);
+    background-color: #111;
+  }
+
+  .demo-card__body {
+    display: grid;
+    gap: 0.2rem;
+    min-width: 0;
+  }
+
+  .demo-card__vendor,
+  .demo-card__title,
+  .demo-card__note {
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .demo-card__vendor {
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-70));
+  }
+
+  .demo-card__note {
+    font-size: 0.8125rem;
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-70));
+  }
+
+  .demo-card__swatches {
+    display: flex;
+    gap: 0.35rem;
+    margin-block-start: 0.25rem;
+  }
+
+  .demo-card__swatch {
+    width: 0.875rem;
+    height: 0.875rem;
+    border-radius: 50%;
+    background-color: var(--swatch);
+    box-shadow: inset 0 0 0 1px rgb(var(--color-foreground-rgb) / var(--opacity-20, 0.2));
+  }
+{% endstylesheet %}

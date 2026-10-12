@@ -96,7 +96,15 @@
         endif
       %}
       {% capture list_items %}
-        {% for product in products limit: section.settings.max_products %}
+        {% comment %} SNEAKROW: skip products outside the storefront catalogue (snippets/catalog-guard). {% endcomment %}
+        {% assign rendered_count = 0 %}
+        {% for product in products %}
+          {% if rendered_count >= section.settings.max_products %}{% break %}{% endif %}
+          {% capture guard_state %}{% render 'catalog-guard', product: product %}{% endcapture %}
+          {% unless guard_state contains 'allowed' %}{% continue %}{% endunless %}
+          {% if rendered_count > 0 %}
+            <!--@list/split-->
+          {% endif %}
           <div class="resource-list__item">
             {% content_for 'block',
               type: '_product-card',
@@ -105,9 +113,7 @@
               product_view_context: 'recommendation'
             %}
           </div>
-          {% unless forloop.last %}
-            <!--@list/split-->
-          {% endunless %}
+          {% assign rendered_count = rendered_count | plus: 1 %}
         {% endfor %}
       {% endcapture %}
 
@@ -116,7 +122,7 @@
         assign slide_content = list_items | strip
         assign slides = slide_content | split: '<!--@list/split-->'
 
-        if products != blank and products.size > 0
+        if products != blank and products.size > 0 and rendered_count > 0
           assign has_recommendations = 'true'
         else
           assign has_recommendations = 'false'

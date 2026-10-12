@@ -37,17 +37,26 @@
 
     {% paginate search.results by products_per_page %}
       {% if search.results_count > 0 %}
-        {% content_for 'block', type: 'filters', id: 'filters', results: search, results_size: search.results_count %}
         {% assign products = search.results | where: 'object_type', 'product' %}
       {% else %}
-        {% assign collection = settings.empty_state_collection | default: collections.all %}
+        {% comment %}
+          SNEAKROW: suggestions come only from the collection chosen in Theme settings > Search. There is no
+          fallback to collections.all, which on a shared store would list another brand's catalogue.
+        {% endcomment %}
+        {% assign collection = settings.empty_state_collection %}
         {% assign default_title = 'content.search_results_resource_products' | t %}
         {% assign title = settings.empty_state_collection.title | default: default_title %}
         {% assign products = collection.products %}
       {% endif %}
 
+      {% assign visible_count = 0 %}
       {% capture children %}
         {% for product in products %}
+          {% capture guard_state %}{% render 'catalog-guard', product: product %}{% endcapture %}
+          {% unless guard_state contains 'allowed' %}
+            {% continue %}
+          {% endunless %}
+          {% assign visible_count = visible_count | plus: 1 %}
           <li
             id="{{ section.id }}-{{ product.id }}"
             class="product-grid__item product-grid__item--{{ forloop.index0 }}"
@@ -65,10 +74,15 @@
         {% endfor %}
       {% endcapture %}
 
+      {% if search.results_count > 0 and visible_count > 0 %}
+        {% content_for 'block', type: 'filters', id: 'filters', results: search, results_size: search.results_count %}
+      {% endif %}
+
       {% render 'product-grid',
         section: section,
         children: children,
         products: products,
+        visible_count: visible_count,
         paginate: paginate,
         enable_infinite_scroll: section.settings.enable_infinite_scroll,
         title: title

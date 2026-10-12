@@ -39,13 +39,31 @@
   {% endif %}
 
   {% capture list_items %}
-    {% for collection in section_collections limit: max_items %}
+    {% comment %}
+      SNEAKROW catalogue guard: with "Storefront product types" set, only collections that contain at least one
+      matching product (among their first 20) are listed.
+    {% endcomment %}
+    {% assign rendered_count = 0 %}
+    {% for collection in section_collections %}
+      {% if rendered_count >= max_items %}{% break %}{% endif %}
+      {% if settings.catalog_product_types != blank and collection.id != blank %}
+        {% assign collection_allowed = false %}
+        {% for collection_product in collection.products limit: 20 %}
+          {% capture guard_state %}{% render 'catalog-guard', product: collection_product %}{% endcapture %}
+          {% if guard_state contains 'allowed' %}
+            {% assign collection_allowed = true %}
+            {% break %}
+          {% endif %}
+        {% endfor %}
+        {% unless collection_allowed %}{% continue %}{% endunless %}
+      {% endif %}
+      {% if rendered_count > 0 %}
+        <!--@list/split-->
+      {% endif %}
       <div class="resource-list__item">
         {% content_for 'block', type: '_collection-card', id: 'static-collection-card', closest.collection: collection %}
       </div>
-      {% unless forloop.last %}
-        <!--@list/split-->
-      {% endunless %}
+      {% assign rendered_count = rendered_count | plus: 1 %}
     {% endfor %}
   {% endcapture %}
 

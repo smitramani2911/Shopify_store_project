@@ -1,0 +1,67 @@
+{%- doc -%}
+  Echoes 'live' or 'missing' for a link setting, so callers can avoid rendering links to collections, pages,
+  products, blogs or policies that do not exist (or have no products) in the connected store.
+  Only relative store URLs are checked; external links and other routes (search, cart, account) are 'live'.
+  Capture the output and strip it:
+
+  @param {string} url - The link to check, usually a url setting value
+
+  @example
+  {% capture state %}{% render 'link-state', url: block.settings.link %}{% endcapture %}
+  {% if state contains 'live' %}…{% endif %}
+{%- enddoc -%}
+
+{%- liquid
+  assign state = 'live'
+  assign first_char = url | slice: 0
+  assign first_two = url | slice: 0, 2
+
+  if url != blank and first_char == '/' and first_two != '//'
+    assign path = url | split: '?' | first | split: '#' | first
+    assign segments = path | split: '/'
+    assign handle = segments | last
+
+    if path contains '/products/'
+      if all_products[handle] == blank
+        assign state = 'missing'
+      endif
+    elsif path contains '/collections/'
+      assign collection_handle = path | split: '/collections/' | last | split: '/' | first
+      if collection_handle != 'all' and collection_handle != 'vendors' and collection_handle != 'types'
+        assign target_collection = collections[collection_handle]
+        if target_collection == blank or target_collection.products_count == 0
+          assign state = 'missing'
+        endif
+      endif
+    elsif path contains '/pages/'
+      if pages[handle] == blank
+        assign state = 'missing'
+      endif
+    elsif path contains '/blogs/'
+      assign blog_handle = path | split: '/blogs/' | last | split: '/' | first
+      if blogs[blog_handle] == blank
+        assign state = 'missing'
+      endif
+    elsif path contains '/policies/'
+      case handle
+        when 'shipping-policy'
+          assign policy_body = shop.shipping_policy.body
+        when 'refund-policy'
+          assign policy_body = shop.refund_policy.body
+        when 'privacy-policy'
+          assign policy_body = shop.privacy_policy.body
+        when 'terms-of-service'
+          assign policy_body = shop.terms_of_service.body
+        when 'subscription-policy'
+          assign policy_body = shop.subscription_policy.body
+        else
+          assign policy_body = 'unknown'
+      endcase
+      if policy_body == blank
+        assign state = 'missing'
+      endif
+    endif
+  endif
+
+  echo state
+-%}

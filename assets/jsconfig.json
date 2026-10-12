@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "baseUrl": "./",
+    "ignoreDeprecations": "6.0",
     "checkJs": true,
     "target": "ES2020",
     "noImplicitAny": true,

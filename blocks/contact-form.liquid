@@ -117,6 +117,32 @@
       placeholder="{{ 'blocks.contact_form.phone' | t }}"
     >
 
+    {%- comment -%} SNEAKROW: optional inquiry type, options come from the block setting (comma-separated). {%- endcomment -%}
+    {%- if block.settings.inquiry_types != blank -%}
+      {%- assign inquiry_types = block.settings.inquiry_types | split: ',' -%}
+      <label
+        class="visually-hidden"
+        for="ContactForm-inquiry"
+      >
+        {{- 'blocks.contact_form.inquiry_type' | t -}}
+      </label>
+      <select
+        id="ContactForm-inquiry"
+        class="contact-form__input contact-form__select"
+        name="contact[{{ 'blocks.contact_form.inquiry_type' | t }}]"
+      >
+        <option value="">{{ 'blocks.contact_form.inquiry_type' | t }}</option>
+        {%- for inquiry in inquiry_types -%}
+          {%- assign inquiry_label = inquiry | strip -%}
+          {%- if inquiry_label != blank -%}
+            <option value="{{ inquiry_label | escape }}">
+              {{- inquiry_label | escape -}}
+            </option>
+          {%- endif -%}
+        {%- endfor -%}
+      </select>
+    {%- endif -%}
+
     <label
       class="visually-hidden"
       for="ContactForm-body"
@@ -167,6 +193,11 @@
     -webkit-font-smoothing: antialiased;
   }
 
+  .contact-form__select {
+    appearance: auto;
+    min-height: 3rem;
+  }
+
   .contact-form__input--textarea {
     resize: vertical;
     min-height: var(--input-textarea-min-height);
@@ -185,6 +216,12 @@
   "name": "t:names.contact_form",
   "tag": null,
   "settings": [
+    {
+      "type": "text",
+      "id": "inquiry_types",
+      "label": "t:settings.inquiry_types",
+      "info": "t:info.inquiry_types"
+    },
     {
       "type": "select",
       "id": "width",

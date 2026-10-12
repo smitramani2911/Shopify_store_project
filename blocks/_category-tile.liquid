@@ -1,15 +1,43 @@
 {%- doc -%}
-  Renders one collection tile inside the category-tiles section.
-  Image priority: the tile's own image, then the collection image, then the chosen bundled CC0 photo,
-  then the collection's first product image. On the storefront the tile renders only when its collection
-  exists and has products; in the theme editor it always renders so it can be configured.
+  Renders one tile inside the category-tiles section.
+  Destination priority: the collection (when it has products), then the page (when it exists), then the
+  custom link. Image priority: the tile's own image, then the collection image, then the chosen bundled CC0
+  photo, then the collection's first product image.
+  On the storefront a tile renders only when it has a destination. In the theme editor, and in demo preview
+  mode, a tile without a destination renders as a labelled, non-clickable preview instead of a broken link.
 {%- enddoc -%}
 
 {% liquid
   assign tile_collection = block.settings.collection
-  assign tile_ready = false
+  assign collection_ready = false
   if tile_collection != blank and tile_collection.products_count > 0
+    assign collection_ready = true
+  endif
+
+  assign tile_url = blank
+  if collection_ready
+    assign tile_url = tile_collection.url
+  elsif block.settings.page != blank
+    assign tile_url = block.settings.page.url
+  elsif block.settings.link != blank
+    capture custom_link_state
+      render 'link-state', url: block.settings.link
+    endcapture
+    if custom_link_state contains 'live'
+      assign tile_url = block.settings.link
+    endif
+  endif
+
+  assign tile_ready = false
+  if tile_url != blank
     assign tile_ready = true
+  endif
+
+  assign tile_preview = false
+  if tile_ready == false
+    if request.design_mode or settings.demo_mode
+      assign tile_preview = true
+    endif
   endif
 
   assign tile_style = section.settings.style | default: 'tiles'
@@ -17,11 +45,6 @@
   assign tile_title = block.settings.title | default: tile_collection.title
   if tile_title == blank
     assign tile_title = 'content.category_tile_placeholder' | t
-  endif
-
-  assign tile_url = tile_collection.url
-  if tile_url == blank
-    assign tile_url = routes.collections_url
   endif
 
   assign tile_bundled = block.settings.bundled_photo | default: 'none'
@@ -42,15 +65,19 @@
   endif
 %}
 
-{% if tile_ready or request.design_mode %}
+{% if tile_ready or tile_preview %}
   <li
-    class="category-tile category-tile--{{ tile_style }}"
+    class="category-tile category-tile--{{ tile_style }}{% if tile_preview %} category-tile--preview{% endif %}"
     {{ block.shopify_attributes }}
   >
-    <a
-      class="category-tile__link"
-      href="{{ tile_url }}"
-    >
+    {% if tile_ready %}
+      <a
+        class="category-tile__link"
+        href="{{ tile_url }}"
+      >
+    {% else %}
+      <div class="category-tile__link">
+    {% endif %}
       {% if tile_style == 'tiles' or tile_image != blank or tile_bundled != 'none' %}
         <div class="category-tile__media">
           {% if tile_image != blank %}
@@ -65,9 +92,15 @@
                 class: 'category-tile__image'
             }}
           {% elsif tile_bundled != 'none' %}
+            {% liquid
+              assign tile_crop = 'portrait'
+              if tile_style == 'cards'
+                assign tile_crop = 'landscape'
+              endif
+            %}
             {% render 'bundled-photo',
               name: tile_bundled,
-              crop: 'portrait',
+              crop: tile_crop,
               sizes: tile_sizes,
               class: 'category-tile__image',
               decorative: true
@@ -89,19 +122,25 @@
         {% if tile_style == 'cards' and block.settings.description != blank %}
           <p class="category-tile__description">{{ block.settings.description | escape }}</p>
         {% endif %}
-        {% if section.settings.show_count and tile_ready %}
+        {% if section.settings.show_count and collection_ready %}
           <span class="category-tile__count">
             {{- 'content.category_tile_count' | t: count: tile_collection.products_count -}}
           </span>
         {% endif %}
-        {% if block.settings.link_label != blank %}
+        {% if tile_preview %}
+          <span class="category-tile__preview-note">{{ 'content.category_tile_preview' | t }}</span>
+        {% elsif block.settings.link_label != blank %}
           <span class="category-tile__cta">
             {{- block.settings.link_label | escape }}
             <span aria-hidden="true">&rarr;</span>
           </span>
         {% endif %}
       </div>
-    </a>
+    {% if tile_ready %}
+      </a>
+    {% else %}
+      </div>
+    {% endif %}
   </li>
 {% endif %}
 
@@ -116,6 +155,19 @@
     height: 100%;
     color: inherit;
     text-decoration: none;
+  }
+
+  .category-tile__preview-note {
+    display: inline-block;
+    justify-self: start;
+    width: fit-content;
+    padding: 0.2rem 0.4rem;
+    font-size: 0.625rem;
+    line-height: 1.3;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-accent, #c7ff35);
+    background-color: #111;
   }
 
   .category-tile__media {
@@ -277,6 +329,18 @@
       "label": "t:settings.collection"
     },
     {
+      "type": "page",
+      "id": "page",
+      "label": "t:settings.page",
+      "info": "t:info.category_tile_page"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "t:settings.link",
+      "info": "t:info.category_tile_link"
+    },
+    {
       "type": "text",
       "id": "title",
       "label": "t:settings.title",
@@ -335,6 +399,18 @@
         {
           "value": "wire",
           "label": "t:options.bundled_photo_wire"
+        },
+        {
+          "value": "everyday",
+          "label": "t:options.bundled_photo_everyday"
+        },
+        {
+          "value": "classic",
+          "label": "t:options.bundled_photo_classic"
+        },
+        {
+          "value": "performance",
+          "label": "t:options.bundled_photo_performance"
         }
       ],
       "default": "none"

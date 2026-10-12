@@ -78,7 +78,7 @@ changed later in the theme editor.
 | SNEAKROW main menu | `sneakrow-main-menu` | **Shop** → `/collections/sneakers`, with Men, Women, Lifestyle, Running, Basketball and Retro nested underneath for the mega menu. **New Arrivals** → `/collections/new-in`. **Brands** → `/pages/brands`. **The Sneaker Edit** → `/pages/sneaker-edit`. |
 | SNEAKROW footer: Shop | `sneakrow-footer-shop` | Shop All → `/collections/sneakers`, Men, Women, New Arrivals → `/collections/new-in`, Brands → `/pages/brands` |
 | SNEAKROW footer: Help | `sneakrow-footer-help` | Contact → `/pages/contact`, FAQ → `/pages/faq`, Size Guide → `/pages/size-guide`, Shipping → Shipping policy, Returns → Refund policy |
-| SNEAKROW footer: About | `sneakrow-footer-about` | About SNEAKROW → `/pages/about`, The Sneaker Edit → `/pages/sneaker-edit` |
+| SNEAKROW footer: About | `sneakrow-footer-about` | About SNEAKROW → `/pages/about`, The Sneaker Edit → `/pages/sneaker-edit`, Sneaker Care → `/pages/sneaker-care` |
 | Customer account menu | `customer-account-main-menu` | Shopify's default account menu (Orders, Profile). The header account popover logs a console notice when it is missing. |
 
 Until a menu exists, its header links or footer column are hidden on the storefront. The theme
@@ -93,7 +93,8 @@ editor still shows the column heading.
 | Size guide | `size-guide` | `page.size-guide` | **Your size charts**, as tables per brand, using verified brand data. Keep the handle `size-guide`: the product page "Size guide" drawer loads this page. |
 | Contact | `contact` | `page.contact` | Short intro plus any verified contact details you want to publish. The form uses Shopify's contact form and sends to the store's sender email. |
 | Brands | `brands` | `page.brands` | Optional intro. The A–Z list is generated from the vendors of products in the `sneakers` collection. |
-| The Sneaker Edit | `sneaker-edit` | `page.sneaker-edit` | Editorial intro. Below it are curated cards for Lifestyle, Retro, Running and Basketball, a campaign block and a "Trending now" product row. |
+| The Sneaker Edit | `sneaker-edit` | `page.sneaker-edit` | Editorial intro. Below it are curated cards for Everyday rotation, Retro classics, Performance picks and Court, a campaign block and a "Trending now" product row. The homepage Sneaker Edit cards link here when their collection is not set up yet. |
+| Sneaker care | `sneaker-care` | `page.sneaker-care` | Optional extra notes. The template holds cautious general care guidance (preparation, materials, drying and storage, mistakes to avoid) and tells shoppers to follow the brand's own care instructions. |
 
 ### 2.5 Policies (Settings > Policies)
 
@@ -141,8 +142,78 @@ Customize).
 | Made for your everyday | Home > Shopping confidence: up to 4 items, each linking to a page, a policy or a URL |
 | Newsletter | Home > Email signup section: heading, text and consent note |
 | Footer | Footer group: brand column (wordmark, tagline, newsletter, payment icons), three menu columns, social links (Utilities > Social links) |
+| Demo preview | Theme settings > Demo preview > **Show demo products** (see section 4) |
+| Contact form | Contact page > Contact form > **Inquiry types**: comma-separated options, empty hides the field |
 
-## 4. Preview and test
+## 4. Demo preview mode
+
+The SNEAKROW catalogue doesn't exist yet, so the theme has a preview-only demo mode. It is **on** in
+this branch's `config/settings_data.json` and **off** by default in the schema. Switch it in
+Theme settings > Demo preview > **Show demo products**.
+
+When it is on:
+
+- A lime banner at the top of every page says that products marked DEMO are placeholders and not for
+  sale.
+- Product lists whose collection is missing or empty show demo sneaker cards. Each card is labelled
+  **DEMO PRODUCT — PREVIEW ONLY** and has a fictional "Demo brand" vendor, no price, no link, no
+  quick add and no form, so demo items cannot reach the cart or checkout. Demo cards never appear on
+  the cart page.
+- Tiles, brands and info items whose destination doesn't exist yet render as labelled, non-clickable
+  previews instead of disappearing.
+- Buttons whose collection, page or policy doesn't exist render visibly disabled instead of leading
+  to a 404.
+- Real products always win. As soon as a collection has products, its real cards replace the demo
+  cards, even with demo mode on.
+- Demo images are illustrative CC0 photos (see `ASSET-MANIFEST.md`), not photos of products for sale.
+
+When it is off, anything without real data is hidden on the storefront, as before.
+
+### Pre-launch checklist
+
+1. **Connect the correct store.** Create or choose the SNEAKROW store, log the CLI into it and confirm
+   the target with `shopify theme list --store <sneakrow-store>.myshopify.com`. Then run
+   `shopify theme push --store <sneakrow-store>.myshopify.com --unpublished`.
+2. **Add genuine products**, with brand vendors, the Sneakers product type, Size (and Color) options,
+   tags, inventory tracking and real photography (section 2.2).
+3. **Create the collections** in section 2.1, with descriptions and images.
+4. **Configure navigation and brand links**: the four menus in section 2.3, and brand collections or
+   Brand blocks with authorised logos.
+5. **Set accurate policies and shipping**: refund, privacy, terms and shipping policies, shipping
+   rates, payments and taxes (sections 2.5 and 2.6).
+6. **Disable demo mode**: Theme settings > Demo preview > untick **Show demo products**, then save.
+7. **Verify before publishing**: preview the unpublished theme, then check every menu link, a product
+   page, add to cart, cart, checkout with Shopify's test mode or a bogus gateway, the newsletter and
+   contact forms, policies and the 404 page. Run `shopify theme check`, remove the storefront password
+   and only then publish.
+
+## 5. Catalogue guard (shared-store cleanup)
+
+Theme settings > Catalogue > **Storefront product types** limits the storefront to products whose
+product type is in the list. In this branch it is set to `Sneakers, Footwear, Shoes`; leave it empty
+on a store that only sells SNEAKROW products. Products are excluded when the page is built, not
+hidden with CSS. While it is set:
+
+- product lists, collection grids, search results, predictive search and recommendations only render
+  matching products;
+- predictive search shows products only, with no collection, page, article or query suggestions;
+- a product page, or a collection page with no matching products, shows a "This item isn't available
+  here" message with `noindex`, a generic title and a SNEAKROW sharing image;
+- `/collections` only lists collections that contain a matching product;
+- the search empty states no longer fall back to `collections.all`.
+
+The guard can't change store content. On the shared LUMERA dev store, these still show LUMERA text
+and need a separate SNEAKROW store, because editing them would change the live LUMERA store:
+
+- the Pages `contact`, `faq`, `size-guide`, `shipping-returns` and `track-order`, including their
+  "| LUMERA" SEO titles;
+- the Shopify-generated privacy policy;
+- the store name in emails and checkout.
+
+Product and collection URLs still contain their handles, because that is the address the visitor
+opened.
+
+## 6. Preview and test
 
 ```sh
 git switch sneakrow
@@ -152,12 +223,12 @@ shopify theme check                                             # 6 pre-existing
 
 Open `http://127.0.0.1:9292`. On a store without the SNEAKROW pages, alternate templates can be
 previewed on any existing page: `/pages/<page>?view=about`, `?view=faq`, `?view=size-guide`,
-`?view=brands` and `?view=sneaker-edit`.
+`?view=brands`, `?view=sneaker-edit` and `?view=sneaker-care`.
 
-Empty sections show placeholders only inside the theme editor. On the storefront they stay hidden
-until their collection, menu, page or policy exists.
+With demo mode off, empty sections show placeholders only inside the theme editor and stay hidden on
+the storefront until their collection, menu, page or policy exists.
 
-## 5. What changed in the theme
+## 7. What changed in the theme
 
 - **Settings**: `logo_text` (text wordmark), `color_accent` (`--color-accent`) and "New" badge
   settings. `config/settings_data.json` holds the SNEAKROW palette, Archivo/Inter typography and

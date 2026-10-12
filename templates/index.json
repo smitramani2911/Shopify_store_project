@@ -475,7 +475,7 @@
                 "title": {
                   "type": "text",
                   "settings": {
-                    "text": "<h2>Just dropped</h2>",
+                    "text": "<h2>Just landed</h2>",
                     "width": "fit-content",
                     "max_width": "normal",
                     "alignment": "left",
@@ -500,7 +500,7 @@
                 "subtitle": {
                   "type": "text",
                   "settings": {
-                    "text": "<p>The latest pairs to land at SNEAKROW.</p>",
+                    "text": "<p>Fresh picks for your next rotation.</p>",
                     "width": "fit-content",
                     "max_width": "narrow",
                     "alignment": "left",
@@ -699,7 +699,9 @@
           "type": "_category-tile",
           "settings": {
             "collection": "lifestyle",
-            "title": "",
+            "page": "",
+            "link": "",
+            "title": "Lifestyle",
             "description": "",
             "link_label": "Shop",
             "bundled_photo": "lifestyle"
@@ -710,7 +712,9 @@
           "type": "_category-tile",
           "settings": {
             "collection": "running",
-            "title": "",
+            "page": "",
+            "link": "",
+            "title": "Running",
             "description": "",
             "link_label": "Shop",
             "bundled_photo": "running"
@@ -721,7 +725,9 @@
           "type": "_category-tile",
           "settings": {
             "collection": "basketball",
-            "title": "",
+            "page": "",
+            "link": "",
+            "title": "Basketball",
             "description": "",
             "link_label": "Shop",
             "bundled_photo": "basketball"
@@ -732,7 +738,9 @@
           "type": "_category-tile",
           "settings": {
             "collection": "retro",
-            "title": "",
+            "page": "",
+            "link": "",
+            "title": "Retro",
             "description": "",
             "link_label": "Shop",
             "bundled_photo": "retro"
@@ -754,7 +762,7 @@
         "source_collection": "sneakers",
         "layout": "row",
         "max_brands": 6,
-        "heading": "The brands we move with",
+        "heading": "The brands in your rotation",
         "heading_level": "h2",
         "subheading": "",
         "view_all_label": "View all brands",
@@ -775,8 +783,8 @@
         "image_position": "left",
         "eyebrow": "The SNEAKROW edit",
         "heading": "Move different.",
-        "text": "<p>Sneakers are how you show up. We pick pairs for the way you actually move: on the street, on the court, on the daily run and everywhere in between.</p>",
-        "button_label": "Explore the Sneaker Edit",
+        "text": "<p>Built around your style. Ready for wherever the day takes you.</p>",
+        "button_label": "Explore the Edit",
         "button_link": "shopify://pages/sneaker-edit",
         "section_width": "full-width",
         "background_color": "{{ settings.color_palette.foreground }}",
@@ -891,7 +899,7 @@
                 "title": {
                   "type": "text",
                   "settings": {
-                    "text": "<h2>Most wanted</h2>",
+                    "text": "<h2>The rotation favorites</h2>",
                     "width": "fit-content",
                     "max_width": "normal",
                     "alignment": "left",
@@ -916,7 +924,7 @@
                 "subtitle": {
                   "type": "text",
                   "settings": {
-                    "text": "<p>The pairs our customers keep coming back for.</p>",
+                    "text": "<p>Hand-picked pairs from our current lineup.</p>",
                     "width": "fit-content",
                     "max_width": "narrow",
                     "alignment": "left",
@@ -947,7 +955,7 @@
             "view_all": {
               "type": "_product-list-button",
               "settings": {
-                "label": "Shop best sellers",
+                "label": "Shop all",
                 "open_in_new_tab": false,
                 "style_class": "button-unstyled",
                 "width": "fit-content",
@@ -1115,10 +1123,12 @@
           "type": "_category-tile",
           "settings": {
             "collection": "lifestyle",
+            "page": "sneaker-edit",
+            "link": "",
             "title": "Everyday rotation",
-            "description": "Easy-wearing pairs for daily miles, commutes and weekends.",
+            "description": "Versatile pairs for your daily lineup.",
             "link_label": "Explore",
-            "bundled_photo": "none"
+            "bundled_photo": "everyday"
           },
           "blocks": {}
         },
@@ -1126,10 +1136,12 @@
           "type": "_category-tile",
           "settings": {
             "collection": "retro",
+            "page": "sneaker-edit",
+            "link": "",
             "title": "Retro classics",
-            "description": "Archive shapes and heritage silhouettes that never left.",
+            "description": "Timeless silhouettes with lasting appeal.",
             "link_label": "Explore",
-            "bundled_photo": "none"
+            "bundled_photo": "classic"
           },
           "blocks": {}
         },
@@ -1137,10 +1149,12 @@
           "type": "_category-tile",
           "settings": {
             "collection": "running",
-            "title": "Performance and running",
-            "description": "Cushioning and support built for the road and the track.",
+            "page": "sneaker-edit",
+            "link": "",
+            "title": "Performance picks",
+            "description": "Explore footwear designed around movement.",
             "link_label": "Explore",
-            "bundled_photo": "none"
+            "bundled_photo": "performance"
           },
           "blocks": {}
         }
@@ -1165,7 +1179,7 @@
           "type": "_confidence-item",
           "settings": {
             "icon": "ruler",
-            "heading": "Size guidance",
+            "heading": "Find your fit",
             "text": "Check your fit against our size guide before you order.",
             "destination": "page",
             "page": "size-guide",
@@ -1191,8 +1205,8 @@
           "type": "_confidence-item",
           "settings": {
             "icon": "return",
-            "heading": "Returns information",
-            "text": "How returns and exchanges work, set out in our returns policy.",
+            "heading": "Returns policy",
+            "text": "How returns and exchanges work, set out in one easy-to-find place.",
             "destination": "refund_policy",
             "page": "",
             "custom_link": "",
@@ -1258,7 +1272,7 @@
         "heading": {
           "type": "text",
           "settings": {
-            "text": "<h2>Stay in the loop.</h2>",
+            "text": "<h2>Stay in the rotation</h2>",
             "width": "100%",
             "max_width": "normal",
             "alignment": "center",
@@ -1283,7 +1297,7 @@
         "body": {
           "type": "text",
           "settings": {
-            "text": "<p>New drops. Fresh pairs. No noise.</p>",
+            "text": "<p>Get updates on new arrivals, fresh edits, and what’s next.</p>",
             "width": "100%",
             "max_width": "normal",
             "alignment": "center",

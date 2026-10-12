@@ -1,5 +1,20 @@
-
-{% render 'button', link: block.settings.link %}
+{% liquid
+  # SNEAKROW: never render a button that leads to a missing collection, page or policy.
+  # Storefront: hidden. Demo preview: shown visibly disabled. Theme editor: shown as configured.
+  assign button_link = block.settings.link
+  assign button_state = 'live'
+  if button_link != blank
+    capture button_state
+      render 'link-state', url: button_link
+    endcapture
+    assign button_state = button_state | strip
+  endif
+%}
+{% if button_state == 'live' or request.design_mode %}
+  {% render 'button', link: button_link %}
+{% elsif settings.demo_mode %}
+  {% render 'button', link: blank %}
+{% endif %}
 
 {% schema %}
 {

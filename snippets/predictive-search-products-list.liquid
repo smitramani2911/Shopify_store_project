@@ -49,6 +49,9 @@
           {% for _id in order_ids %}
             {% assign int_id = _id | times: 1 %}
             {% assign product = products | find: 'id', int_id %}
+            {% comment %} SNEAKROW: skip products outside the storefront catalogue (snippets/catalog-guard). {% endcomment %}
+            {% capture guard_state %}{% render 'catalog-guard', product: product %}{% endcapture %}
+            {% unless guard_state contains 'allowed' %}{% continue %}{% endunless %}
             <li
               class="predictive-search-results__card predictive-search-results__card--product"
               ref="recentlyViewedItems[]"
@@ -65,6 +68,8 @@
           {% endfor %}
         {% else %}
           {% for product in products limit: limit %}
+            {% capture guard_state %}{% render 'catalog-guard', product: product %}{% endcapture %}
+            {% unless guard_state contains 'allowed' %}{% continue %}{% endunless %}
             <li
               class="predictive-search-results__card predictive-search-results__card--product"
               ref="recentlyViewedItems[]"
@@ -93,6 +98,8 @@
         assign limit = limit | default: 8
       %}
       {% for product in products limit: limit %}
+        {% capture guard_state %}{% render 'catalog-guard', product: product %}{% endcapture %}
+        {% unless guard_state contains 'allowed' %}{% continue %}{% endunless %}
         <li
           class="predictive-search-results__card predictive-search-results__card--product"
           ref="resultsItems[]"

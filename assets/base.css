@@ -870,6 +870,7 @@ input:not(:placeholder-shown)::placeholder {
 
 .button[aria-disabled='true'],
 .button-secondary[aria-disabled='true'],
+.button-custom[aria-disabled='true'],
 .button:disabled {
   opacity: 0.5;
   cursor: not-allowed;

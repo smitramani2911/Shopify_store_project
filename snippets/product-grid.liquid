@@ -7,6 +7,7 @@
   @param {string} [title] - Header of the collection or search results
   @param {string} children - List or grid of product cards
   @param {boolean} [enable_infinite_scroll] - Whether to enable infinite scroll (default: true)
+  @param {number} [visible_count] - How many of `products` passed the catalogue guard; 0 shows the empty state
 {%- enddoc -%}
 
 {%- liquid
@@ -102,14 +103,14 @@
       container-name: product-grid;
     "
   >
-    {% if products.size == 0 %}
+    {% if products.size == 0 or visible_count == 0 %}
       {% render 'product-card-styles' %}
       {% render 'text-block-styles' %}
       {% render 'price-styles' %}
       {% render 'product-card-gallery-zoom-details-styles' %}
       <div class="main-collection-grid__empty">
         {% comment %} SNEAKROW: a collection with no products at all gets its own message instead of "use fewer filters". {% endcomment %}
-        {% if request.page_type == 'collection' and collection.all_products_count == 0 %}
+        {% if request.page_type == 'collection' and collection.all_products_count == 0 or visible_count == 0 %}
           <h2 class="main-collection-grid__empty-title h2">
             {{ 'content.collection_empty_title' | t }}
           </h2>

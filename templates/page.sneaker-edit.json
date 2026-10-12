@@ -136,8 +136,10 @@
           "type": "_category-tile",
           "settings": {
             "collection": "lifestyle",
+            "page": "",
+            "link": "",
             "title": "Everyday rotation",
-            "description": "Easy-wearing pairs for daily miles, commutes and weekends.",
+            "description": "Versatile pairs for your daily lineup.",
             "link_label": "Shop the edit",
             "bundled_photo": "lifestyle"
           },
@@ -147,8 +149,10 @@
           "type": "_category-tile",
           "settings": {
             "collection": "retro",
+            "page": "",
+            "link": "",
             "title": "Retro classics",
-            "description": "Archive shapes and heritage silhouettes that never left.",
+            "description": "Timeless silhouettes with lasting appeal.",
             "link_label": "Shop the edit",
             "bundled_photo": "retro"
           },
@@ -158,8 +162,10 @@
           "type": "_category-tile",
           "settings": {
             "collection": "running",
-            "title": "Performance and running",
-            "description": "Cushioning and support built for the road and the track.",
+            "page": "",
+            "link": "",
+            "title": "Performance picks",
+            "description": "Explore footwear designed around movement.",
             "link_label": "Shop the edit",
             "bundled_photo": "running"
           },
@@ -169,6 +175,8 @@
           "type": "_category-tile",
           "settings": {
             "collection": "basketball",
+            "page": "",
+            "link": "",
             "title": "Court ready",
             "description": "High-tops and court shoes made for the game and the street.",
             "link_label": "Shop the edit",

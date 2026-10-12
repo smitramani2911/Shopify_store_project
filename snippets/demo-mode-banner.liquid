@@ -1,0 +1,41 @@
+{%- doc -%}
+  Site-wide notice shown while Theme settings > Demo preview > "Show demo products" is on, so nobody mistakes
+  demo cards for real merchandise. Renders nothing when demo mode is off.
+
+  @example
+  {% render 'demo-mode-banner' %}
+{%- enddoc -%}
+
+{%- if settings.demo_mode -%}
+  <div
+    class="demo-mode-banner"
+    role="note"
+  >
+    <p class="demo-mode-banner__text">
+      <span class="demo-mode-banner__label">{{ 'content.demo_products.banner_label' | t }}</span>
+      {{ 'content.demo_products.banner_text' | t }}
+    </p>
+  </div>
+{%- endif -%}
+
+{% stylesheet %}
+  .demo-mode-banner {
+    padding: 0.45rem var(--page-margin, 16px);
+    background-color: var(--color-accent, #c7ff35);
+    color: #111;
+    text-align: center;
+  }
+
+  .demo-mode-banner__text {
+    margin: 0;
+    font-size: 0.75rem;
+    line-height: 1.4;
+  }
+
+  .demo-mode-banner__label {
+    margin-inline-end: 0.4em;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+{% endstylesheet %}

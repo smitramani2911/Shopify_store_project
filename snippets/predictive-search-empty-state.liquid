@@ -19,7 +19,8 @@
   {% if load_empty_state %}
     <div class="predictive-search-results__inner">
       {% liquid
-        assign collection = settings.empty_state_collection | default: collections.all
+        # SNEAKROW: no fallback to collections.all, which on a shared store lists another brand's catalogue.
+        assign collection = settings.empty_state_collection
         assign default_title = 'content.search_results_resource_products' | t
         assign title = settings.empty_state_collection.title | default: default_title
       %}

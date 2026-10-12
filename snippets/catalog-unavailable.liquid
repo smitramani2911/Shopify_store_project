@@ -1,0 +1,52 @@
+{%- doc -%}
+  Shown instead of a product or collection page that sits outside the storefront catalogue
+  (Theme settings > Catalogue > "Storefront product types"). It names nothing from the hidden page.
+
+  @example
+  {% render 'catalog-unavailable' %}
+{%- enddoc -%}
+
+<div class="catalog-unavailable page-width-content section">
+  <div class="catalog-unavailable__inner">
+    <p class="catalog-unavailable__eyebrow">{{ 'content.catalog_unavailable.eyebrow' | t }}</p>
+    <h1 class="catalog-unavailable__title h2">{{ 'content.catalog_unavailable.title' | t }}</h1>
+    <p class="catalog-unavailable__text">{{ 'content.catalog_unavailable.text' | t }}</p>
+    <a
+      class="button"
+      href="{{ routes.root_url }}"
+    >
+      {{- 'actions.continue_shopping' | t -}}
+    </a>
+  </div>
+</div>
+
+{% stylesheet %}
+  .catalog-unavailable {
+    padding-block: clamp(4rem, 12vw, 8rem);
+  }
+
+  .catalog-unavailable__inner {
+    display: grid;
+    justify-items: center;
+    gap: var(--gap-md, 1rem);
+    text-align: center;
+  }
+
+  .catalog-unavailable__eyebrow {
+    margin: 0;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-70));
+  }
+
+  .catalog-unavailable__title,
+  .catalog-unavailable__text {
+    margin: 0;
+  }
+
+  .catalog-unavailable__text {
+    max-width: 32rem;
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-70));
+  }
+{% endstylesheet %}

@@ -28,7 +28,8 @@
       "phone": "Telefono",
       "comment": "Commento",
       "post_success": "Grazie per averci contattato. Risponderemo il prima possibile.",
-      "error_heading": "Correggi gli errori seguenti:"
+      "error_heading": "Correggi gli errori seguenti:",
+      "inquiry_type": "Inquiry type"
     },
     "slider_label": "Cursore",
     "breadcrumbs": {
@@ -309,7 +310,10 @@
       "lifestyle": "Looking down at a pair of canvas sneakers",
       "running": "Runner crouched at the start line of a running track",
       "basketball": "Outdoor basketball court in front of a colourful apartment block",
-      "retro": "Navy canvas low-top sneakers on a city street"
+      "retro": "Navy canvas low-top sneakers on a city street",
+      "everyday": "Sneakers on a city street",
+      "classic": "Classic low-top sneakers with a retro feel",
+      "performance": "Runner in motion wearing training shoes"
     },
     "category_tile_placeholder": "Collection",
     "category_tile_count": {
@@ -325,7 +329,36 @@
     "brand_list_empty_cta": "Continue shopping",
     "brand_placeholder": "Brand",
     "collection_empty_title": "No pairs here yet",
-    "collection_empty_text": "This collection doesn't have any products right now. New pairs are added regularly, so check back soon."
+    "collection_empty_text": "This collection doesn't have any products right now. New pairs are added regularly, so check back soon.",
+    "demo_products": {
+      "badge": "Demo product — preview only",
+      "banner_label": "Preview mode",
+      "banner_text": "Products marked DEMO are placeholders for design review. They are not for sale and can’t be added to the cart.",
+      "not_for_sale": "Preview only · not for sale",
+      "card_label": "Demo product, preview only: {{ title }}",
+      "image_alt": "Illustrative sneaker photo for a demo product",
+      "brand_name": "Demo brand {{ letter }}",
+      "brand_tag": "Demo",
+      "category_lifestyle": "Lifestyle",
+      "category_running": "Running",
+      "category_basketball": "Basketball",
+      "category_retro": "Retro",
+      "title_1": "Everyday Leather Low",
+      "title_2": "Canvas Plimsoll",
+      "title_3": "Court Canvas High-Top",
+      "title_4": "Night Run Trainer",
+      "title_5": "Canvas Slip-On",
+      "title_6": "Red Canvas High-Top",
+      "title_7": "Navy Canvas Low",
+      "title_8": "Street Canvas Low"
+    },
+    "category_tile_preview": "Preview · collection not set up yet",
+    "confidence_item_preview": "Preview · page or policy not published yet",
+    "catalog_unavailable": {
+      "eyebrow": "Not in this store",
+      "title": "This item isn’t available here",
+      "text": "The page you opened isn’t part of the SNEAKROW sneaker catalogue."
+    }
   },
   "gift_cards": {
     "issued": {

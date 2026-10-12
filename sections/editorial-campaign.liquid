@@ -18,6 +18,15 @@
   if section.settings.background_color != blank
     render 'contrast-override', background_color: section.settings.background_color, section_id: section.id
   endif
+
+  # The button renders only when its destination exists; demo preview shows it disabled instead.
+  assign button_state = 'missing'
+  if section.settings.button_link != blank
+    capture button_state
+      render 'link-state', url: section.settings.button_link
+    endcapture
+    assign button_state = button_state | strip
+  endif
 %}
 
 <div
@@ -63,13 +72,23 @@
       {% if section.settings.text != blank %}
         <div class="editorial-campaign__text rte">{{ section.settings.text }}</div>
       {% endif %}
-      {% if section.settings.button_label != blank and section.settings.button_link != blank %}
-        <a
-          class="button editorial-campaign__button"
-          href="{{ section.settings.button_link }}"
-        >
-          {{- section.settings.button_label | escape -}}
-        </a>
+      {% if section.settings.button_label != blank %}
+        {% if button_state == 'live' or request.design_mode and section.settings.button_link != blank %}
+          <a
+            class="button editorial-campaign__button"
+            href="{{ section.settings.button_link }}"
+          >
+            {{- section.settings.button_label | escape -}}
+          </a>
+        {% elsif settings.demo_mode %}
+          <a
+            class="button editorial-campaign__button"
+            role="link"
+            aria-disabled="true"
+          >
+            {{- section.settings.button_label | escape -}}
+          </a>
+        {% endif %}
       {% endif %}
     </div>
   </div>

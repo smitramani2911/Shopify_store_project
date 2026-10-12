@@ -177,7 +177,10 @@
     "brand": "Brand",
     "shopping_confidence": "Shopping confidence",
     "confidence_item": "Confidence item",
-    "breadcrumbs": "Breadcrumbs"
+    "breadcrumbs": "Breadcrumbs",
+    "demo_preview": "Demo preview",
+    "collection_banner_image": "Collection image",
+    "catalogue": "Catalogue"
   },
   "settings": {
     "autoplay": "Autoodtwarzanie",
@@ -616,7 +619,10 @@
     "empty_state_link": "Empty state link",
     "brand_name": "Brand name",
     "brand_logo": "Logo",
-    "link_destination": "Link to"
+    "link_destination": "Link to",
+    "demo_mode": "Show demo products",
+    "inquiry_types": "Inquiry types",
+    "catalog_product_types": "Storefront product types"
   },
   "options": {
     "apple": "Apple",
@@ -909,7 +915,10 @@
     "photo_tiles": "Photo tiles",
     "editorial_cards": "Editorial cards",
     "featured_row": "Featured row",
-    "a_to_z_directory": "A–Z directory"
+    "a_to_z_directory": "A–Z directory",
+    "bundled_photo_everyday": "Everyday: sneakers on the street",
+    "bundled_photo_classic": "Retro: classic low-tops",
+    "bundled_photo_performance": "Performance: runner in motion"
   },
   "content": {
     "background_video": "Wideo w tle",
@@ -1040,7 +1049,10 @@
     "page_text_color_contrast_info": "Sekcje z niestandardowym kolorem tła będą używać tego koloru tekstu tylko w przypadku wystarczającego kontrastu kolorów.",
     "category_tiles_visibility": "On the storefront a tile appears only when its collection has products, and the section hides when no tile qualifies.",
     "brand_list_source": "Brands are listed automatically from the vendors of products in the chosen collection. Add Brand blocks to hand-pick the featured row instead.",
-    "shopping_confidence_visibility": "On the storefront an item appears only when its page or store policy exists."
+    "shopping_confidence_visibility": "On the storefront an item appears only when its page or store policy exists.",
+    "demo_preview_info": "Preview the storefront before the SNEAKROW catalogue exists. Real products always replace demo cards automatically.",
+    "collection_banner_image_info": "Shows the image set on the collection in Admin > Products > Collections. Hidden when the collection has no image.",
+    "catalogue_info": "Use this when the store also holds products that don’t belong in this storefront. Products are excluded when the page is built, not hidden with CSS."
   },
   "html_defaults": {
     "share_information_about_your": "<p>Podziel się informacjami o swojej marce z klientami. Opisz produkt, ogłaszaj nowości lub witaj klientów w swoim sklepie.</p>",
@@ -1173,7 +1185,13 @@
     "category_tile_title": "Defaults to the collection title.",
     "category_tile_description": "Shown in the editorial cards style.",
     "brand_name": "Defaults to the collection title.",
-    "brand_logo": "Only upload logos you are authorised to use. Leave empty to show the brand name."
+    "brand_logo": "Only upload logos you are authorised to use. Leave empty to show the brand name.",
+    "demo_mode": "Fills empty product lists with labelled demo sneakers and shows unconfigured tiles as previews. Demo products can’t be added to the cart. Turn this off before launch.",
+    "category_tile_page": "Used when the collection is missing or has no products.",
+    "category_tile_link": "Used when neither the collection nor the page is available.",
+    "brand_link": "Used when no brand collection is selected or it has no products.",
+    "inquiry_types": "Comma-separated options for the contact form. Leave empty to hide the field.",
+    "catalog_product_types": "Comma-separated product types, for example: Sneakers, Footwear. Only products with these types appear in product lists, search, recommendations and product pages. Leave empty to show every product."
   },
   "categories": {
     "product_list": "Polecana kolekcja",

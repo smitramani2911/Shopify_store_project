@@ -20,6 +20,15 @@
     assign render_section = false
   endif
 
+  # Only show the "view all" link when its destination exists.
+  assign view_all_state = 'missing'
+  if section.settings.view_all_link != blank
+    capture view_all_state
+      render 'link-state', url: section.settings.view_all_link
+    endcapture
+    assign view_all_state = view_all_state | strip
+  endif
+
   if render_section and section.settings.background_color != blank
     render 'contrast-override', background_color: section.settings.background_color, section_id: section.id
   endif
@@ -45,7 +54,7 @@
               <p class="category-tiles__subheading">{{ section.settings.subheading | escape }}</p>
             {% endif %}
           </div>
-          {% if section.settings.view_all_label != blank and section.settings.view_all_link != blank %}
+          {% if section.settings.view_all_label != blank and view_all_state == 'live' %}
             <a
               class="category-tiles__view-all link-arrow"
               href="{{ section.settings.view_all_link }}"

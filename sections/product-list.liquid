@@ -7,12 +7,43 @@
   endif
 
   # On the storefront, an unconfigured or empty collection can hide the section instead of showing placeholder cards.
-  assign hide_empty_list = false
-  if section.settings.hide_when_empty and request.design_mode != true
-    if section.settings.collection == blank or section.settings.collection.products_count == 0
-      assign hide_empty_list = true
+  assign collection_is_empty = false
+  if section.settings.collection == blank or section.settings.collection.products_count == 0
+    assign collection_is_empty = true
+  elsif settings.catalog_product_types != blank
+    # A collection whose products are all outside the storefront catalogue counts as empty.
+    assign allowed_in_collection = 0
+    for product in section.settings.collection.products limit: 50
+      capture guard_state
+        render 'catalog-guard', product: product
+      endcapture
+      if guard_state contains 'allowed'
+        assign allowed_in_collection = allowed_in_collection | plus: 1
+        break
+      endif
+    endfor
+    if allowed_in_collection == 0
+      assign collection_is_empty = true
     endif
   endif
+
+  # SNEAKROW demo preview: labelled, non-purchasable demo cards stand in for an empty collection.
+  # Real products always win: demo cards never render when the collection has products.
+  # Never next to the real cart, so demo content can't be mistaken for something added to it.
+  assign use_demo_products = false
+  if settings.demo_mode and collection_is_empty and template.name != 'cart'
+    assign use_demo_products = true
+  endif
+
+  # Placeholder cards (Horizon's clothing artwork) are an editor aid only, so on the storefront an empty list
+  # is always hidden unless demo preview fills it.
+  assign hide_empty_list = false
+  if collection_is_empty and request.design_mode != true and use_demo_products == false
+    assign hide_empty_list = true
+  endif
+
+  # Different sections start at different demo items so the same card isn't repeated down the page.
+  assign demo_offset = section.index | default: 0 | times: 3
 %}
 
 {% unless hide_empty_list %}
@@ -40,12 +71,33 @@
   </div>
 
   {% capture list_items %}
-    {% if section.settings.collection != blank and shop.products_count != 0 %}
-      {% paginate section.settings.collection.products by max_items %}
-        {% for product in section.settings.collection.products limit: max_items %}
+    {% if use_demo_products %}
+      {% for i in (1..max_items) %}
         <div
           class="resource-list__item"
         >
+          {% assign demo_index = i | plus: demo_offset %}
+          {% render 'demo-product-card', index: demo_index %}
+        </div>
+
+        {% unless forloop.last %}
+          <!--@list/split-->
+        {% endunless %}
+      {% endfor %}
+    {% elsif section.settings.collection != blank and shop.products_count != 0 and collection_is_empty == false %}
+      {% paginate section.settings.collection.products by 50 %}
+        {% comment %} SNEAKROW: skip products outside the storefront catalogue (snippets/catalog-guard). {% endcomment %}
+        {% assign rendered_count = 0 %}
+        {% for product in section.settings.collection.products %}
+          {% if rendered_count >= max_items %}{% break %}{% endif %}
+          {% capture guard_state %}{% render 'catalog-guard', product: product %}{% endcapture %}
+          {% unless guard_state contains 'allowed' %}{% continue %}{% endunless %}
+          {% if rendered_count > 0 %}
+            <!--@list/split-->
+          {% endif %}
+          <div
+            class="resource-list__item"
+          >
             {% content_for 'block',
               type: '_product-card',
               id: 'static-product-card',
@@ -53,10 +105,7 @@
               product_view_context: 'collection'
             %}
           </div>
-
-          {% unless forloop.last %}
-            <!--@list/split-->
-          {% endunless %}
+          {% assign rendered_count = rendered_count | plus: 1 %}
         {% endfor %}
       {% endpaginate %}
     {% else %}

@@ -203,7 +203,9 @@ class MarqueeComponent extends Component {
     if (!marqueeItems[0]) return;
 
     for (let i = 0; i < numberOfCopies - 1; i++) {
-      const clone = marqueeItems[0].cloneNode(true);
+      const clone = /** @type {HTMLElement} */ (marqueeItems[0].cloneNode(true));
+      // Repeated copies are visual only; screen readers should hear the ticker text once.
+      clone.setAttribute('aria-hidden', 'true');
       content.appendChild(clone);
     }
   }

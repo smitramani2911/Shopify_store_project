@@ -1,0 +1,31 @@
+{%- doc -%}
+  SNEAKROW catalogue guard. Echoes 'allowed' or 'blocked' for a product, based on
+  Theme settings > Catalogue > "Storefront product types" (comma-separated, case-insensitive).
+  When the setting is empty every product is allowed, so a store that only sells SNEAKROW products needs no
+  configuration. On a shared store it keeps unrelated catalogues (for example another brand's clothing) out of
+  product grids, search, recommendations and product pages, at render time rather than with CSS.
+
+  @param {object} product - The product to check
+
+  @example
+  {% capture state %}{% render 'catalog-guard', product: product %}{% endcapture %}
+  {% if state contains 'allowed' %}…{% endif %}
+{%- enddoc -%}
+
+{%- liquid
+  assign guard_state = 'allowed'
+  # Editor placeholders (no real product) are always allowed.
+  if settings.catalog_product_types != blank and product.id != blank
+    assign guard_state = 'blocked'
+    assign product_type = product.type | downcase | strip
+    assign allowed_types = settings.catalog_product_types | downcase | split: ','
+    for allowed_type in allowed_types
+      assign clean_type = allowed_type | strip
+      if clean_type != blank and clean_type == product_type
+        assign guard_state = 'allowed'
+        break
+      endif
+    endfor
+  endif
+  echo guard_state
+-%}

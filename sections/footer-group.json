@@ -134,7 +134,7 @@
             "newsletter_heading": {
               "type": "text",
               "settings": {
-                "text": "<p>Stay in the loop</p>",
+                "text": "<p>Stay in the rotation</p>",
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",

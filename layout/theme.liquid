@@ -16,7 +16,17 @@
 
     {%- render 'view-transition-opt-in' -%}
 
-    {%- render 'meta-tags' -%}
+    {%- comment -%}
+      SNEAKROW catalogue guard: product and collection pages outside the storefront catalogue render an
+      "unavailable" message instead of their content (see snippets/catalog-page-state).
+    {%- endcomment -%}
+    {%- capture catalog_page_state -%}{%- render 'catalog-page-state' -%}{%- endcapture -%}
+    {%- assign catalog_page_blocked = false -%}
+    {%- if catalog_page_state contains 'blocked' -%}
+      {%- assign catalog_page_blocked = true -%}
+    {%- endif -%}
+
+    {%- render 'meta-tags', page_blocked: catalog_page_blocked -%}
     {%- render 'stylesheets' -%}
     {%- render 'card-hover-effect-styles' -%}
     {%- render 'fonts' -%}
@@ -37,6 +47,7 @@
     {% render 'chat-drawer' %}
 
     <div class="page-wrapper">
+      {% render 'demo-mode-banner' %}
       <div id="header-group">
         {% sections 'header-group' %}
       </div>
@@ -156,7 +167,11 @@
         data-product-transition="{{ settings.transition_to_main_product }}"
         data-template="{{ template | default: request.page_type }}"
       >
-        {{ content_for_layout }}
+        {% if catalog_page_blocked %}
+          {% render 'catalog-unavailable' %}
+        {% else %}
+          {{ content_for_layout }}
+        {% endif %}
       </main>
 
       <footer>

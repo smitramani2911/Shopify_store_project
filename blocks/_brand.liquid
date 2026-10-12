@@ -1,26 +1,45 @@
 {%- doc -%}
-  One hand-picked brand in the brand-list section's featured row. Points at the brand's collection and can show
-  an authorised logo instead of the name. Renders on the storefront only when the collection has products.
+  One hand-picked brand in the brand-list section's featured row. Links to the brand's collection (when it has
+  products) or to a custom link that exists, and can show an authorised logo instead of the name. A brand
+  entered by name only, with no working destination, is shown as plain text.
 {%- enddoc -%}
 
 {% liquid
+  # Destination: the brand collection when it has products, otherwise a custom link that exists.
   assign brand_collection = block.settings.collection
-  assign brand_ready = false
+  assign brand_url = blank
   if brand_collection != blank and brand_collection.products_count > 0
-    assign brand_ready = true
+    assign brand_url = brand_collection.url
+  elsif block.settings.link != blank
+    capture brand_link_state
+      render 'link-state', url: block.settings.link
+    endcapture
+    if brand_link_state contains 'live'
+      assign brand_url = block.settings.link
+    endif
   endif
   assign brand_name = block.settings.name | default: brand_collection.title
+
+  # A merchant-entered brand name without a working destination is shown as plain text, never as a dead link.
+  assign brand_visible = false
+  if brand_url != blank or brand_name != blank or request.design_mode
+    assign brand_visible = true
+  endif
 %}
 
-{% if brand_ready or request.design_mode %}
+{% if brand_visible %}
   <li
     class="brand-list__item"
     {{ block.shopify_attributes }}
   >
-    <a
-      class="brand-list__link"
-      href="{{ brand_collection.url | default: routes.collections_url }}"
-    >
+    {% if brand_url != blank %}
+      <a
+        class="brand-list__link"
+        href="{{ brand_url }}"
+      >
+    {% else %}
+      <span class="brand-list__link">
+    {% endif %}
       {% if block.settings.logo != blank %}
         {{
           block.settings.logo
@@ -32,7 +51,11 @@
       {% else %}
         <span class="brand-list__link--placeholder">{{ 'content.brand_placeholder' | t }}</span>
       {% endif %}
-    </a>
+    {% if brand_url != blank %}
+      </a>
+    {% else %}
+      </span>
+    {% endif %}
   </li>
 {% endif %}
 
@@ -51,6 +74,12 @@
       "id": "name",
       "label": "t:settings.brand_name",
       "info": "t:info.brand_name"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "t:settings.link",
+      "info": "t:info.brand_link"
     },
     {
       "type": "image_picker",

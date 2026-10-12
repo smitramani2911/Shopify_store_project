@@ -1,0 +1,35 @@
+{%- doc -%}
+  Echoes 'blocked' when the current product page, or collection page, sits outside the storefront catalogue
+  defined by Theme settings > Catalogue > "Storefront product types"; otherwise 'allowed'.
+  A collection counts as outside the catalogue when it has products but none of its first 50 match.
+  Used by layout/theme.liquid (page body) and snippets/meta-tags.liquid (title, description, image).
+
+  @example
+  {% capture catalog_page_state %}{% render 'catalog-page-state' %}{% endcapture %}
+{%- enddoc -%}
+
+{%- liquid
+  assign page_state = 'allowed'
+  if settings.catalog_product_types != blank
+    if request.page_type == 'product' and product != blank
+      capture guard_state
+        render 'catalog-guard', product: product
+      endcapture
+      unless guard_state contains 'allowed'
+        assign page_state = 'blocked'
+      endunless
+    elsif request.page_type == 'collection' and collection.products_count > 0
+      assign page_state = 'blocked'
+      for collection_product in collection.products limit: 50
+        capture guard_state
+          render 'catalog-guard', product: collection_product
+        endcapture
+        if guard_state contains 'allowed'
+          assign page_state = 'allowed'
+          break
+        endif
+      endfor
+    endif
+  endif
+  echo page_state
+-%}

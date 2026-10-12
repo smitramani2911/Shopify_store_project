@@ -16,7 +16,28 @@
       class="predictive-search-results__inner"
       data-search-results
     >
-      {% if predictive_search.performed %}
+      {% liquid
+        # SNEAKROW catalogue guard: with "Storefront product types" set, only matching products are suggested.
+        # Collection, page, article and query suggestions come from the whole store, so they are left out.
+        assign guard_active = false
+        if settings.catalog_product_types != blank
+          assign guard_active = true
+        endif
+        assign allowed_products = 0
+        if guard_active and predictive_search.performed
+          for product in predictive_search.resources.products
+            capture guard_state
+              render 'catalog-guard', product: product
+            endcapture
+            if guard_state contains 'allowed'
+              assign allowed_products = allowed_products | plus: 1
+            endif
+          endfor
+        endif
+      %}
+      {% if predictive_search.performed and guard_active %}
+        {% assign search_results_count = allowed_products %}
+      {% elsif predictive_search.performed %}
         {% assign search_results_count = predictive_search.resources.products.size
           | plus: predictive_search.resources.pages.size
           | plus: predictive_search.resources.articles.size
@@ -32,7 +53,7 @@
       >
         {%- if predictive_search.performed and search_results_count > 0 -%}
           {{ 'accessibility.search_results_count' | t: count: search_results_count, query: predictive_search.terms }}
-        {%- elsif predictive_search.performed and predictive_search.resources.queries.size > 0 -%}
+        {%- elsif predictive_search.performed and predictive_search.resources.queries.size > 0 and guard_active == false -%}
           {{- 'accessibility.search_suggestions_available' | t: query: predictive_search.terms -}}
         {%- elsif predictive_search.performed -%}
           {{ 'accessibility.search_results_no_results' | t: query: predictive_search.terms }}
@@ -40,7 +61,7 @@
       </div>
 
       {% if predictive_search.performed %}
-        {% if predictive_search.resources.queries.size > 0 %}
+        {% if predictive_search.resources.queries.size > 0 and guard_active == false %}
           <ul
             class="predictive-search-results__list predictive-search-results__wrapper predictive-search-results__wrapper-queries list-unstyled"
           >
@@ -65,7 +86,7 @@
         {% endif %}
 
         {%- if search_results_count > 0 -%}
-          {% if predictive_search.resources.products.size > 0 %}
+          {% if predictive_search.resources.products.size > 0 and search_results_count > 0 %}
             {%- liquid
               assign title = 'content.search_results_resource_products' | t
               assign products = predictive_search.resources.products
@@ -73,7 +94,7 @@
             -%}
           {% endif %}
 
-          {% if predictive_search.resources.collections.size > 0 %}
+          {% if predictive_search.resources.collections.size > 0 and guard_active == false %}
             {% assign resource_title = 'content.search_results_resource_collections' | t %}
 
             {% render 'predictive-search-resource-carousel',
@@ -83,7 +104,7 @@
             %}
           {% endif %}
 
-          {% if predictive_search.resources.pages.size > 0 %}
+          {% if predictive_search.resources.pages.size > 0 and guard_active == false %}
             {% assign resource_title = 'content.search_results_resource_pages' | t %}
 
             {% render 'predictive-search-resource-carousel',
@@ -93,7 +114,7 @@
             %}
           {% endif %}
 
-          {% if predictive_search.resources.articles.size > 0 %}
+          {% if predictive_search.resources.articles.size > 0 and guard_active == false %}
             {% assign resource_title = 'content.search_results_resource_articles' | t %}
 
             {% render 'predictive-search-resource-carousel',
@@ -102,7 +123,7 @@
               resources: predictive_search.resources.articles
             %}
           {% endif %}
-        {%- elsif predictive_search.resources.queries.size == 0 -%}
+        {%- elsif predictive_search.resources.queries.size == 0 or guard_active -%}
           <p class="predictive-search-results__no-results">
             {{ 'content.search_results_no_results' | t: terms: predictive_search.terms }}
           </p>
@@ -123,7 +144,7 @@
         -%}
       {% endif %}
 
-      {% if predictive_search.performed %}
+      {% if predictive_search.performed and guard_active == false %}
         {%- if search_results_count > 0 -%}
           {% assign total_results = predictive_search.resources.products.size
             | plus: predictive_search.resources.collections.size
