@@ -1332,6 +1332,19 @@ summary:hover {
   padding-block: var(--padding-xl);
 }
 
+/* SNEAKROW: Shopify's policy stylesheet loads after the theme and fixes the container at 65ch. The doubled
+   class outranks it so long words, URLs and large headings stay inside narrow screens. */
+.shopify-policy__container.shopify-policy__container {
+  box-sizing: border-box;
+  max-width: min(65ch, 100%);
+  padding-inline: var(--page-margin, 16px);
+  overflow-wrap: anywhere;
+}
+
+.shopify-policy__body :is(h2, h3) {
+  font-size: clamp(1.25rem, 1rem + 1.5vw, 1.75rem);
+}
+
 /* Radio buttons and checkboxes - shared base styles */
 :where(input[type='radio']),
 :where(input[type='checkbox']) {

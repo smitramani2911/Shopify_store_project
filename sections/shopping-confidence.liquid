@@ -1,0 +1,185 @@
+{% comment %}
+  Section contract.
+  Short "shop with confidence" columns (size guidance, shipping, returns, support). Each `_confidence-item`
+  links to a real destination: a page, a store policy, or a custom URL. On the storefront an item is hidden
+  when its destination does not exist (missing page, empty policy), and the section hides when no item
+  qualifies, so it never promises anything the store has not published.
+  @example
+  <!-- Home "Made for your everyday": size guide page, shipping policy, refund policy, contact page -->
+{% endcomment %}
+
+{% liquid
+  # Theme blocks decide their own visibility, so render them first and hide the section when nothing came out.
+  capture items_html
+    content_for 'blocks'
+  endcapture
+  assign items_html = items_html | strip
+
+  assign render_section = true
+  if items_html == blank and request.design_mode != true
+    assign render_section = false
+  endif
+
+  if render_section and section.settings.background_color != blank
+    render 'contrast-override', background_color: section.settings.background_color, section_id: section.id
+  endif
+%}
+
+{% if render_section %}
+  <div
+    class="section-background{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
+  ></div>
+  <div
+    class="section section--page-width shopping-confidence{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %} spacing-style"
+    style="{% render 'spacing-style', settings: section.settings %}"
+    data-testid="shopping-confidence-{{ section.id }}"
+  >
+    <div class="shopping-confidence__inner">
+      {% if section.settings.heading != blank %}
+        <h2 class="shopping-confidence__heading h2">{{ section.settings.heading | escape }}</h2>
+      {% endif %}
+      <ul
+        class="shopping-confidence__grid"
+        role="list"
+      >
+        {{ items_html }}
+      </ul>
+    </div>
+  </div>
+{% endif %}
+
+{% stylesheet %}
+  .shopping-confidence__inner {
+    display: grid;
+    gap: var(--gap-xl, 2rem);
+    min-width: 0;
+  }
+
+  .shopping-confidence__heading {
+    margin: 0;
+  }
+
+  .shopping-confidence__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  @media screen and (min-width: 750px) {
+    .shopping-confidence__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0 var(--gap-xl, 2rem);
+    }
+  }
+
+  @media screen and (min-width: 1200px) {
+    .shopping-confidence__grid {
+      grid-auto-flow: column;
+      grid-auto-columns: minmax(0, 1fr);
+      grid-template-columns: none;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:names.shopping_confidence",
+  "tag": "section",
+  "class": "section-wrapper",
+  "blocks": [
+    {
+      "type": "_confidence-item"
+    }
+  ],
+  "max_blocks": 4,
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "t:content.shopping_confidence_visibility"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:settings.heading",
+      "default": "Made for your everyday"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "t:settings.background_color",
+      "placeholder": "t:settings.default"
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 64
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:names.shopping_confidence",
+      "category": "t:categories.text",
+      "blocks": {
+        "item_1": {
+          "type": "_confidence-item",
+          "settings": {
+            "icon": "ruler",
+            "heading": "Size guidance",
+            "destination": "page"
+          }
+        },
+        "item_2": {
+          "type": "_confidence-item",
+          "settings": {
+            "icon": "truck",
+            "heading": "Shipping information",
+            "destination": "shipping_policy"
+          }
+        },
+        "item_3": {
+          "type": "_confidence-item",
+          "settings": {
+            "icon": "return",
+            "heading": "Returns information",
+            "destination": "refund_policy"
+          }
+        },
+        "item_4": {
+          "type": "_confidence-item",
+          "settings": {
+            "icon": "chat_bubble",
+            "heading": "Customer support",
+            "destination": "page"
+          }
+        }
+      },
+      "block_order": ["item_1", "item_2", "item_3", "item_4"]
+    }
+  ]
+}
+{% endschema %}

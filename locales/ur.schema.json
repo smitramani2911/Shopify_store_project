@@ -155,7 +155,10 @@
     "disclosures": "ڈسکلوزر",
     "disclosures_metafield_content": "اس پروڈکٹ کے لیے درکار حفاظتی انتباہات اور ریگولیٹری ڈسکلوزر۔",
     "app_required_for_ratings": "پروڈکٹ کی ریٹنگز کے لیے ایک ایپ درکار ہے۔ [مزید جانیں](https://help.shopify.com/manual/apps)",
-    "navigation": "نیویگیشن"
+    "navigation": "نیویگیشن",
+    "category_tiles_visibility": "On the storefront a tile appears only when its collection has products, and the section hides when no tile qualifies.",
+    "brand_list_source": "Brands are listed automatically from the vendors of products in the chosen collection. Add Brand blocks to hand-pick the featured row instead.",
+    "shopping_confidence_visibility": "On the storefront an item appears only when its page or store policy exists."
   },
   "html_defaults": {
     "join_our_email_list": "<h2>ہماری ای میل لسٹ میں شامل ہوں</h2>",
@@ -245,7 +248,12 @@
     "video_autoplay": "ویڈیو ڈیفالٹ کے طور پر میوٹ ہوں گی",
     "video_external": "کوئی YouTube یا Vimeo کا URL استعمال کریں",
     "pills_usage": "لاگو کردہ فلٹر، ڈسکاؤنٹ کوڈ، اور تلاش کی تجاویز کے لیے استعمال ہوتا ہے",
-    "media_type_info": "خصوصیات آپ کے مینو کے لنک سے پُر کی گئی ہیں"
+    "media_type_info": "خصوصیات آپ کے مینو کے لنک سے پُر کی گئی ہیں",
+    "bundled_photo": "A CC0 photo included with the theme, used only when no image is selected. Replace it with your own photography before launch.",
+    "category_tile_title": "Defaults to the collection title.",
+    "category_tile_description": "Shown in the editorial cards style.",
+    "brand_name": "Defaults to the collection title.",
+    "brand_logo": "Only upload logos you are authorised to use. Leave empty to show the brand name."
   },
   "names": {
     "column": "کالم",
@@ -408,7 +416,15 @@
     "view_all_button": "سبھی دیکھیں",
     "disclosures": "ڈسکلوزر",
     "pills": "پل",
-    "comparison_slider": "موازنہ کرنے والا سلائیڈر"
+    "comparison_slider": "موازنہ کرنے والا سلائیڈر",
+    "category_tiles": "Category tiles",
+    "category_tile": "Category tile",
+    "editorial_campaign": "Editorial campaign",
+    "brand_list": "Brand list",
+    "brand": "Brand",
+    "shopping_confidence": "Shopping confidence",
+    "confidence_item": "Confidence item",
+    "breadcrumbs": "Breadcrumbs"
   },
   "options": {
     "above_carousel": "کیرول کے اوپر",
@@ -691,7 +707,17 @@
     "wide": "چوڑا",
     "youtube": "YouTube",
     "with_hints": "اشاروں کے ساتھ",
-    "below_media": "میڈیا کے نیچے"
+    "below_media": "میڈیا کے نیچے",
+    "bundled_photo_street": "Street: white sneakers on asphalt",
+    "bundled_photo_wire": "Street: sneakers on a wire",
+    "bundled_photo_lifestyle": "Lifestyle: canvas sneakers",
+    "bundled_photo_running": "Running track",
+    "bundled_photo_basketball": "Basketball court",
+    "bundled_photo_retro": "Retro canvas low-tops",
+    "photo_tiles": "Photo tiles",
+    "editorial_cards": "Editorial cards",
+    "featured_row": "Featured row",
+    "a_to_z_directory": "A–Z directory"
   },
   "settings": {
     "accordion": "ایکارڈین",
@@ -1116,7 +1142,21 @@
     "top_row_background": "اوپری قطار کا پس منظر",
     "top_row_text": "اوپری قطار کا متن",
     "bottom_row_background": "نچلی قطار کا پس منظر",
-    "bottom_row_text": "نچلی قطار کا متن"
+    "bottom_row_text": "نچلی قطار کا متن",
+    "bundled_photo": "Bundled photo",
+    "subheading": "Subheading",
+    "view_all_label": "View all label",
+    "description": "Description",
+    "link_label": "Link label",
+    "eyebrow": "Eyebrow",
+    "button_label": "Button label",
+    "brands_source_collection": "Brands from",
+    "max_brands": "Maximum brands",
+    "heading_level": "Heading level",
+    "empty_state_link": "Empty state link",
+    "brand_name": "Brand name",
+    "brand_logo": "Logo",
+    "link_destination": "Link to"
   },
   "text_defaults": {
     "accordion_heading": "ایکارڈین کی سرخی",

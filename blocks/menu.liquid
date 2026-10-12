@@ -10,7 +10,8 @@
   endif
 %}
 
-{% if menu != blank or heading != blank %}
+{% comment %} SNEAKROW: a heading without menu links only renders in the theme editor, so unconfigured footer columns stay hidden. {% endcomment %}
+{% if menu.links.size > 0 or heading != blank and request.design_mode %}
   {% render 'contrast-override',
     background_color: block_settings.background_color,
     text_color: block_settings.text_color,

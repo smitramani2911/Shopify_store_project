@@ -795,6 +795,10 @@
 
   .header__icon--menu {
     position: initial;
+
+    /* SNEAKROW: keep a 44px touch target; the glyph stays pinned to the content edge. */
+    min-width: 44px;
+    min-height: 44px;
   }
 
   .menu-drawer-container .header__icon--summary {

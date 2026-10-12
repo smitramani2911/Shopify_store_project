@@ -19,8 +19,8 @@
         "background_color": "{{ settings.color_palette.foreground }}",
         "divider_width": 0,
         "divider_color": "",
-        "padding-block-start": 10,
-        "padding-block-end": 10,
+        "padding-block-start": 8,
+        "padding-block-end": 8,
         "padding-inline-start": 0,
         "padding-inline-end": 0
       },
@@ -28,8 +28,8 @@
         "announcement": {
           "type": "_announcement",
           "settings": {
-            "text": "Find Your Next Move.",
-            "link": "shopify://collections/new-in",
+            "text": "FIND YOUR NEXT MOVE.",
+            "link": "",
             "font": "var(--font-accent--family)",
             "font_size": "0.75rem",
             "weight": "",
@@ -104,7 +104,7 @@
             "type_case_primary_link": "uppercase",
             "menu_style": "collection_images",
             "featured_products_aspect_ratio": "1 / 1",
-            "featured_collections_aspect_ratio": "16 / 9",
+            "featured_collections_aspect_ratio": "4 / 5",
             "image_border_radius": 0,
             "navigation_bar": false,
             "background_color_navigation_bar": "{{ settings.color_palette.background }}",

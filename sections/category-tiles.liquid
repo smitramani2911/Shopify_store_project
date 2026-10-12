@@ -1,0 +1,291 @@
+{% comment %}
+  Section contract.
+  A heading plus a grid of collection tiles ("tiles": photo cards, "cards": compact numbered editorial links).
+  Each tile is a `_category-tile` block that points at a collection. On the storefront a tile only renders
+  when its collection exists and has products, and the whole section is hidden when no tile qualifies,
+  so shoppers never land on an empty or missing collection. In the theme editor every tile renders.
+  @example
+  <!-- Home "Find your style": four tiles for lifestyle, running, basketball and retro collections -->
+{% endcomment %}
+
+{% liquid
+  # Each tile hides itself when its collection is missing or empty; hide the section when no tile rendered.
+  capture tiles_html
+    content_for 'blocks'
+  endcapture
+  assign tiles_html = tiles_html | strip
+
+  assign render_section = true
+  if tiles_html == blank and request.design_mode != true
+    assign render_section = false
+  endif
+
+  if render_section and section.settings.background_color != blank
+    render 'contrast-override', background_color: section.settings.background_color, section_id: section.id
+  endif
+%}
+
+{% if render_section %}
+  <div
+    class="section-background{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
+  ></div>
+  <div
+    class="section section--page-width category-tiles category-tiles--{{ section.settings.style }}{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %} spacing-style"
+    style="{% render 'spacing-style', settings: section.settings %} --category-tiles-columns: {{ section.settings.columns }};"
+    data-testid="category-tiles-{{ section.id }}"
+  >
+    <div class="category-tiles__inner">
+      {% if section.settings.heading != blank or section.settings.subheading != blank or section.settings.view_all_label != blank %}
+        <div class="category-tiles__header">
+          <div class="category-tiles__intro">
+            {% if section.settings.heading != blank %}
+              <h2 class="category-tiles__heading h2">{{ section.settings.heading | escape }}</h2>
+            {% endif %}
+            {% if section.settings.subheading != blank %}
+              <p class="category-tiles__subheading">{{ section.settings.subheading | escape }}</p>
+            {% endif %}
+          </div>
+          {% if section.settings.view_all_label != blank and section.settings.view_all_link != blank %}
+            <a
+              class="category-tiles__view-all link-arrow"
+              href="{{ section.settings.view_all_link }}"
+            >
+              {{- section.settings.view_all_label | escape -}}
+              <span aria-hidden="true">&rarr;</span>
+            </a>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      <ul
+        class="category-tiles__grid list-unstyled"
+        role="list"
+      >
+        {{ tiles_html }}
+      </ul>
+    </div>
+  </div>
+{% endif %}
+
+{% stylesheet %}
+  .category-tiles__inner {
+    display: grid;
+    gap: var(--gap-xl, 2rem);
+    min-width: 0;
+  }
+
+  .category-tiles__header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--gap-md, 1rem) var(--gap-xl, 2rem);
+  }
+
+  .category-tiles__intro {
+    display: grid;
+    gap: var(--gap-xs, 0.5rem);
+    min-width: 0;
+    max-width: 44rem;
+  }
+
+  .category-tiles__heading {
+    margin: 0;
+  }
+
+  .category-tiles__subheading {
+    margin: 0;
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-70));
+  }
+
+  .category-tiles__view-all {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    min-height: 44px;
+    font-family: var(--font-accent--family);
+    font-weight: var(--font-accent--weight);
+    font-size: 0.8125rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-foreground);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.35em;
+  }
+
+  .category-tiles__view-all:hover {
+    text-decoration-thickness: 2px;
+  }
+
+  .category-tiles__grid {
+    counter-reset: category-tile;
+    display: grid;
+    gap: var(--gap-md, 1rem);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  @media screen and (min-width: 990px) {
+    .category-tiles__grid {
+      grid-template-columns: repeat(var(--category-tiles-columns, 4), minmax(0, 1fr));
+      gap: var(--gap-lg, 1.25rem);
+    }
+  }
+
+  .category-tiles--cards .category-tiles__grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+
+  @media screen and (min-width: 750px) {
+    .category-tiles--cards .category-tiles__grid {
+      grid-template-columns: repeat(var(--category-tiles-columns, 3), minmax(0, 1fr));
+      gap: var(--gap-xl, 2rem);
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:names.category_tiles",
+  "tag": "section",
+  "class": "section-wrapper",
+  "blocks": [
+    {
+      "type": "_category-tile"
+    }
+  ],
+  "max_blocks": 8,
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "t:content.category_tiles_visibility"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:settings.heading",
+      "default": "Find your style"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "t:settings.subheading"
+    },
+    {
+      "type": "text",
+      "id": "view_all_label",
+      "label": "t:settings.view_all_label"
+    },
+    {
+      "type": "url",
+      "id": "view_all_link",
+      "label": "t:settings.link"
+    },
+    {
+      "type": "header",
+      "content": "t:content.layout"
+    },
+    {
+      "type": "select",
+      "id": "style",
+      "label": "t:settings.style",
+      "options": [
+        {
+          "value": "tiles",
+          "label": "t:options.photo_tiles"
+        },
+        {
+          "value": "cards",
+          "label": "t:options.editorial_cards"
+        }
+      ],
+      "default": "tiles"
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "label": "t:settings.columns",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "checkbox",
+      "id": "show_count",
+      "label": "t:settings.show_count",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "t:settings.background_color",
+      "placeholder": "t:settings.default"
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 48
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:names.category_tiles",
+      "category": "t:categories.collections",
+      "blocks": {
+        "tile_1": {
+          "type": "_category-tile",
+          "settings": {
+            "bundled_photo": "lifestyle"
+          }
+        },
+        "tile_2": {
+          "type": "_category-tile",
+          "settings": {
+            "bundled_photo": "running"
+          }
+        },
+        "tile_3": {
+          "type": "_category-tile",
+          "settings": {
+            "bundled_photo": "basketball"
+          }
+        },
+        "tile_4": {
+          "type": "_category-tile",
+          "settings": {
+            "bundled_photo": "retro"
+          }
+        }
+      },
+      "block_order": ["tile_1", "tile_2", "tile_3", "tile_4"]
+    }
+  ]
+}
+{% endschema %}

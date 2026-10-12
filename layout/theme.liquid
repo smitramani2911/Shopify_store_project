@@ -154,7 +154,7 @@
         role="main"
         data-page-transition-enabled="{{ settings.page_transition_enabled }}"
         data-product-transition="{{ settings.transition_to_main_product }}"
-        data-template="{{ template }}"
+        data-template="{{ template | default: request.page_type }}"
       >
         {{ content_for_layout }}
       </main>

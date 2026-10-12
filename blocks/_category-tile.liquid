@@ -1,0 +1,344 @@
+{%- doc -%}
+  Renders one collection tile inside the category-tiles section.
+  Image priority: the tile's own image, then the collection image, then the chosen bundled CC0 photo,
+  then the collection's first product image. On the storefront the tile renders only when its collection
+  exists and has products; in the theme editor it always renders so it can be configured.
+{%- enddoc -%}
+
+{% liquid
+  assign tile_collection = block.settings.collection
+  assign tile_ready = false
+  if tile_collection != blank and tile_collection.products_count > 0
+    assign tile_ready = true
+  endif
+
+  assign tile_style = section.settings.style | default: 'tiles'
+
+  assign tile_title = block.settings.title | default: tile_collection.title
+  if tile_title == blank
+    assign tile_title = 'content.category_tile_placeholder' | t
+  endif
+
+  assign tile_url = tile_collection.url
+  if tile_url == blank
+    assign tile_url = routes.collections_url
+  endif
+
+  assign tile_bundled = block.settings.bundled_photo | default: 'none'
+  if tile_style == 'cards'
+    # Compact cards only show a photo the merchant chose for the card itself.
+    assign tile_image = block.settings.image
+  else
+    assign tile_image = block.settings.image | default: tile_collection.image
+    if tile_image == blank and tile_bundled == 'none'
+      assign tile_image = tile_collection.featured_image
+    endif
+  endif
+
+  if tile_style == 'cards'
+    assign tile_sizes = '(min-width: 750px) 30vw, 100vw'
+  else
+    assign tile_sizes = '(min-width: 990px) 25vw, 50vw'
+  endif
+%}
+
+{% if tile_ready or request.design_mode %}
+  <li
+    class="category-tile category-tile--{{ tile_style }}"
+    {{ block.shopify_attributes }}
+  >
+    <a
+      class="category-tile__link"
+      href="{{ tile_url }}"
+    >
+      {% if tile_style == 'tiles' or tile_image != blank or tile_bundled != 'none' %}
+        <div class="category-tile__media">
+          {% if tile_image != blank %}
+            {{
+              tile_image
+              | image_url: width: 1200
+              | image_tag:
+                widths: '360, 480, 720, 960, 1200',
+                sizes: tile_sizes,
+                loading: 'lazy',
+                alt: '',
+                class: 'category-tile__image'
+            }}
+          {% elsif tile_bundled != 'none' %}
+            {% render 'bundled-photo',
+              name: tile_bundled,
+              crop: 'portrait',
+              sizes: tile_sizes,
+              class: 'category-tile__image',
+              decorative: true
+            %}
+          {% else %}
+            {{ 'collection-apparel-1' | placeholder_svg_tag: 'category-tile__image category-tile__image--placeholder' }}
+          {% endif %}
+        </div>
+      {% endif %}
+
+      <div class="category-tile__body">
+        {% if tile_style == 'cards' %}
+          <span
+            class="category-tile__number"
+            aria-hidden="true"
+          ></span>
+        {% endif %}
+        <h3 class="category-tile__title">{{ tile_title | escape }}</h3>
+        {% if tile_style == 'cards' and block.settings.description != blank %}
+          <p class="category-tile__description">{{ block.settings.description | escape }}</p>
+        {% endif %}
+        {% if section.settings.show_count and tile_ready %}
+          <span class="category-tile__count">
+            {{- 'content.category_tile_count' | t: count: tile_collection.products_count -}}
+          </span>
+        {% endif %}
+        {% if block.settings.link_label != blank %}
+          <span class="category-tile__cta">
+            {{- block.settings.link_label | escape }}
+            <span aria-hidden="true">&rarr;</span>
+          </span>
+        {% endif %}
+      </div>
+    </a>
+  </li>
+{% endif %}
+
+{% stylesheet %}
+  .category-tile {
+    counter-increment: category-tile;
+    min-width: 0;
+  }
+
+  .category-tile__link {
+    display: block;
+    height: 100%;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .category-tile__media {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 4 / 5;
+    background-color: rgb(var(--color-foreground-rgb) / var(--opacity-5, 0.05));
+  }
+
+  .category-tile__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .category-tile__image {
+      transition: transform var(--animation-speed-slow, 0.6s) var(--animation-easing, ease);
+    }
+
+    .category-tile__link:hover .category-tile__image {
+      transform: scale(1.04);
+    }
+  }
+
+  /* Photo tiles: title over a dark gradient at the foot of the image. */
+  .category-tile--tiles .category-tile__link {
+    position: relative;
+    color: #fff;
+  }
+
+  .category-tile--tiles .category-tile__media::after {
+    content: '';
+    position: absolute;
+    inset: 40% 0 0;
+    background: linear-gradient(to top, rgb(0 0 0 / 0.7), rgb(0 0 0 / 0));
+    pointer-events: none;
+  }
+
+  .category-tile--tiles .category-tile__body {
+    position: absolute;
+    inset: auto 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 0.25rem 0.75rem;
+    padding: clamp(0.75rem, 2.5vw, 1.5rem);
+  }
+
+  .category-tile--tiles .category-tile__title {
+    margin: 0;
+    color: #fff;
+    font-family: var(--font-heading--family);
+    font-weight: var(--font-heading--weight);
+    font-size: clamp(1.125rem, 0.9rem + 1.2vw, 2rem);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+  }
+
+  .category-tile--tiles .category-tile__count,
+  .category-tile--tiles .category-tile__cta {
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #fff;
+  }
+
+  .category-tile--tiles .category-tile__cta {
+    display: none;
+  }
+
+  @media screen and (min-width: 750px) {
+    .category-tile--tiles .category-tile__cta {
+      display: inline-flex;
+      gap: 0.4em;
+    }
+  }
+
+  .category-tile--tiles .category-tile__link:focus-visible {
+    outline-offset: 3px;
+  }
+
+  /* Editorial cards: numbered, text-led, rule above. */
+  .category-tile--cards .category-tile__link {
+    display: grid;
+    gap: var(--gap-md, 1rem);
+    padding-block: var(--gap-lg, 1.25rem);
+    border-block-start: 1px solid rgb(var(--color-foreground-rgb) / var(--opacity-20, 0.2));
+  }
+
+  .category-tile--cards .category-tile__media {
+    aspect-ratio: 16 / 10;
+  }
+
+  .category-tile--cards .category-tile__body {
+    display: grid;
+    gap: 0.5rem;
+    align-content: start;
+  }
+
+  .category-tile--cards .category-tile__number::before {
+    content: counter(category-tile, decimal-leading-zero);
+  }
+
+  .category-tile--cards .category-tile__number {
+    font-family: var(--font-accent--family);
+    font-size: 0.8125rem;
+    letter-spacing: 0.08em;
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-70));
+  }
+
+  .category-tile--cards .category-tile__title {
+    margin: 0;
+    font-family: var(--font-heading--family);
+    font-weight: var(--font-heading--weight);
+    font-size: clamp(1.375rem, 1.1rem + 1vw, 2rem);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+  }
+
+  .category-tile--cards .category-tile__description {
+    margin: 0;
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-70));
+  }
+
+  .category-tile--cards .category-tile__count {
+    font-size: 0.8125rem;
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-70));
+  }
+
+  .category-tile--cards .category-tile__cta {
+    display: inline-flex;
+    gap: 0.4em;
+    margin-block-start: 0.25rem;
+    font-size: 0.8125rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: underline;
+    text-underline-offset: 0.35em;
+  }
+
+  .category-tile--cards .category-tile__link:hover .category-tile__cta {
+    text-decoration-thickness: 2px;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:names.category_tile",
+  "tag": null,
+  "settings": [
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "t:settings.collection"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "t:settings.title",
+      "info": "t:info.category_tile_title"
+    },
+    {
+      "type": "text",
+      "id": "description",
+      "label": "t:settings.description",
+      "info": "t:info.category_tile_description"
+    },
+    {
+      "type": "text",
+      "id": "link_label",
+      "label": "t:settings.link_label"
+    },
+    {
+      "type": "header",
+      "content": "t:content.media"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "t:settings.image"
+    },
+    {
+      "type": "select",
+      "id": "bundled_photo",
+      "label": "t:settings.bundled_photo",
+      "info": "t:info.bundled_photo",
+      "options": [
+        {
+          "value": "none",
+          "label": "t:options.none"
+        },
+        {
+          "value": "lifestyle",
+          "label": "t:options.bundled_photo_lifestyle"
+        },
+        {
+          "value": "running",
+          "label": "t:options.bundled_photo_running"
+        },
+        {
+          "value": "basketball",
+          "label": "t:options.bundled_photo_basketball"
+        },
+        {
+          "value": "retro",
+          "label": "t:options.bundled_photo_retro"
+        },
+        {
+          "value": "street",
+          "label": "t:options.bundled_photo_street"
+        },
+        {
+          "value": "wire",
+          "label": "t:options.bundled_photo_wire"
+        }
+      ],
+      "default": "none"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,351 @@
+{% comment %}
+  Section contract.
+  A split editorial campaign: a large photograph beside a statement headline, short copy and one call to action.
+  The photo comes from the image picker, or from a bundled CC0 photo until the merchant uploads their own.
+  The button renders only when it has both a label and a link.
+  @example
+  <!-- Home "Move different." campaign: bundled 'wire' photo on the left, copy and "Shop lifestyle" on the right -->
+{% endcomment %}
+
+{% liquid
+  assign campaign_image = section.settings.image
+  assign campaign_bundled = section.settings.bundled_photo | default: 'none'
+  assign has_media = false
+  if campaign_image != blank or campaign_bundled != 'none'
+    assign has_media = true
+  endif
+
+  if section.settings.background_color != blank
+    render 'contrast-override', background_color: section.settings.background_color, section_id: section.id
+  endif
+%}
+
+<div
+  class="section-background{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
+></div>
+<div
+  class="section section--{{ section.settings.section_width }} editorial-campaign{% if section.settings.image_position == 'right' %} editorial-campaign--media-right{% endif %}{% unless has_media %} editorial-campaign--no-media{% endunless %}{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %} spacing-style"
+  style="{% render 'spacing-style', settings: section.settings %}"
+  data-testid="editorial-campaign-{{ section.id }}"
+>
+  <div class="editorial-campaign__grid">
+    {% if has_media or request.design_mode %}
+      <div class="editorial-campaign__media">
+        {% if campaign_image != blank %}
+          {{
+            campaign_image
+            | image_url: width: 2400
+            | image_tag:
+              widths: '600, 900, 1200, 1600, 2000, 2400',
+              sizes: '(min-width: 990px) 58vw, 100vw',
+              loading: 'lazy',
+              class: 'editorial-campaign__image'
+          }}
+        {% elsif campaign_bundled != 'none' %}
+          {% render 'bundled-photo',
+            name: campaign_bundled,
+            sizes: '(min-width: 990px) 58vw, 100vw',
+            class: 'editorial-campaign__image'
+          %}
+        {% else %}
+          {{ 'lifestyle-1' | placeholder_svg_tag: 'editorial-campaign__image' }}
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <div class="editorial-campaign__content">
+      {% if section.settings.eyebrow != blank %}
+        <p class="editorial-campaign__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      {% endif %}
+      {% if section.settings.heading != blank %}
+        <h2 class="editorial-campaign__heading">{{ section.settings.heading | escape }}</h2>
+      {% endif %}
+      {% if section.settings.text != blank %}
+        <div class="editorial-campaign__text rte">{{ section.settings.text }}</div>
+      {% endif %}
+      {% if section.settings.button_label != blank and section.settings.button_link != blank %}
+        <a
+          class="button editorial-campaign__button"
+          href="{{ section.settings.button_link }}"
+        >
+          {{- section.settings.button_label | escape -}}
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .editorial-campaign__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: stretch;
+    min-width: 0;
+  }
+
+  @media screen and (min-width: 990px) {
+    .editorial-campaign__grid {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+      min-height: min(78vh, 760px);
+    }
+
+    .editorial-campaign--media-right .editorial-campaign__media {
+      order: 2;
+    }
+
+    .editorial-campaign--no-media .editorial-campaign__grid {
+      grid-template-columns: minmax(0, 1fr);
+      min-height: 0;
+    }
+  }
+
+  .editorial-campaign__media {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 4 / 5;
+    background-color: rgb(var(--color-foreground-rgb) / var(--opacity-10, 0.1));
+  }
+
+  /* Tablets stack the layout; a landscape crop keeps the photo from taking over the screen. */
+  @media screen and (min-width: 750px) and (max-width: 989px) {
+    .editorial-campaign__media {
+      aspect-ratio: 3 / 2;
+    }
+  }
+
+  @media screen and (min-width: 990px) {
+    .editorial-campaign__media {
+      aspect-ratio: auto;
+      min-height: 100%;
+    }
+  }
+
+  .editorial-campaign__image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .editorial-campaign__content {
+    container-type: inline-size;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
+    gap: var(--gap-lg, 1.25rem);
+    min-width: 0;
+    padding: clamp(2rem, 6vw, 4.5rem) var(--page-margin, 16px);
+  }
+
+  @media screen and (min-width: 990px) {
+    .editorial-campaign__content {
+      padding: clamp(2.5rem, 5vw, 5rem);
+    }
+  }
+
+  /* Text stays in the foreground colour so it reads on light and dark backgrounds; the lime marker carries the accent. */
+  .editorial-campaign__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6em;
+    margin: 0;
+    font-family: var(--font-accent--family);
+    font-weight: var(--font-accent--weight);
+    font-size: 0.8125rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-foreground);
+  }
+
+  .editorial-campaign__eyebrow::before {
+    content: '';
+    flex: none;
+    width: 0.7em;
+    height: 0.7em;
+    background-color: var(--color-accent, currentcolor);
+  }
+
+  .editorial-campaign__heading {
+    margin: 0;
+    font-family: var(--font-heading--family);
+    font-weight: var(--font-heading--weight);
+    /* Sized to the copy column so the longest word ("different.") never breaks mid-word. */
+    font-size: clamp(2.5rem, 14cqi, 7.5rem);
+    line-height: 0.85;
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
+    overflow-wrap: break-word;
+    hyphens: none;
+    color: var(--color-foreground);
+  }
+
+  .editorial-campaign__text {
+    max-width: 34rem;
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-80, 0.8));
+  }
+
+  .editorial-campaign__text > * {
+    margin-block: 0 0.75em;
+  }
+
+  .editorial-campaign__text > :last-child {
+    margin-block-end: 0;
+  }
+
+  .editorial-campaign__button {
+    --button-background-color: var(--color-accent, var(--color-primary-button-background));
+    --button-color: #0f0f0f;
+    --button-border-color: var(--color-accent, var(--color-primary-button-border));
+
+    min-height: 48px;
+  }
+
+  .editorial-campaign__button:hover {
+    --button-background-color: var(--color-foreground);
+    --button-color: var(--color-background);
+    --button-border-color: var(--color-foreground);
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:names.editorial_campaign",
+  "tag": "section",
+  "class": "section-wrapper",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "t:settings.image"
+    },
+    {
+      "type": "select",
+      "id": "bundled_photo",
+      "label": "t:settings.bundled_photo",
+      "info": "t:info.bundled_photo",
+      "options": [
+        {
+          "value": "none",
+          "label": "t:options.none"
+        },
+        {
+          "value": "wire",
+          "label": "t:options.bundled_photo_wire"
+        },
+        {
+          "value": "street",
+          "label": "t:options.bundled_photo_street"
+        }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "t:settings.image_position",
+      "options": [
+        {
+          "value": "left",
+          "label": "t:options.left"
+        },
+        {
+          "value": "right",
+          "label": "t:options.right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "t:content.text"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "t:settings.eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:settings.heading",
+      "default": "Move different."
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "t:settings.text"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "t:settings.button_label"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "t:settings.link"
+    },
+    {
+      "type": "header",
+      "content": "t:content.layout"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "t:settings.width",
+      "options": [
+        {
+          "value": "page-width",
+          "label": "t:options.page"
+        },
+        {
+          "value": "full-width",
+          "label": "t:options.full"
+        }
+      ],
+      "default": "full-width"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "t:settings.background_color",
+      "placeholder": "t:settings.default"
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:names.editorial_campaign",
+      "category": "t:categories.storytelling"
+    }
+  ]
+}
+{% endschema %}

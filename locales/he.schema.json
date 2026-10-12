@@ -155,7 +155,10 @@
     "disclosures": "גילוי נאות",
     "disclosures_metafield_content": "אזהרות בטיחות חובה וגילויים רגולטוריים עבור מוצר זה.",
     "app_required_for_ratings": "נדרש יישום עבור דירוגי מוצרים. [למידע נוסף](https://help.shopify.com/manual/apps)",
-    "navigation": "ניווט"
+    "navigation": "ניווט",
+    "category_tiles_visibility": "On the storefront a tile appears only when its collection has products, and the section hides when no tile qualifies.",
+    "brand_list_source": "Brands are listed automatically from the vendors of products in the chosen collection. Add Brand blocks to hand-pick the featured row instead.",
+    "shopping_confidence_visibility": "On the storefront an item appears only when its page or store policy exists."
   },
   "html_defaults": {
     "join_our_email_list": "<h2>הצטרף לרשימת הדיוור שלנו</h2>",
@@ -245,7 +248,12 @@
     "video_autoplay": "סרטונים יושתקו כברירת מחדל",
     "video_external": "השתמש בכתובת URL של YouTube או Vimeo",
     "pills_usage": "משמש למסננים שהוחלו, קודי הנחה והצעות חיפוש",
-    "media_type_info": "התכונות מאוכלסות מקישורי התפריט שלך"
+    "media_type_info": "התכונות מאוכלסות מקישורי התפריט שלך",
+    "bundled_photo": "A CC0 photo included with the theme, used only when no image is selected. Replace it with your own photography before launch.",
+    "category_tile_title": "Defaults to the collection title.",
+    "category_tile_description": "Shown in the editorial cards style.",
+    "brand_name": "Defaults to the collection title.",
+    "brand_logo": "Only upload logos you are authorised to use. Leave empty to show the brand name."
   },
   "names": {
     "column": "עמודה",
@@ -408,7 +416,15 @@
     "view_all_button": "הצג הכול",
     "disclosures": "גילוי נאות",
     "pills": "גלולות",
-    "comparison_slider": "מחוון השוואה"
+    "comparison_slider": "מחוון השוואה",
+    "category_tiles": "Category tiles",
+    "category_tile": "Category tile",
+    "editorial_campaign": "Editorial campaign",
+    "brand_list": "Brand list",
+    "brand": "Brand",
+    "shopping_confidence": "Shopping confidence",
+    "confidence_item": "Confidence item",
+    "breadcrumbs": "Breadcrumbs"
   },
   "options": {
     "above_carousel": "מעל הקרוסלה",
@@ -691,7 +707,17 @@
     "wide": "רחב",
     "youtube": "YouTube",
     "with_hints": "עם רמזים",
-    "below_media": "מתחת למדיה"
+    "below_media": "מתחת למדיה",
+    "bundled_photo_street": "Street: white sneakers on asphalt",
+    "bundled_photo_wire": "Street: sneakers on a wire",
+    "bundled_photo_lifestyle": "Lifestyle: canvas sneakers",
+    "bundled_photo_running": "Running track",
+    "bundled_photo_basketball": "Basketball court",
+    "bundled_photo_retro": "Retro canvas low-tops",
+    "photo_tiles": "Photo tiles",
+    "editorial_cards": "Editorial cards",
+    "featured_row": "Featured row",
+    "a_to_z_directory": "A–Z directory"
   },
   "settings": {
     "accordion": "אקורדיון",
@@ -1116,7 +1142,21 @@
     "top_row_background": "רקע לשורה העליונה",
     "top_row_text": "טקסט לשורה העליונה",
     "bottom_row_background": "רקע לשורה התחתונה",
-    "bottom_row_text": "טקסט לשורה התחתונה"
+    "bottom_row_text": "טקסט לשורה התחתונה",
+    "bundled_photo": "Bundled photo",
+    "subheading": "Subheading",
+    "view_all_label": "View all label",
+    "description": "Description",
+    "link_label": "Link label",
+    "eyebrow": "Eyebrow",
+    "button_label": "Button label",
+    "brands_source_collection": "Brands from",
+    "max_brands": "Maximum brands",
+    "heading_level": "Heading level",
+    "empty_state_link": "Empty state link",
+    "brand_name": "Brand name",
+    "brand_logo": "Logo",
+    "link_destination": "Link to"
   },
   "text_defaults": {
     "accordion_heading": "כותרת אקורדיון",

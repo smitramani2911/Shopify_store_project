@@ -97,6 +97,35 @@
 </div>
 {% endunless %}
 
+{% stylesheet %}
+  /* SNEAKROW: the header "view all" link matches the uppercase arrow links used by the other sections. */
+  .section-resource-list__header a.button-unstyled {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    min-height: 44px;
+    font-family: var(--font-accent--family);
+    font-weight: var(--font-accent--weight);
+    font-size: 0.8125rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.35em;
+    color: var(--color-foreground);
+  }
+
+  .section-resource-list__header a.button-unstyled::after {
+    content: '→';
+    text-decoration: none;
+  }
+
+  .section-resource-list__header a.button-unstyled:hover {
+    color: var(--color-foreground);
+    text-decoration-thickness: 2px;
+  }
+{% endstylesheet %}
+
 {% schema %}
 {
   "name": "t:names.product_list",

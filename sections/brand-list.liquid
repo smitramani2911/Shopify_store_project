@@ -1,0 +1,557 @@
+{% comment %}
+  Section contract.
+  Lists the brands that are actually stocked. By default brands come from the vendors of the products in the
+  "Brands from" collection (collection.all_vendors), so a brand appears only while it has products there.
+  Each brand links to the collection whose handle matches the brand name when that collection has products,
+  otherwise to Shopify's automatic vendor page. Optional `_brand` blocks replace the automatic list with a
+  hand-picked set of brand collections (and logos) for the "row" layout.
+  Layouts: "row" (a restrained featured strip, capped by max_brands) and "directory" (A–Z index with jump links).
+  @example
+  <!-- Home "The brands we move with": row layout, 6 brands from the sneakers collection, "View all brands" -->
+{% endcomment %}
+
+{% liquid
+  assign layout = section.settings.layout
+  assign source = section.settings.source_collection
+
+  # Hand-picked brand blocks render only when their collection has products; they replace the automatic list.
+  capture picked_html
+    content_for 'blocks'
+  endcapture
+  assign picked_html = picked_html | strip
+  assign has_picked = false
+  if picked_html != blank
+    assign has_picked = true
+  endif
+
+  assign vendors = ''
+  if source != blank and source.products_count > 0
+    assign vendors = source.all_vendors | sort_natural
+  endif
+
+  assign brand_total = vendors.size
+  if layout == 'row' and has_picked and request.design_mode != true
+    assign brand_total = 1
+  endif
+
+  assign limit = 999
+  if layout == 'row'
+    assign limit = section.settings.max_brands
+  endif
+
+  assign render_section = true
+  if brand_total == 0 and layout == 'row' and request.design_mode != true
+    assign render_section = false
+  endif
+
+  if render_section and section.settings.background_color != blank
+    render 'contrast-override', background_color: section.settings.background_color, section_id: section.id
+  endif
+%}
+
+{% if render_section %}
+  <div
+    class="section-background{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
+  ></div>
+  <div
+    class="section section--page-width brand-list brand-list--{{ layout }}{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %} spacing-style"
+    style="{% render 'spacing-style', settings: section.settings %}"
+    data-testid="brand-list-{{ section.id }}"
+  >
+    <div class="brand-list__inner">
+      {% if section.settings.heading != blank or section.settings.view_all_label != blank %}
+        <div class="brand-list__header">
+          <div class="brand-list__intro">
+            {% if section.settings.heading != blank %}
+              {% if section.settings.heading_level == 'h1' %}
+                <h1 class="brand-list__heading h2">{{ section.settings.heading | escape }}</h1>
+              {% else %}
+                <h2 class="brand-list__heading h2">{{ section.settings.heading | escape }}</h2>
+              {% endif %}
+            {% endif %}
+            {% if section.settings.subheading != blank %}
+              <p class="brand-list__subheading">{{ section.settings.subheading | escape }}</p>
+            {% endif %}
+            {% if layout == 'directory' and brand_total > 0 %}
+              <p class="brand-list__count">{{ 'content.brand_list_count' | t: count: brand_total }}</p>
+            {% endif %}
+          </div>
+          {% if layout == 'row' and section.settings.view_all_label != blank and section.settings.view_all_link != blank %}
+            <a
+              class="brand-list__view-all"
+              href="{{ section.settings.view_all_link }}"
+            >
+              {{- section.settings.view_all_label | escape }}
+              <span aria-hidden="true">&rarr;</span>
+            </a>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {% if layout == 'row' %}
+        <ul
+          class="brand-list__row list-unstyled"
+          role="list"
+        >
+          {% if has_picked %}
+            {{ picked_html }}
+          {% else %}
+            {% for vendor in vendors limit: limit %}
+              {% liquid
+                assign vendor_handle = vendor | handle
+                assign vendor_collection = collections[vendor_handle]
+                if vendor_collection != blank and vendor_collection.products_count > 0
+                  assign vendor_url = vendor_collection.url
+                else
+                  assign vendor_url = vendor | url_for_vendor
+                endif
+              %}
+              <li class="brand-list__item">
+                <a
+                  class="brand-list__link"
+                  href="{{ vendor_url }}"
+                >
+                  {{- vendor | escape -}}
+                </a>
+              </li>
+            {% else %}
+              {% if request.design_mode %}
+                {% for i in (1..6) %}
+                  <li class="brand-list__item">
+                    <span class="brand-list__link brand-list__link--placeholder">
+                      {{- 'content.brand_placeholder' | t -}}
+                    </span>
+                  </li>
+                {% endfor %}
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+        </ul>
+      {% else %}
+        {% if brand_total > 0 %}
+          {% liquid
+            assign letters = ''
+            for vendor in vendors
+              assign letter = vendor | slice: 0 | upcase
+              unless letters contains letter
+                assign letters = letters | append: letter | append: '|'
+              endunless
+            endfor
+            assign letters = letters | split: '|'
+          %}
+          <nav
+            class="brand-list__letters"
+            aria-label="{{ 'content.brand_list_jump' | t }}"
+          >
+            <ul
+              class="list-unstyled"
+              role="list"
+            >
+              {% for letter in letters %}
+                <li>
+                  <a href="#BrandLetter-{{ section.id }}-{{ letter | handle | default: forloop.index }}">{{ letter }}</a>
+                </li>
+              {% endfor %}
+            </ul>
+          </nav>
+
+          <div class="brand-list__directory">
+            {% for letter in letters %}
+              <section
+                class="brand-list__group"
+                id="BrandLetter-{{ section.id }}-{{ letter | handle | default: forloop.index }}"
+                aria-labelledby="BrandLetterHeading-{{ section.id }}-{{ forloop.index }}"
+              >
+                <h2
+                  class="brand-list__letter h4"
+                  id="BrandLetterHeading-{{ section.id }}-{{ forloop.index }}"
+                >
+                  {{ letter }}
+                </h2>
+                <ul
+                  class="brand-list__names list-unstyled"
+                  role="list"
+                >
+                  {% for vendor in vendors %}
+                    {% assign vendor_letter = vendor | slice: 0 | upcase %}
+                    {% if vendor_letter == letter %}
+                      {% liquid
+                        assign vendor_handle = vendor | handle
+                        assign vendor_collection = collections[vendor_handle]
+                        if vendor_collection != blank and vendor_collection.products_count > 0
+                          assign vendor_url = vendor_collection.url
+                        else
+                          assign vendor_url = vendor | url_for_vendor
+                        endif
+                      %}
+                      <li>
+                        <a
+                          class="brand-list__name"
+                          href="{{ vendor_url }}"
+                        >
+                          {{- vendor | escape -}}
+                        </a>
+                      </li>
+                    {% endif %}
+                  {% endfor %}
+                </ul>
+              </section>
+            {% endfor %}
+          </div>
+        {% else %}
+          <div class="brand-list__empty">
+            <p>{{ 'content.brand_list_empty' | t }}</p>
+            {% if section.settings.empty_link != blank %}
+              <a
+                class="button"
+                href="{{ section.settings.empty_link }}"
+              >
+                {{- 'content.brand_list_empty_cta' | t -}}
+              </a>
+            {% endif %}
+          </div>
+        {% endif %}
+      {% endif %}
+    </div>
+  </div>
+{% endif %}
+
+{% stylesheet %}
+  .brand-list__inner {
+    display: grid;
+    gap: var(--gap-xl, 2rem);
+    min-width: 0;
+  }
+
+  .brand-list__header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--gap-md, 1rem) var(--gap-xl, 2rem);
+  }
+
+  .brand-list__intro {
+    display: grid;
+    gap: var(--gap-xs, 0.5rem);
+    min-width: 0;
+  }
+
+  .brand-list__heading,
+  .brand-list__subheading,
+  .brand-list__count {
+    margin: 0;
+  }
+
+  .brand-list__subheading,
+  .brand-list__count {
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-70));
+  }
+
+  .brand-list__view-all {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    min-height: 44px;
+    font-family: var(--font-accent--family);
+    font-weight: var(--font-accent--weight);
+    font-size: 0.8125rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-foreground);
+    text-decoration: underline;
+    text-underline-offset: 0.35em;
+  }
+
+  .list-unstyled {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* Featured row: a restrained strip of brand names or logos in equal cells. */
+  .brand-list__row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding-block-start: 1px;
+    padding-inline-start: 1px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .brand-list__row {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media screen and (min-width: 1200px) {
+    .brand-list__row {
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+    }
+  }
+
+  /* Each cell draws its own border and overlaps its neighbours by 1px, so short rows stay tidy. */
+  .brand-list__item {
+    min-width: 0;
+    margin-block-start: -1px;
+    margin-inline-start: -1px;
+    border: 1px solid rgb(var(--color-foreground-rgb) / var(--opacity-20, 0.2));
+  }
+
+  .brand-list__link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: clamp(4.5rem, 10vw, 7rem);
+    padding: 1rem;
+    font-family: var(--font-heading--family);
+    font-weight: var(--font-heading--weight);
+    font-size: clamp(1rem, 0.85rem + 0.6vw, 1.375rem);
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+    text-align: center;
+    text-transform: uppercase;
+    text-decoration: none;
+    overflow-wrap: anywhere;
+    color: var(--color-foreground);
+    transition: background-color var(--animation-speed, 0.2s) var(--animation-easing, ease),
+      color var(--animation-speed, 0.2s) var(--animation-easing, ease);
+  }
+
+  a.brand-list__link:hover {
+    background-color: var(--color-foreground);
+    color: var(--color-background);
+  }
+
+  .brand-list__link--placeholder {
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-40, 0.4));
+  }
+
+  .brand-list__logo {
+    display: block;
+    max-width: 70%;
+    max-height: 2.5rem;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+  }
+
+  /* Directory: A–Z jump links and grouped names. */
+  .brand-list__letters ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+
+  .brand-list__letters a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+    border: 1px solid rgb(var(--color-foreground-rgb) / var(--opacity-20, 0.2));
+    font-family: var(--font-heading--family);
+    font-weight: var(--font-heading--weight);
+    text-decoration: none;
+    color: var(--color-foreground);
+  }
+
+  .brand-list__letters a:hover {
+    background-color: var(--color-foreground);
+    color: var(--color-background);
+  }
+
+  .brand-list__directory {
+    display: grid;
+    gap: var(--gap-xl, 2rem);
+  }
+
+  .brand-list__group {
+    display: grid;
+    gap: var(--gap-sm, 0.75rem);
+    padding-block-start: var(--gap-md, 1rem);
+    border-block-start: 1px solid rgb(var(--color-foreground-rgb) / var(--opacity-20, 0.2));
+    scroll-margin-block-start: calc(var(--header-height, 64px) + 1rem);
+  }
+
+  @media screen and (min-width: 750px) {
+    .brand-list__group {
+      grid-template-columns: 6rem minmax(0, 1fr);
+    }
+  }
+
+  .brand-list__letter {
+    margin: 0;
+  }
+
+  .brand-list__names {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+    gap: 0.25rem var(--gap-lg, 1.25rem);
+  }
+
+  .brand-list__name {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-size: 1.0625rem;
+    text-decoration: none;
+    color: var(--color-foreground);
+  }
+
+  .brand-list__name:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.3em;
+  }
+
+  .brand-list__empty {
+    display: grid;
+    justify-items: start;
+    gap: var(--gap-md, 1rem);
+    padding: clamp(1.5rem, 4vw, 3rem);
+    border: 1px solid rgb(var(--color-foreground-rgb) / var(--opacity-20, 0.2));
+  }
+
+  .brand-list__empty p {
+    margin: 0;
+    max-width: 36rem;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:names.brand_list",
+  "tag": "section",
+  "class": "section-wrapper",
+  "blocks": [
+    {
+      "type": "_brand"
+    }
+  ],
+  "max_blocks": 12,
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "t:content.brand_list_source"
+    },
+    {
+      "type": "collection",
+      "id": "source_collection",
+      "label": "t:settings.brands_source_collection"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "t:settings.layout",
+      "options": [
+        {
+          "value": "row",
+          "label": "t:options.featured_row"
+        },
+        {
+          "value": "directory",
+          "label": "t:options.a_to_z_directory"
+        }
+      ],
+      "default": "row"
+    },
+    {
+      "type": "range",
+      "id": "max_brands",
+      "label": "t:settings.max_brands",
+      "min": 3,
+      "max": 12,
+      "step": 1,
+      "default": 6,
+      "visible_if": "{{ section.settings.layout == 'row' }}"
+    },
+    {
+      "type": "header",
+      "content": "t:content.text"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:settings.heading",
+      "default": "The brands we move with"
+    },
+    {
+      "type": "select",
+      "id": "heading_level",
+      "label": "t:settings.heading_level",
+      "options": [
+        {
+          "value": "h2",
+          "label": "t:options.h2"
+        },
+        {
+          "value": "h1",
+          "label": "t:options.h1"
+        }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "t:settings.subheading"
+    },
+    {
+      "type": "text",
+      "id": "view_all_label",
+      "label": "t:settings.view_all_label",
+      "visible_if": "{{ section.settings.layout == 'row' }}"
+    },
+    {
+      "type": "url",
+      "id": "view_all_link",
+      "label": "t:settings.link",
+      "visible_if": "{{ section.settings.layout == 'row' }}"
+    },
+    {
+      "type": "url",
+      "id": "empty_link",
+      "label": "t:settings.empty_state_link",
+      "visible_if": "{{ section.settings.layout == 'directory' }}"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "t:settings.background_color",
+      "placeholder": "t:settings.default"
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 48
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:names.brand_list",
+      "category": "t:categories.collections"
+    }
+  ]
+}
+{% endschema %}

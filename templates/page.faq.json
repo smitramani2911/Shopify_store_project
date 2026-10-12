@@ -9,15 +9,48 @@
  */{
   "sections": {
     "main": {
-      "type": "main-page",
+      "type": "section",
+      "name": "t:names.page",
       "settings": {
         "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
         "gap": 12,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "background_media": "none",
         "background_color": "{{ settings.color_palette.background }}",
-        "padding-block-start": 48,
-        "padding-block-end": 8
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_color": "",
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 24,
+        "padding-block-end": 8,
+        "padding-inline-start": 0,
+        "padding-inline-end": 0
       },
       "blocks": {
+        "breadcrumbs": {
+          "type": "breadcrumbs",
+          "settings": {
+            "alignment": "flex-start",
+            "padding-block-start": 0,
+            "padding-block-end": 8
+          },
+          "blocks": {}
+        },
         "eyebrow": {
           "type": "text",
           "settings": {
@@ -95,6 +128,7 @@
         }
       },
       "block_order": [
+        "breadcrumbs",
         "eyebrow",
         "title",
         "content"
@@ -154,11 +188,11 @@
             "padding-inline-end": 0
           },
           "blocks": {
-            "sizing": {
+            "orders": {
               "type": "_accordion-row",
               "name": "t:names.accordion_row",
               "settings": {
-                "heading": "How do I find my size?",
+                "heading": "How do I place an order?",
                 "open_by_default": true,
                 "icon": "none",
                 "width": 20
@@ -167,7 +201,87 @@
                 "answer": {
                   "type": "text",
                   "settings": {
-                    "text": "<p>Sizes are listed in each brand’s own scale. Open the size guide on any product page to measure your foot and compare it with the brand’s chart before you order.</p>",
+                    "text": "<p>Choose your size on the product page, add the pair to your bag and check out. You’ll receive an order confirmation email as soon as your order is placed.</p>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "left",
+                    "type_preset": "rte",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "text_color": "",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "answer"
+              ]
+            },
+            "tracking": {
+              "type": "_accordion-row",
+              "name": "t:names.accordion_row",
+              "settings": {
+                "heading": "Where is my order?",
+                "open_by_default": false,
+                "icon": "none",
+                "width": 20
+              },
+              "blocks": {
+                "answer": {
+                  "type": "text",
+                  "settings": {
+                    "text": "<p>When your order ships you’ll receive a shipping confirmation email, with tracking details when the carrier provides them. If you have an account, you can also check your order status there.</p>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "left",
+                    "type_preset": "rte",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "text_color": "",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "answer"
+              ]
+            },
+            "sizing": {
+              "type": "_accordion-row",
+              "name": "t:names.accordion_row",
+              "settings": {
+                "heading": "How do I find my size?",
+                "open_by_default": false,
+                "icon": "none",
+                "width": 20
+              },
+              "blocks": {
+                "answer": {
+                  "type": "text",
+                  "settings": {
+                    "text": "<p>Sizing differs between brands and models. Open the size guide from any product page, measure your foot and compare it with the brand’s chart before you order.</p>",
                     "width": "100%",
                     "max_width": "normal",
                     "alignment": "left",
@@ -198,7 +312,7 @@
               "type": "_accordion-row",
               "name": "t:names.accordion_row",
               "settings": {
-                "heading": "How long does shipping take?",
+                "heading": "How much is shipping and how long does it take?",
                 "open_by_default": false,
                 "icon": "none",
                 "width": 20
@@ -254,11 +368,11 @@
                 "policy"
               ]
             },
-            "authenticity": {
+            "payments": {
               "type": "_accordion-row",
               "name": "t:names.accordion_row",
               "settings": {
-                "heading": "Are your sneakers authentic?",
+                "heading": "Which payment methods can I use?",
                 "open_by_default": false,
                 "icon": "none",
                 "width": 20
@@ -267,7 +381,7 @@
                 "answer": {
                   "type": "text",
                   "settings": {
-                    "text": "<p>[Describe how you source products, for example: every pair is sourced from the brand or an authorised distributor. Replace this placeholder before launch.]</p>",
+                    "text": "<p>The payment methods available for your order are shown at checkout, and accepted methods are listed in the footer of every page. Payments are processed through Shopify’s secure checkout.</p>",
                     "width": "100%",
                     "max_width": "normal",
                     "alignment": "left",
@@ -294,11 +408,11 @@
                 "answer"
               ]
             },
-            "orders": {
+            "availability": {
               "type": "_accordion-row",
               "name": "t:names.accordion_row",
               "settings": {
-                "heading": "Where is my order?",
+                "heading": "Is a size in stock?",
                 "open_by_default": false,
                 "icon": "none",
                 "width": 20
@@ -307,7 +421,7 @@
                 "answer": {
                   "type": "text",
                   "settings": {
-                    "text": "<p>Log in to your account to see the status of your order. Tracking details appear there and in your shipping confirmation email once the order is on its way.</p>",
+                    "text": "<p>Availability on each product page comes straight from our inventory. Sold-out sizes are marked and can’t be added to your bag.</p>",
                     "width": "100%",
                     "max_width": "normal",
                     "alignment": "left",
@@ -376,11 +490,13 @@
             }
           },
           "block_order": [
+            "orders",
+            "tracking",
             "sizing",
             "shipping",
             "returns",
-            "authenticity",
-            "orders",
+            "payments",
+            "availability",
             "contact"
           ]
         }

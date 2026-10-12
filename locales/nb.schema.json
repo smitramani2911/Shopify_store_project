@@ -169,7 +169,15 @@
     "product_sku": "SKU",
     "layered_slideshow": "Lagdelt lysbildefremvisning",
     "cart_drawer": "Handlekurvskuff",
-    "disclosures": "Opplysninger"
+    "disclosures": "Opplysninger",
+    "category_tiles": "Category tiles",
+    "category_tile": "Category tile",
+    "editorial_campaign": "Editorial campaign",
+    "brand_list": "Brand list",
+    "brand": "Brand",
+    "shopping_confidence": "Shopping confidence",
+    "confidence_item": "Confidence item",
+    "breadcrumbs": "Breadcrumbs"
   },
   "settings": {
     "alignment": "Justering",
@@ -594,7 +602,21 @@
     "input_style": "Inndatastil",
     "selected_button_style": "Valgt knappestil",
     "open_by_default": "Åpen som standard",
-    "title_preset": "Forhåndsinnstilling for tittel"
+    "title_preset": "Forhåndsinnstilling for tittel",
+    "bundled_photo": "Bundled photo",
+    "subheading": "Subheading",
+    "view_all_label": "View all label",
+    "description": "Description",
+    "link_label": "Link label",
+    "eyebrow": "Eyebrow",
+    "button_label": "Button label",
+    "brands_source_collection": "Brands from",
+    "max_brands": "Maximum brands",
+    "heading_level": "Heading level",
+    "empty_state_link": "Empty state link",
+    "brand_name": "Brand name",
+    "brand_logo": "Logo",
+    "link_destination": "Link to"
   },
   "options": {
     "apple": "Eple",
@@ -877,7 +899,17 @@
     "below_media": "Under mediene",
     "full_frame": "Full ramme",
     "icons": "Ikoner",
-    "input_field": "Inndatafelt"
+    "input_field": "Inndatafelt",
+    "bundled_photo_street": "Street: white sneakers on asphalt",
+    "bundled_photo_wire": "Street: sneakers on a wire",
+    "bundled_photo_lifestyle": "Lifestyle: canvas sneakers",
+    "bundled_photo_running": "Running track",
+    "bundled_photo_basketball": "Basketball court",
+    "bundled_photo_retro": "Retro canvas low-tops",
+    "photo_tiles": "Photo tiles",
+    "editorial_cards": "Editorial cards",
+    "featured_row": "Featured row",
+    "a_to_z_directory": "A–Z directory"
   },
   "content": {
     "advanced": "Avansert",
@@ -1005,7 +1037,10 @@
     "gift_card_products": "Gavekortprodukter",
     "disclosures": "Opplysninger",
     "disclosures_metafield_content": "Obligatoriske sikkerhetsadvarsler og lovpålagte opplysninger for dette produktet.",
-    "page_text_color_contrast_info": "Seksjoner med en egendefinert bakgrunnsfarge bruker bare denne tekstfargen når det er tilstrekkelig fargekontrast."
+    "page_text_color_contrast_info": "Seksjoner med en egendefinert bakgrunnsfarge bruker bare denne tekstfargen når det er tilstrekkelig fargekontrast.",
+    "category_tiles_visibility": "On the storefront a tile appears only when its collection has products, and the section hides when no tile qualifies.",
+    "brand_list_source": "Brands are listed automatically from the vendors of products in the chosen collection. Add Brand blocks to hand-pick the featured row instead.",
+    "shopping_confidence_visibility": "On the storefront an item appears only when its page or store policy exists."
   },
   "html_defaults": {
     "share_information_about_your": "<p>Del informasjon om merkevaren din med kundene. Beskriv et produkt, kom med kunngjøringer eller ønsk kundene velkommen til butikken.</p>",
@@ -1133,7 +1168,12 @@
     "page_text_color_default_info": "Standard for temaseksjoner",
     "actions_display_style": "Ikoner brukes alltid på mobil",
     "edit_input_field_in_theme_settings": "Rediger inndatafelt i [temainnstillinger](/editor?context=theme&category=input%20fields)",
-    "edit_variants_in_theme_settings": "Rediger variantstiler i [temainnstillinger](/editor?context=theme&category=variant%20pickers)"
+    "edit_variants_in_theme_settings": "Rediger variantstiler i [temainnstillinger](/editor?context=theme&category=variant%20pickers)",
+    "bundled_photo": "A CC0 photo included with the theme, used only when no image is selected. Replace it with your own photography before launch.",
+    "category_tile_title": "Defaults to the collection title.",
+    "category_tile_description": "Shown in the editorial cards style.",
+    "brand_name": "Defaults to the collection title.",
+    "brand_logo": "Only upload logos you are authorised to use. Leave empty to show the brand name."
   },
   "categories": {
     "product_list": "Utvalgt samling",

@@ -169,7 +169,15 @@
     "product_sku": "SKU",
     "layered_slideshow": "Katmanlı slayt gösterisi",
     "cart_drawer": "Sepet çekmecesi",
-    "disclosures": "Bildirimler"
+    "disclosures": "Bildirimler",
+    "category_tiles": "Category tiles",
+    "category_tile": "Category tile",
+    "editorial_campaign": "Editorial campaign",
+    "brand_list": "Brand list",
+    "brand": "Brand",
+    "shopping_confidence": "Shopping confidence",
+    "confidence_item": "Confidence item",
+    "breadcrumbs": "Breadcrumbs"
   },
   "settings": {
     "autoplay": "Otomatik oynatma",
@@ -594,7 +602,21 @@
     "input_style": "Giriş stili",
     "selected_button_style": "Seçili düğme stili",
     "open_by_default": "Varsayılan olarak açık",
-    "title_preset": "Başlık ön ayarı"
+    "title_preset": "Başlık ön ayarı",
+    "bundled_photo": "Bundled photo",
+    "subheading": "Subheading",
+    "view_all_label": "View all label",
+    "description": "Description",
+    "link_label": "Link label",
+    "eyebrow": "Eyebrow",
+    "button_label": "Button label",
+    "brands_source_collection": "Brands from",
+    "max_brands": "Maximum brands",
+    "heading_level": "Heading level",
+    "empty_state_link": "Empty state link",
+    "brand_name": "Brand name",
+    "brand_logo": "Logo",
+    "link_destination": "Link to"
   },
   "options": {
     "apple": "Apple",
@@ -877,7 +899,17 @@
     "below_media": "Medyanın altında",
     "full_frame": "Tam çerçeve",
     "icons": "Simgeler",
-    "input_field": "Giriş alanı"
+    "input_field": "Giriş alanı",
+    "bundled_photo_street": "Street: white sneakers on asphalt",
+    "bundled_photo_wire": "Street: sneakers on a wire",
+    "bundled_photo_lifestyle": "Lifestyle: canvas sneakers",
+    "bundled_photo_running": "Running track",
+    "bundled_photo_basketball": "Basketball court",
+    "bundled_photo_retro": "Retro canvas low-tops",
+    "photo_tiles": "Photo tiles",
+    "editorial_cards": "Editorial cards",
+    "featured_row": "Featured row",
+    "a_to_z_directory": "A–Z directory"
   },
   "content": {
     "background_video": "Arka plan videosu",
@@ -1005,7 +1037,10 @@
     "gift_card_products": "Hediye kartı ürünleri",
     "disclosures": "Bildirimler",
     "disclosures_metafield_content": "Bu ürün için zorunlu güvenlik uyarıları ve yasal bildirimler.",
-    "page_text_color_contrast_info": "Özel arka plan rengine sahip bölümler, yalnızca yeterli renk kontrastı olduğunda bu metin rengini kullanır."
+    "page_text_color_contrast_info": "Özel arka plan rengine sahip bölümler, yalnızca yeterli renk kontrastı olduğunda bu metin rengini kullanır.",
+    "category_tiles_visibility": "On the storefront a tile appears only when its collection has products, and the section hides when no tile qualifies.",
+    "brand_list_source": "Brands are listed automatically from the vendors of products in the chosen collection. Add Brand blocks to hand-pick the featured row instead.",
+    "shopping_confidence_visibility": "On the storefront an item appears only when its page or store policy exists."
   },
   "html_defaults": {
     "share_information_about_your": "<p>Markanızla ilgili bilgileri müşterilerinizle paylaşın. Bir ürünü açıklayın, duyurular yapın veya mağazanıza gelen müşterileri karşılayın.</p>",
@@ -1133,7 +1168,12 @@
     "page_text_color_default_info": "Tema bölümleri için varsayılan",
     "actions_display_style": "Mobilde her zaman simgeler kullanılır",
     "edit_input_field_in_theme_settings": "[Tema ayarlarında](/editor?context=theme&category=input%20fields) giriş alanını düzenle",
-    "edit_variants_in_theme_settings": "Varyasyon stilini [tema ayarlarından](/editor?context=theme&category=variant%20pickers) düzenleyin"
+    "edit_variants_in_theme_settings": "Varyasyon stilini [tema ayarlarından](/editor?context=theme&category=variant%20pickers) düzenleyin",
+    "bundled_photo": "A CC0 photo included with the theme, used only when no image is selected. Replace it with your own photography before launch.",
+    "category_tile_title": "Defaults to the collection title.",
+    "category_tile_description": "Shown in the editorial cards style.",
+    "brand_name": "Defaults to the collection title.",
+    "brand_logo": "Only upload logos you are authorised to use. Leave empty to show the brand name."
   },
   "categories": {
     "product_list": "Öne çıkan koleksiyon",

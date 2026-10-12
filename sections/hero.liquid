@@ -17,6 +17,9 @@
     assign show_media_placeholder = false
   endif
 
+  # SNEAKROW: a bundled CC0 campaign photo stands in until the merchant picks their own media (see ASSET-MANIFEST.md).
+  assign bundled_photo = section.settings.bundled_photo | default: 'none'
+
   # Desktop media checks
   # For each media slot, check if the media is not blank and the media type matches the slot
   # Need to check both (1) media picker is not blank AND (2) section.setting.media_type because user can toggle between different media types to display, but choosing "Image" doesn't clear a saved "Video" in the theme editor.
@@ -115,8 +118,18 @@
 
   assign fetch_priority = 'auto'
 
+  # SNEAKROW: the bundled photo occupies one grid cell on desktop and mobile.
+  assign grid_media_count = media_count
+  assign grid_media_count_mobile = media_count_mobile
+  assign bundled_loading = 'lazy'
+  if media_count == 0 and bundled_photo != 'none'
+    assign grid_media_count = 1
+    assign grid_media_count_mobile = 1
+  endif
+
   if section.index == 1
     assign fetch_priority = 'high'
+    assign bundled_loading = 'eager'
   endif
 %}
 
@@ -332,7 +345,17 @@
   {{ media_slot_1 }}
   {{ media_slot_2 }}
 
-  {% if media_count == 0 and show_media_placeholder %}
+  {% if media_count == 0 and bundled_photo != 'none' %}
+    <div class="hero__media-wrapper hero__media-wrapper--desktop hero__media-wrapper--mobile">
+      {% render 'bundled-photo',
+        name: bundled_photo,
+        sizes: '100vw',
+        class: 'hero__media',
+        loading: bundled_loading,
+        fetchpriority: fetch_priority
+      %}
+    </div>
+  {% elsif media_count == 0 and show_media_placeholder %}
     {{ 'hero-apparel-1' | placeholder_svg_tag: 'hero__media' }}
   {%- endif -%}
 {% endcapture %}
@@ -527,7 +550,7 @@
     {%- endif -%}
     <div
       class="hero__media-grid"
-      style="--hero-media-count: {{ media_count }};--hero-media-count-mobile: {{ media_count_mobile }};{%- if section.settings.image_1 != blank -%} --hero-media-aspect-ratio: {{ section.settings.image_1.aspect_ratio }};{% endif %}"
+      style="--hero-media-count: {{ grid_media_count }};--hero-media-count-mobile: {{ grid_media_count_mobile }};{%- if section.settings.image_1 != blank -%} --hero-media-aspect-ratio: {{ section.settings.image_1.aspect_ratio }};{% endif %}"
       data-testid="hero-media-wrapper"
     >
       {% liquid
@@ -805,6 +828,27 @@
     "groups": ["header"]
   },
   "settings": [
+    {
+      "type": "select",
+      "id": "bundled_photo",
+      "label": "t:settings.bundled_photo",
+      "info": "t:info.bundled_photo",
+      "options": [
+        {
+          "value": "none",
+          "label": "t:options.none"
+        },
+        {
+          "value": "street",
+          "label": "t:options.bundled_photo_street"
+        },
+        {
+          "value": "wire",
+          "label": "t:options.bundled_photo_wire"
+        }
+      ],
+      "default": "none"
+    },
     {
       "type": "header",
       "content": "t:content.media_1"

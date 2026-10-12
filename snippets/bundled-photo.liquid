@@ -1,0 +1,119 @@
+{%- doc -%}
+  Renders one of the CC0 campaign photos bundled in assets/ (sneakrow-photo-*.jpg) as a responsive <picture>.
+  Used as documented placeholder imagery until the merchant uploads their own photography; see ASSET-MANIFEST.md.
+  Landscape crops exist only for 'street' and 'wire'; every photo has a 4:5 portrait crop.
+
+  @param {string} name - Photo name: 'street' | 'wire' | 'lifestyle' | 'running' | 'basketball' | 'retro'
+  @param {string} [sizes] - The sizes attribute, defaults to '100vw'
+  @param {string} [crop] - 'auto' (landscape on desktop, portrait below 750px) or 'portrait', defaults to 'auto'
+  @param {string} [class] - Class for the <img>
+  @param {string} [loading] - 'lazy' (default) or 'eager'
+  @param {string} [fetchpriority] - Fetch priority for the <img>
+  @param {boolean} [decorative] - Renders an empty alt when the photo is purely decorative
+
+  @example
+  {% render 'bundled-photo', name: 'street', sizes: '100vw', class: 'hero__media', loading: 'eager', fetchpriority: 'high' %}
+{%- enddoc -%}
+
+{%- liquid
+  assign crop = crop | default: 'auto'
+  assign sizes = sizes | default: '100vw'
+  assign loading = loading | default: 'lazy'
+
+  case name
+    when 'street'
+      assign landscape_widths = '1200,1800,2400' | split: ','
+      assign portrait_widths = '600,750,900,1200' | split: ','
+      assign landscape_ratio = '1.5'
+    when 'wire'
+      assign landscape_widths = '1000,1600' | split: ','
+      assign portrait_widths = '600,750,900,1200' | split: ','
+      assign landscape_ratio = '1.5'
+    when 'lifestyle', 'running', 'basketball', 'retro'
+      assign landscape_widths = blank
+      assign portrait_widths = '480,720,960' | split: ','
+    else
+      break
+  endcase
+
+  if landscape_widths == blank
+    assign crop = 'portrait'
+  endif
+
+  assign alt_key = 'content.bundled_photo_alt.' | append: name
+  if decorative
+    assign alt = ''
+  else
+    assign alt = alt_key | t
+  endif
+
+  assign prefix = 'sneakrow-photo-' | append: name
+-%}
+
+{%- capture portrait_srcset -%}
+  {%- for w in portrait_widths -%}
+    {%- assign file = prefix | append: '-portrait-' | append: w | append: '.jpg' -%}
+    {{ file | asset_url }} {{ w }}w{% unless forloop.last %}, {% endunless %}
+  {%- endfor -%}
+{%- endcapture -%}
+
+{%- if crop == 'auto' -%}
+  {%- capture landscape_srcset -%}
+    {%- for w in landscape_widths -%}
+      {%- assign file = prefix | append: '-' | append: w | append: '.jpg' -%}
+      {{ file | asset_url }} {{ w }}w{% unless forloop.last %}, {% endunless %}
+    {%- endfor -%}
+  {%- endcapture -%}
+  {%- assign fallback_width = landscape_widths | last -%}
+  {%- assign fallback_file = prefix | append: '-' | append: fallback_width | append: '.jpg' -%}
+  {%- assign fallback_height = fallback_width | times: 1.0 | divided_by: landscape_ratio | round -%}
+  <picture class="bundled-photo">
+    <source
+      media="(max-width: 749px)"
+      srcset="{{ portrait_srcset }}"
+      sizes="{{ sizes }}"
+      width="1200"
+      height="1500"
+    >
+    <img
+      src="{{ fallback_file | asset_url }}"
+      srcset="{{ landscape_srcset }}"
+      sizes="{{ sizes }}"
+      width="{{ fallback_width }}"
+      height="{{ fallback_height }}"
+      alt="{{ alt | escape }}"
+      loading="{{ loading }}"
+      {% if fetchpriority != blank %}
+        fetchpriority="{{ fetchpriority }}"
+      {% endif %}
+      {% if class != blank %}
+        class="{{ class }}"
+      {% endif %}
+    >
+  </picture>
+{%- else -%}
+  {%- assign fallback_width = portrait_widths | last -%}
+  {%- assign fallback_file = prefix | append: '-portrait-' | append: fallback_width | append: '.jpg' -%}
+  <img
+    src="{{ fallback_file | asset_url }}"
+    srcset="{{ portrait_srcset }}"
+    sizes="{{ sizes }}"
+    width="{{ fallback_width }}"
+    height="{{ fallback_width | times: 5 | divided_by: 4 }}"
+    alt="{{ alt | escape }}"
+    loading="{{ loading }}"
+    {% if fetchpriority != blank %}
+      fetchpriority="{{ fetchpriority }}"
+    {% endif %}
+    {% if class != blank %}
+      class="{{ class }}"
+    {% endif %}
+  >
+{%- endif -%}
+
+{% stylesheet %}
+  /* The <picture> wrapper must not interfere with layouts that size the <img> directly. */
+  .bundled-photo {
+    display: contents;
+  }
+{% endstylesheet %}

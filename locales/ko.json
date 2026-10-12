@@ -30,7 +30,13 @@
       "post_success": "문의해 주셔서 감사합니다. 최대한 빨리 답변드리겠습니다.",
       "error_heading": "다음을 조정하세요."
     },
-    "slider_label": "슬라이더"
+    "slider_label": "슬라이더",
+    "breadcrumbs": {
+      "label": "Breadcrumb",
+      "home": "Home",
+      "search": "Search",
+      "collections": "Collections"
+    }
   },
   "accessibility": {
     "play_model": "3D 모델 재생",
@@ -290,7 +296,30 @@
     },
     "item_count_cutoff": "{{ count }}개 이상의 품목",
     "quick_order_list": "빠른 주문 목록",
-    "product_disclosures": "제품 고지 사항"
+    "product_disclosures": "제품 고지 사항",
+    "bundled_photo_alt": {
+      "street": "White canvas sneakers on dark asphalt beside a yellow road marking",
+      "wire": "Pairs of sneakers hanging from a cable between city buildings",
+      "lifestyle": "Looking down at a pair of canvas sneakers",
+      "running": "Runner crouched at the start line of a running track",
+      "basketball": "Outdoor basketball court in front of a colourful apartment block",
+      "retro": "Navy canvas low-top sneakers on a city street"
+    },
+    "category_tile_placeholder": "Collection",
+    "category_tile_count": {
+      "one": "{{ count }} style",
+      "other": "{{ count }} styles"
+    },
+    "brand_list_count": {
+      "one": "{{ count }} brand",
+      "other": "{{ count }} brands"
+    },
+    "brand_list_jump": "Jump to brands by letter",
+    "brand_list_empty": "Our brand directory fills in automatically as products are added. Check back soon.",
+    "brand_list_empty_cta": "Continue shopping",
+    "brand_placeholder": "Brand",
+    "collection_empty_title": "No pairs here yet",
+    "collection_empty_text": "This collection doesn't have any products right now. New pairs are added regularly, so check back soon."
   },
   "gift_cards": {
     "issued": {

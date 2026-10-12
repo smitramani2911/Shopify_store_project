@@ -12,7 +12,7 @@
     "logo_height": 36,
     "logo_height_mobile": 28,
     "page_background_color": "{{ settings.color_palette.background }}",
-    "page_width": "normal",
+    "page_width": "narrow",
     "page_text_color": "{{ settings.color_palette.foreground }}",
     "type_body_font": "inter_n4",
     "type_subheading_font": "inter_n6",
@@ -133,7 +133,8 @@
     "badge_new_enabled": true,
     "badge_new_days": 30,
     "badge_new_background_color": "{{ settings.color_palette.foreground }}",
-    "badge_new_text_color": "{{ settings.color_palette.color3 }}"
+    "badge_new_text_color": "{{ settings.color_palette.color3 }}",
+    "empty_state_collection": "best-sellers"
   },
   "presets": {
     "Horizon": {

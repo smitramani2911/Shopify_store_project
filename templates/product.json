@@ -96,6 +96,15 @@
             "padding-inline-end": 0
           },
           "blocks": {
+            "breadcrumbs": {
+              "type": "breadcrumbs",
+              "settings": {
+                "alignment": "flex-start",
+                "padding-block-start": 0,
+                "padding-block-end": 0
+              },
+              "blocks": {}
+            },
             "header": {
               "type": "group",
               "name": "t:names.header",
@@ -526,6 +535,7 @@
             }
           },
           "block_order": [
+            "breadcrumbs",
             "header",
             "divider",
             "variant_picker",

@@ -169,7 +169,15 @@
     "product_sku": "SKU(재고 관리 코드)",
     "layered_slideshow": "레이어드 슬라이드 쇼",
     "cart_drawer": "카트 서랍",
-    "disclosures": "고지 사항"
+    "disclosures": "고지 사항",
+    "category_tiles": "Category tiles",
+    "category_tile": "Category tile",
+    "editorial_campaign": "Editorial campaign",
+    "brand_list": "Brand list",
+    "brand": "Brand",
+    "shopping_confidence": "Shopping confidence",
+    "confidence_item": "Confidence item",
+    "breadcrumbs": "Breadcrumbs"
   },
   "settings": {
     "autoplay": "자동 재생",
@@ -594,7 +602,21 @@
     "input_style": "입력 스타일",
     "selected_button_style": "선택한 버튼 스타일",
     "open_by_default": "기본으로 열기",
-    "title_preset": "제목 사전 설정"
+    "title_preset": "제목 사전 설정",
+    "bundled_photo": "Bundled photo",
+    "subheading": "Subheading",
+    "view_all_label": "View all label",
+    "description": "Description",
+    "link_label": "Link label",
+    "eyebrow": "Eyebrow",
+    "button_label": "Button label",
+    "brands_source_collection": "Brands from",
+    "max_brands": "Maximum brands",
+    "heading_level": "Heading level",
+    "empty_state_link": "Empty state link",
+    "brand_name": "Brand name",
+    "brand_logo": "Logo",
+    "link_destination": "Link to"
   },
   "options": {
     "apple": "Apple",
@@ -877,7 +899,17 @@
     "below_media": "미디어 아래",
     "full_frame": "전체 프레임",
     "icons": "아이콘",
-    "input_field": "입력 필드"
+    "input_field": "입력 필드",
+    "bundled_photo_street": "Street: white sneakers on asphalt",
+    "bundled_photo_wire": "Street: sneakers on a wire",
+    "bundled_photo_lifestyle": "Lifestyle: canvas sneakers",
+    "bundled_photo_running": "Running track",
+    "bundled_photo_basketball": "Basketball court",
+    "bundled_photo_retro": "Retro canvas low-tops",
+    "photo_tiles": "Photo tiles",
+    "editorial_cards": "Editorial cards",
+    "featured_row": "Featured row",
+    "a_to_z_directory": "A–Z directory"
   },
   "content": {
     "background_video": "배경 비디오",
@@ -1005,7 +1037,10 @@
     "gift_card_products": "기프트 카드 제품",
     "disclosures": "고지 사항",
     "disclosures_metafield_content": "이 제품에 필수적인 안전 경고 및 규제 관련 고지 사항입니다.",
-    "page_text_color_contrast_info": "사용자 지정 배경 색상이 있는 섹션은 색상 대비가 충분한 경우에만 이 텍스트 색상을 사용합니다."
+    "page_text_color_contrast_info": "사용자 지정 배경 색상이 있는 섹션은 색상 대비가 충분한 경우에만 이 텍스트 색상을 사용합니다.",
+    "category_tiles_visibility": "On the storefront a tile appears only when its collection has products, and the section hides when no tile qualifies.",
+    "brand_list_source": "Brands are listed automatically from the vendors of products in the chosen collection. Add Brand blocks to hand-pick the featured row instead.",
+    "shopping_confidence_visibility": "On the storefront an item appears only when its page or store policy exists."
   },
   "html_defaults": {
     "share_information_about_your": "<p>고객과 브랜드에 대한 정보를 공유하세요. 제품을 설명하거나, 공지 사항을 알리거나, 스토어를 방문하는 고객을 환영할 수 있습니다.</p>",
@@ -1133,7 +1168,12 @@
     "page_text_color_default_info": "테마 섹션 기본값",
     "actions_display_style": "모바일에서는 항상 아이콘이 사용됩니다.",
     "edit_input_field_in_theme_settings": "[테마 설정](/editor?context=theme&category=input%20fields)에서 입력 필드 편집",
-    "edit_variants_in_theme_settings": "[테마 설정](/editor?context=theme&category=variant%20pickers)에서 이형 상품 스타일을 편집하십시오."
+    "edit_variants_in_theme_settings": "[테마 설정](/editor?context=theme&category=variant%20pickers)에서 이형 상품 스타일을 편집하십시오.",
+    "bundled_photo": "A CC0 photo included with the theme, used only when no image is selected. Replace it with your own photography before launch.",
+    "category_tile_title": "Defaults to the collection title.",
+    "category_tile_description": "Shown in the editorial cards style.",
+    "brand_name": "Defaults to the collection title.",
+    "brand_logo": "Only upload logos you are authorised to use. Leave empty to show the brand name."
   },
   "categories": {
     "basic": "기본",

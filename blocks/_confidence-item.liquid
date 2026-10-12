@@ -1,0 +1,212 @@
+{%- doc -%}
+  One column in the shopping-confidence section: icon, heading, short text and a link to a page, a store
+  policy or a custom URL. Hidden on the storefront when the destination does not exist.
+{%- enddoc -%}
+
+{% liquid
+  assign item_url = blank
+  assign item_label = block.settings.link_label
+  case block.settings.destination
+    when 'page'
+      if block.settings.page != blank
+        assign item_url = block.settings.page.url
+      endif
+    when 'shipping_policy'
+      if shop.shipping_policy.body != blank
+        assign item_url = shop.shipping_policy.url
+      endif
+    when 'refund_policy'
+      if shop.refund_policy.body != blank
+        assign item_url = shop.refund_policy.url
+      endif
+    when 'custom'
+      assign item_url = block.settings.custom_link
+  endcase
+%}
+
+{% if item_url != blank or request.design_mode %}
+  <li
+    class="confidence-item"
+    {{ block.shopify_attributes }}
+  >
+    <a
+      class="confidence-item__link"
+      href="{{ item_url | default: '#' }}"
+    >
+      {% if block.settings.icon != 'none' %}
+        <span class="confidence-item__icon">
+          {% render 'icon-or-image', icon: block.settings.icon, image_upload: blank, width: 28, class_name: 'confidence-item__svg' %}
+        </span>
+      {% endif %}
+      <span class="confidence-item__body">
+        {% if block.settings.heading != blank %}
+          <span class="confidence-item__heading h5">{{ block.settings.heading | escape }}</span>
+        {% endif %}
+        {% if block.settings.text != blank %}
+          <span class="confidence-item__text">{{ block.settings.text | escape }}</span>
+        {% endif %}
+        {% if item_label != blank %}
+          <span class="confidence-item__cta">
+            {{- item_label | escape }}
+            <span aria-hidden="true">&rarr;</span>
+          </span>
+        {% endif %}
+      </span>
+    </a>
+  </li>
+{% endif %}
+
+{% stylesheet %}
+  .confidence-item {
+    min-width: 0;
+    border-block-start: 1px solid rgb(var(--color-foreground-rgb) / var(--opacity-20, 0.2));
+  }
+
+  .confidence-item__link {
+    display: flex;
+    gap: var(--gap-md, 1rem);
+    align-items: flex-start;
+    height: 100%;
+    padding-block: var(--gap-lg, 1.25rem);
+    color: var(--color-foreground);
+    text-decoration: none;
+  }
+
+  .confidence-item__icon {
+    flex: none;
+    display: inline-flex;
+    color: var(--color-foreground);
+  }
+
+  .confidence-item__body {
+    display: grid;
+    gap: 0.4rem;
+    min-width: 0;
+  }
+
+  .confidence-item__heading {
+    margin: 0;
+  }
+
+  .confidence-item__text {
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-70));
+  }
+
+  .confidence-item__cta {
+    display: inline-flex;
+    gap: 0.4em;
+    margin-block-start: 0.25rem;
+    font-size: 0.8125rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: underline;
+    text-underline-offset: 0.35em;
+  }
+
+  .confidence-item__link:hover .confidence-item__cta {
+    text-decoration-thickness: 2px;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:names.confidence_item",
+  "tag": null,
+  "settings": [
+    {
+      "type": "select",
+      "id": "icon",
+      "label": "t:settings.icon",
+      "options": [
+        {
+          "value": "none",
+          "label": "t:options.none"
+        },
+        {
+          "value": "ruler",
+          "label": "t:options.ruler"
+        },
+        {
+          "value": "truck",
+          "label": "t:options.truck"
+        },
+        {
+          "value": "return",
+          "label": "t:options.return"
+        },
+        {
+          "value": "chat_bubble",
+          "label": "t:options.chat_bubble"
+        },
+        {
+          "value": "shoe",
+          "label": "t:options.shoe"
+        },
+        {
+          "value": "lock",
+          "label": "t:options.lock"
+        },
+        {
+          "value": "question_mark",
+          "label": "t:options.question_mark"
+        },
+        {
+          "value": "box",
+          "label": "t:options.box"
+        }
+      ],
+      "default": "ruler"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:settings.heading"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "t:settings.text"
+    },
+    {
+      "type": "select",
+      "id": "destination",
+      "label": "t:settings.link_destination",
+      "options": [
+        {
+          "value": "page",
+          "label": "t:options.page"
+        },
+        {
+          "value": "shipping_policy",
+          "label": "t:options.shipping_policy"
+        },
+        {
+          "value": "refund_policy",
+          "label": "t:options.refund_policy"
+        },
+        {
+          "value": "custom",
+          "label": "t:options.custom"
+        }
+      ],
+      "default": "page"
+    },
+    {
+      "type": "page",
+      "id": "page",
+      "label": "t:settings.page"
+    },
+    {
+      "type": "url",
+      "id": "custom_link",
+      "label": "t:settings.link",
+      "visible_if": "{{ block.settings.destination == 'custom' }}"
+    },
+    {
+      "type": "text",
+      "id": "link_label",
+      "label": "t:settings.link_label"
+    }
+  ]
+}
+{% endschema %}

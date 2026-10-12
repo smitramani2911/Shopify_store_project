@@ -30,7 +30,13 @@
       "post_success": "Grazie per averci contattato. Risponderemo il prima possibile.",
       "error_heading": "Correggi gli errori seguenti:"
     },
-    "slider_label": "Cursore"
+    "slider_label": "Cursore",
+    "breadcrumbs": {
+      "label": "Breadcrumb",
+      "home": "Home",
+      "search": "Search",
+      "collections": "Collections"
+    }
   },
   "accessibility": {
     "play_model": "Riproduci modello 3D",
@@ -296,7 +302,30 @@
     },
     "item_count_cutoff": "Più di {{ count }} articoli",
     "quick_order_list": "Elenco per ordine rapido",
-    "product_disclosures": "Informative sul prodotto"
+    "product_disclosures": "Informative sul prodotto",
+    "bundled_photo_alt": {
+      "street": "White canvas sneakers on dark asphalt beside a yellow road marking",
+      "wire": "Pairs of sneakers hanging from a cable between city buildings",
+      "lifestyle": "Looking down at a pair of canvas sneakers",
+      "running": "Runner crouched at the start line of a running track",
+      "basketball": "Outdoor basketball court in front of a colourful apartment block",
+      "retro": "Navy canvas low-top sneakers on a city street"
+    },
+    "category_tile_placeholder": "Collection",
+    "category_tile_count": {
+      "one": "{{ count }} style",
+      "other": "{{ count }} styles"
+    },
+    "brand_list_count": {
+      "one": "{{ count }} brand",
+      "other": "{{ count }} brands"
+    },
+    "brand_list_jump": "Jump to brands by letter",
+    "brand_list_empty": "Our brand directory fills in automatically as products are added. Check back soon.",
+    "brand_list_empty_cta": "Continue shopping",
+    "brand_placeholder": "Brand",
+    "collection_empty_title": "No pairs here yet",
+    "collection_empty_text": "This collection doesn't have any products right now. New pairs are added regularly, so check back soon."
   },
   "gift_cards": {
     "issued": {

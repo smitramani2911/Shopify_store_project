@@ -1,0 +1,63 @@
+{%- doc -%}
+  One hand-picked brand in the brand-list section's featured row. Points at the brand's collection and can show
+  an authorised logo instead of the name. Renders on the storefront only when the collection has products.
+{%- enddoc -%}
+
+{% liquid
+  assign brand_collection = block.settings.collection
+  assign brand_ready = false
+  if brand_collection != blank and brand_collection.products_count > 0
+    assign brand_ready = true
+  endif
+  assign brand_name = block.settings.name | default: brand_collection.title
+%}
+
+{% if brand_ready or request.design_mode %}
+  <li
+    class="brand-list__item"
+    {{ block.shopify_attributes }}
+  >
+    <a
+      class="brand-list__link"
+      href="{{ brand_collection.url | default: routes.collections_url }}"
+    >
+      {% if block.settings.logo != blank %}
+        {{
+          block.settings.logo
+          | image_url: width: 480
+          | image_tag: widths: '160, 240, 320, 480', sizes: '160px', loading: 'lazy', alt: brand_name, class: 'brand-list__logo'
+        }}
+      {% elsif brand_name != blank %}
+        {{ brand_name | escape }}
+      {% else %}
+        <span class="brand-list__link--placeholder">{{ 'content.brand_placeholder' | t }}</span>
+      {% endif %}
+    </a>
+  </li>
+{% endif %}
+
+{% schema %}
+{
+  "name": "t:names.brand",
+  "tag": null,
+  "settings": [
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "t:settings.collection"
+    },
+    {
+      "type": "text",
+      "id": "name",
+      "label": "t:settings.brand_name",
+      "info": "t:info.brand_name"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "t:settings.brand_logo",
+      "info": "t:info.brand_logo"
+    }
+  ]
+}
+{% endschema %}

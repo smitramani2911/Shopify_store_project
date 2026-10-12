@@ -36,12 +36,21 @@
         "overlay_color": "#00000026",
         "overlay_style": "solid",
         "gradient_direction": "to top",
-        "padding-block-start": 48,
+        "padding-block-start": 24,
         "padding-block-end": 16,
         "padding-inline-start": 0,
         "padding-inline-end": 0
       },
       "blocks": {
+        "breadcrumbs": {
+          "type": "breadcrumbs",
+          "settings": {
+            "alignment": "flex-start",
+            "padding-block-start": 0,
+            "padding-block-end": 0
+          },
+          "blocks": {}
+        },
         "title": {
           "type": "text",
           "settings": {
@@ -94,6 +103,7 @@
         }
       },
       "block_order": [
+        "breadcrumbs",
         "title",
         "description"
       ]

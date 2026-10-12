@@ -114,7 +114,7 @@
                 style="--aspect-ratio: {% if aspect_ratio == 'adapt' %}{{ media.preview_image.aspect_ratio | default: 1.0 }}{% else %}{{ aspect_ratio }}{% endif %};"
                 ref="thumbnails[]"
                 {% if forloop.first %}
-                  aria-selected="true"
+                  aria-current="true"
                 {% endif %}
               >
                 {% liquid
@@ -167,7 +167,7 @@
                 on:click="/select/{{ forloop.index0 }}"
                 ref="dots[]"
                 {% if forloop.first %}
-                  aria-selected="true"
+                  aria-current="true"
                 {% endif %}
               >
                 {{ forloop.index }}
@@ -370,9 +370,10 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      width: calc(var(--size) * 2);
-      height: calc(var(--size) * 2);
-      margin: calc(var(--size) / -2);
+      /* SNEAKROW: 24px minimum touch target around the small visible dot. */
+      width: max(24px, calc(var(--size) * 2));
+      height: max(24px, calc(var(--size) * 2));
+      margin: -4px;
       font-size: 0;
       border-radius: calc(var(--size));
 
@@ -386,7 +387,7 @@
         box-shadow: inset 0 0 0 1.5px hsl(0 0% 0% / 0.15);
 
         @supports not (view-timeline-axis: inline) {
-          &[aria-selected='true'] {
+          &[aria-current='true'] {
             --color: var(--color-active);
           }
         }
@@ -396,7 +397,7 @@
         }
       }
 
-      &[aria-selected='true'] {
+      &[aria-current='true'] {
         --color: var(--color-active);
 
         &::after {
@@ -465,7 +466,7 @@
         border-radius: var(--thumbnail-radius, var(--media-radius));
       }
 
-      &:is([aria-selected='true']) {
+      &:is([aria-current='true']) {
         outline: var(--focus-outline-width) solid currentcolor;
         outline-offset: calc(var(--focus-outline-offset) / 2);
         border: var(--style-border-width) solid rgb(var(--color-border-rgb) / var(--media-border-opacity));

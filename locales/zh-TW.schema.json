@@ -169,7 +169,15 @@
     "product_sku": "存貨單位 (SKU)",
     "layered_slideshow": "分層輪播",
     "cart_drawer": "購物車",
-    "disclosures": "資訊揭露"
+    "disclosures": "資訊揭露",
+    "category_tiles": "Category tiles",
+    "category_tile": "Category tile",
+    "editorial_campaign": "Editorial campaign",
+    "brand_list": "Brand list",
+    "brand": "Brand",
+    "shopping_confidence": "Shopping confidence",
+    "confidence_item": "Confidence item",
+    "breadcrumbs": "Breadcrumbs"
   },
   "settings": {
     "alignment": "對齊",
@@ -594,7 +602,21 @@
     "input_style": "輸入框樣式",
     "selected_button_style": "已選取按鈕樣式",
     "open_by_default": "預設為開啟",
-    "title_preset": "標題預設設定"
+    "title_preset": "標題預設設定",
+    "bundled_photo": "Bundled photo",
+    "subheading": "Subheading",
+    "view_all_label": "View all label",
+    "description": "Description",
+    "link_label": "Link label",
+    "eyebrow": "Eyebrow",
+    "button_label": "Button label",
+    "brands_source_collection": "Brands from",
+    "max_brands": "Maximum brands",
+    "heading_level": "Heading level",
+    "empty_state_link": "Empty state link",
+    "brand_name": "Brand name",
+    "brand_logo": "Logo",
+    "link_destination": "Link to"
   },
   "options": {
     "apple": "Apple",
@@ -877,7 +899,17 @@
     "below_media": "多媒體檔案下方",
     "full_frame": "滿版",
     "icons": "圖示",
-    "input_field": "輸入欄位"
+    "input_field": "輸入欄位",
+    "bundled_photo_street": "Street: white sneakers on asphalt",
+    "bundled_photo_wire": "Street: sneakers on a wire",
+    "bundled_photo_lifestyle": "Lifestyle: canvas sneakers",
+    "bundled_photo_running": "Running track",
+    "bundled_photo_basketball": "Basketball court",
+    "bundled_photo_retro": "Retro canvas low-tops",
+    "photo_tiles": "Photo tiles",
+    "editorial_cards": "Editorial cards",
+    "featured_row": "Featured row",
+    "a_to_z_directory": "A–Z directory"
   },
   "content": {
     "advanced": "進階",
@@ -1005,7 +1037,10 @@
     "gift_card_products": "禮品卡商品",
     "disclosures": "資訊揭露",
     "disclosures_metafield_content": "此商品必備的安全警告與法規資訊揭露。",
-    "page_text_color_contrast_info": "具有自訂背景顏色的區段，僅在色彩對比度充足時才會使用此文字顏色。"
+    "page_text_color_contrast_info": "具有自訂背景顏色的區段，僅在色彩對比度充足時才會使用此文字顏色。",
+    "category_tiles_visibility": "On the storefront a tile appears only when its collection has products, and the section hides when no tile qualifies.",
+    "brand_list_source": "Brands are listed automatically from the vendors of products in the chosen collection. Add Brand blocks to hand-pick the featured row instead.",
+    "shopping_confidence_visibility": "On the storefront an item appears only when its page or store policy exists."
   },
   "html_defaults": {
     "share_information_about_your": "<p>向顧客分享您的品牌故事。可用來敘述產品、發布公告，或歡迎顧客造訪您的商店。</p>",
@@ -1133,7 +1168,12 @@
     "page_text_color_default_info": "佈景主題區段的預設",
     "actions_display_style": "在行動裝置上一律使用圖示",
     "edit_input_field_in_theme_settings": "在 [佈景主題設定](/editor?context=theme&category=input%20fields) 中編輯輸入欄位",
-    "edit_variants_in_theme_settings": "在[佈景主題設定](/editor?context=theme&category=variant%20pickers)中編輯子類樣式"
+    "edit_variants_in_theme_settings": "在[佈景主題設定](/editor?context=theme&category=variant%20pickers)中編輯子類樣式",
+    "bundled_photo": "A CC0 photo included with the theme, used only when no image is selected. Replace it with your own photography before launch.",
+    "category_tile_title": "Defaults to the collection title.",
+    "category_tile_description": "Shown in the editorial cards style.",
+    "brand_name": "Defaults to the collection title.",
+    "brand_logo": "Only upload logos you are authorised to use. Leave empty to show the brand name."
   },
   "categories": {
     "basic": "基本",

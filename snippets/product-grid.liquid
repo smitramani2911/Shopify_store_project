@@ -108,12 +108,28 @@
       {% render 'price-styles' %}
       {% render 'product-card-gallery-zoom-details-styles' %}
       <div class="main-collection-grid__empty">
-        <h2 class="main-collection-grid__empty-title h2">
-          {{ 'content.no_products_found' | t }}
-        </h2>
-        <p>
-          {{ 'content.use_fewer_filters_html' | t: link: collection.url, class: 'main-collection-grid__empty-link' }}
-        </p>
+        {% comment %} SNEAKROW: a collection with no products at all gets its own message instead of "use fewer filters". {% endcomment %}
+        {% if request.page_type == 'collection' and collection.all_products_count == 0 %}
+          <h2 class="main-collection-grid__empty-title h2">
+            {{ 'content.collection_empty_title' | t }}
+          </h2>
+          <p>{{ 'content.collection_empty_text' | t }}</p>
+          <p>
+            <a
+              class="button main-collection-grid__empty-button"
+              href="{{ routes.root_url }}"
+            >
+              {{- 'actions.continue_shopping' | t -}}
+            </a>
+          </p>
+        {% else %}
+          <h2 class="main-collection-grid__empty-title h2">
+            {{ 'content.no_products_found' | t }}
+          </h2>
+          <p>
+            {{ 'content.use_fewer_filters_html' | t: link: collection.url, class: 'main-collection-grid__empty-link' }}
+          </p>
+        {% endif %}
       </div>
     {% else %}
       {% if enable_infinite_scroll %}

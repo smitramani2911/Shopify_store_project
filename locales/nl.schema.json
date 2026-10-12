@@ -169,7 +169,15 @@
     "product_sku": "SKU",
     "layered_slideshow": "Gelaagde diavoorstelling",
     "cart_drawer": "Winkelwagenoptie",
-    "disclosures": "Toelichtingen"
+    "disclosures": "Toelichtingen",
+    "category_tiles": "Category tiles",
+    "category_tile": "Category tile",
+    "editorial_campaign": "Editorial campaign",
+    "brand_list": "Brand list",
+    "brand": "Brand",
+    "shopping_confidence": "Shopping confidence",
+    "confidence_item": "Confidence item",
+    "breadcrumbs": "Breadcrumbs"
   },
   "settings": {
     "autoplay": "Automatisch afspelen",
@@ -594,7 +602,21 @@
     "input_style": "Invoerstijl",
     "selected_button_style": "Geselecteerde knopstijl",
     "open_by_default": "Standaard geopend",
-    "title_preset": "Titelvoorinstelling"
+    "title_preset": "Titelvoorinstelling",
+    "bundled_photo": "Bundled photo",
+    "subheading": "Subheading",
+    "view_all_label": "View all label",
+    "description": "Description",
+    "link_label": "Link label",
+    "eyebrow": "Eyebrow",
+    "button_label": "Button label",
+    "brands_source_collection": "Brands from",
+    "max_brands": "Maximum brands",
+    "heading_level": "Heading level",
+    "empty_state_link": "Empty state link",
+    "brand_name": "Brand name",
+    "brand_logo": "Logo",
+    "link_destination": "Link to"
   },
   "options": {
     "apple": "Apple",
@@ -877,7 +899,17 @@
     "below_media": "Onder media",
     "full_frame": "Volledig kader",
     "icons": "Pictogrammen",
-    "input_field": "Invoerveld"
+    "input_field": "Invoerveld",
+    "bundled_photo_street": "Street: white sneakers on asphalt",
+    "bundled_photo_wire": "Street: sneakers on a wire",
+    "bundled_photo_lifestyle": "Lifestyle: canvas sneakers",
+    "bundled_photo_running": "Running track",
+    "bundled_photo_basketball": "Basketball court",
+    "bundled_photo_retro": "Retro canvas low-tops",
+    "photo_tiles": "Photo tiles",
+    "editorial_cards": "Editorial cards",
+    "featured_row": "Featured row",
+    "a_to_z_directory": "A–Z directory"
   },
   "content": {
     "background_video": "Achtergrondvideo",
@@ -1005,7 +1037,10 @@
     "gift_card_products": "Cadeaubonproducten",
     "disclosures": "Toelichtingen",
     "disclosures_metafield_content": "Verplichte veiligheidswaarschuwingen en wettelijke vermeldingen voor dit product.",
-    "page_text_color_contrast_info": "Secties met een aangepaste achtergrondkleur gebruiken deze tekstkleur alleen als er voldoende kleurcontrast is."
+    "page_text_color_contrast_info": "Secties met een aangepaste achtergrondkleur gebruiken deze tekstkleur alleen als er voldoende kleurcontrast is.",
+    "category_tiles_visibility": "On the storefront a tile appears only when its collection has products, and the section hides when no tile qualifies.",
+    "brand_list_source": "Brands are listed automatically from the vendors of products in the chosen collection. Add Brand blocks to hand-pick the featured row instead.",
+    "shopping_confidence_visibility": "On the storefront an item appears only when its page or store policy exists."
   },
   "html_defaults": {
     "share_information_about_your": "<p>Deel informatie over je merk met je klanten. Beschrijf een product, doe aankondigingen of heet klanten welkom in je winkel.</p>",
@@ -1133,7 +1168,12 @@
     "page_text_color_default_info": "Standaard voor themasecties",
     "actions_display_style": "Op mobiel worden altijd pictogrammen gebruikt",
     "edit_input_field_in_theme_settings": "Invoerveld bewerken in [thema-instellingen](/editor?context=theme&category=input%20fields)",
-    "edit_variants_in_theme_settings": "Variantstijl bewerken in [thema-instellingen](/editor?context=theme&category=variant%20pickers)"
+    "edit_variants_in_theme_settings": "Variantstijl bewerken in [thema-instellingen](/editor?context=theme&category=variant%20pickers)",
+    "bundled_photo": "A CC0 photo included with the theme, used only when no image is selected. Replace it with your own photography before launch.",
+    "category_tile_title": "Defaults to the collection title.",
+    "category_tile_description": "Shown in the editorial cards style.",
+    "brand_name": "Defaults to the collection title.",
+    "brand_logo": "Only upload logos you are authorised to use. Leave empty to show the brand name."
   },
   "categories": {
     "product_list": "Uitgelichte collectie",

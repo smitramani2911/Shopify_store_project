@@ -1,95 +1,148 @@
-# SNEAKROW — setup, verification and launch checklist
+# SNEAKROW: setup and launch checklist
 
 This branch (`sneakrow`) turns the Horizon 4.1.5 theme in this repository into the SNEAKROW
-multi-brand sneaker storefront. It is a theme only: it does not create products, collections,
-menus, pages or policies. Everything in **Shopify admin setup** below must be done in the admin
-of the store that will run SNEAKROW.
+multi-brand sneaker storefront. It is a theme only. It does not create products, collections,
+menus, pages or policies. Everything under **Shopify admin setup** must be done in the admin of
+the store that will run SNEAKROW. Test results live in `QA-REPORT.md`, and imagery is documented
+in `ASSET-MANIFEST.md`.
 
 ## 1. Where this should run
 
-- The theme was built and previewed on the CLI development theme of `i8yvqh-se.myshopify.com`,
-  which is the LUMERA store. Nothing was published and the live LUMERA theme was not touched.
-- For a real SNEAKROW launch use a **separate Shopify store** (a free Partner development store is
-  enough). Search, `/collections/all`, checkout branding, the store name in page titles and
-  emails, currency, policies and customer accounts are store-wide and cannot be split between two
-  brands in one store. Push this branch to the new store with
-  `shopify theme push --store <sneakrow-store>.myshopify.com --unpublished`, then follow the checklist.
-- Do not merge `sneakrow` into `main` (LUMERA) and do not publish without an explicit decision.
+- The theme is built and previewed on the CLI development theme (#131083337774) of
+  `i8yvqh-se.myshopify.com`, which is the LUMERA store. Nothing was published, pushed or merged.
+  The live LUMERA theme and all LUMERA products, collections, menus, pages and settings were not
+  modified.
+- Launch SNEAKROW on a **separate Shopify store**; a free Partner development store is enough to
+  start. Search, `/collections/all`, checkout branding, the store name in page titles and emails,
+  currency, policies, pages and customer accounts are store-wide and cannot be split between two
+  brands in one store. On the shared dev store, SNEAKROW sections that point at SNEAKROW
+  collections stay hidden, but store-wide pages such as `/pages/contact`, `/pages/size-guide` and
+  `/pages/faq` still show LUMERA's page text.
+- To install the theme on the new store, run
+  `shopify theme push --store <sneakrow-store>.myshopify.com --unpublished`, then work through this
+  checklist. Publishing is a separate, explicit decision.
+- Do not merge `sneakrow` into `main`, which is LUMERA.
 
 ## 2. Shopify admin setup
 
-Handles must match exactly; the theme templates reference them. Everything is also editable later
-in the theme editor.
+Handles must match exactly because the templates reference them. Every reference can also be
+changed later in the theme editor.
 
-### Collections (Products > Collections)
+### 2.1 Collections (Products > Collections)
 
 | Title | Handle | Used by | Suggested rule |
 | --- | --- | --- | --- |
-| Shop all sneakers | `sneakers` | "Shop sneakers" CTAs, 404, empty cart | Automated: product type equals `Sneakers` |
-| Men | `men` | Shop by category | Automated: tag `men` |
-| Women | `women` | Shop by category | Automated: tag `women` |
-| New arrivals | `new-in` | Home "New arrivals", announcement link | Automated: tag `new`, sorted newest first |
-| Best sellers | `best-sellers` | Home "Best sellers", 404 and cart suggestions | Manual, or automated by tag |
-| Trending now | `trending` | Home "Trending now" | Manual |
-| Running | `running` | Shop by category | Automated: tag `running` |
-| Lifestyle | `lifestyle` | Shop by category, editorial CTA | Automated: tag `lifestyle` |
-| Basketball | `basketball` | Shop by category | Automated: tag `basketball` |
-| Retro | `retro` | Shop by category | Automated: tag `retro` |
-| One collection per brand | brand name | Home "Featured brands" (pick them in the editor) | Automated: vendor equals the brand |
+| Shop all sneakers | `sneakers` | Hero "Shop sneakers", "Shop all sneakers" links, empty states, brand list source | Automated: product type equals `Sneakers` |
+| Men | `men` | Main menu, footer Shop menu | Automated: tag equals `men` |
+| Women | `women` | Main menu, footer Shop menu | Automated: tag equals `women` |
+| New arrivals | `new-in` | Home "Just dropped", hero "Explore new arrivals" | Automated: tag equals `new`, sort **Newest** |
+| Best sellers | `best-sellers` | Home "Most wanted", 404 and cart suggestions | Manual, curated by the merchant. Do not invent sales rankings. |
+| Trending now | `trending` | Sneaker Edit page "Trending now" | Manual |
+| Lifestyle | `lifestyle` | Home "Find your style", Sneaker Edit cards | Automated: tag equals `lifestyle` |
+| Running | `running` | Home "Find your style", Sneaker Edit cards | Automated: tag equals `running` |
+| Basketball | `basketball` | Home "Find your style", Sneaker Edit cards | Automated: tag equals `basketball` |
+| Retro | `retro` | Home "Find your style", Sneaker Edit cards | Automated: tag equals `retro` |
+| One per brand | the brand name's handle, for example `new-balance` for vendor "New Balance" | Brand links on the home page and the Brands page | Automated: product vendor equals the brand |
 
-Upload a collection image for each (specs in `ASSET-MANIFEST.md`). `new-in` is used instead of
-`new-arrivals` because that handle already belongs to LUMERA on the shared dev store.
+- Write a short **description** for each collection. The collection page shows it under the title.
+- Upload a **collection image** where you want one. Category tiles use it before the bundled photo.
+- Brand links work without brand collections: they fall back to Shopify's automatic vendor page,
+  `/collections/vendors?q=<brand>`. A brand collection with a matching handle gives a cleaner URL,
+  a description and filters.
+- `new-in` is used instead of `new-arrivals` because that handle belongs to LUMERA on the shared
+  dev store. On a dedicated store, either handle works after updating the theme editor setting.
 
-### Products
+### 2.2 Products
 
-- **Vendor** = the brand. It is shown on product cards, the product page and in the cart.
-- **Options**: `Size` (sizes in the brand's own scale). Add `Color` to get swatches on cards and
-  the product page; swatch colours come from the Shopify category/colour metafield.
-- **Compare-at price** drives the "Sale" badge; the **"New" badge** shows for products created in
-  the last 30 days (theme setting) or tagged `new`. Sold-out badges and "In stock / Low stock"
-  come from inventory tracking.
-- **Media**: square or 4:5 photography; the second image shows on hover.
-- Add `men` / `women` / category tags to feed the automated collections above.
+- **Vendor** must be the brand. It drives the card and product-page brand line, the brand list,
+  the Brands directory and the Brand filter.
+- **Product type** should be `Sneakers` so the `sneakers` collection rule works.
+- **Options**: `Size`, using the sizing system you actually sell (for example `UK 8` or `US 9`).
+  Add a `Color` option to get swatches on cards and the product page. Swatch colours come from the
+  Shopify category colour metafield.
+- **Compare-at price** drives the "Sale" badge. The "New" badge shows for products created in the
+  last 30 days, configurable in Theme settings > Badges, or tagged `new`.
+- **Inventory tracking on.** "In stock / Low stock" text and sold-out states come from Shopify
+  inventory. A sold-out variant shows a disabled "Sold out" button.
+- **Media**: square or 4:5 photography on a consistent background. The second image shows on hover
+  on desktop only. All essential information is visible without hover.
+- **Tags** feed the automated collections: `men`, `women`, `lifestyle`, `running`, `basketball`,
+  `retro`, `new`.
+- **SEO**: fill in the product SEO title and description. Product structured data is generated by
+  Shopify from the product, with no fake reviews or ratings.
 
-### Menus (Online Store > Navigation)
+### 2.3 Menus (Online Store > Navigation)
 
 | Menu title | Handle | Items |
 | --- | --- | --- |
-| SNEAKROW main menu | `sneakrow-main-menu` | Shop All → `/collections/sneakers` (nest Running, Lifestyle, Basketball, Retro and brand collections under it for the mega menu), Men, Women, New Arrivals → `/collections/new-in`, Best Sellers |
-| SNEAKROW footer: Shop | `sneakrow-footer-shop` | Shop all, Men, Women, New arrivals, Best sellers, Running, Lifestyle, Basketball, Retro |
-| SNEAKROW footer: Help | `sneakrow-footer-help` | Contact, FAQ, Size guide, Shipping policy, Refund policy, Track your order (→ account login) |
+| SNEAKROW main menu | `sneakrow-main-menu` | **Shop** → `/collections/sneakers`, with Men, Women, Lifestyle, Running, Basketball and Retro nested underneath for the mega menu. **New Arrivals** → `/collections/new-in`. **Brands** → `/pages/brands`. **The Sneaker Edit** → `/pages/sneaker-edit`. |
+| SNEAKROW footer: Shop | `sneakrow-footer-shop` | Shop All → `/collections/sneakers`, Men, Women, New Arrivals → `/collections/new-in`, Brands → `/pages/brands` |
+| SNEAKROW footer: Help | `sneakrow-footer-help` | Contact → `/pages/contact`, FAQ → `/pages/faq`, Size Guide → `/pages/size-guide`, Shipping → Shipping policy, Returns → Refund policy |
+| SNEAKROW footer: About | `sneakrow-footer-about` | About SNEAKROW → `/pages/about`, The Sneaker Edit → `/pages/sneaker-edit` |
+| Customer account menu | `customer-account-main-menu` | Shopify's default account menu (Orders, Profile). The header account popover logs a console notice when it is missing. |
 
-The header mega menu is set to "collection images", so collection links under Shop All show their
-collection image automatically. Until these menus exist the header shows no links.
+Until a menu exists, its header links or footer column are hidden on the storefront. The theme
+editor still shows the column heading.
 
-### Pages (Online Store > Pages)
+### 2.4 Pages (Online Store > Pages)
 
-| Page | Handle | Theme template to assign | Notes |
+| Page | Handle | Theme template | Page body |
 | --- | --- | --- | --- |
-| About | `about` | `page.about` | Page body = intro; the story and values sections are in the template. Replace the bracketed founding-story placeholder in the theme editor. |
-| FAQ | `faq` | `page.faq` | Page body = optional intro; the accordion lives in the template. Replace the bracketed authenticity answer. |
-| Size guide | `size-guide` | `page.size-guide` | Page body = the size chart tables. **Keep the handle `size-guide`**: the product page "Size guide" drawer loads this page. |
-| Contact | `contact` | `page.contact` | Page body = short intro; the form is Shopify's contact form. |
+| About SNEAKROW | `about` | `page.about` | Short intro. The story and values sections live in the template. **Add your founding story**: who runs SNEAKROW, where you are based and how you source products. The theme deliberately contains no invented history. |
+| FAQ | `faq` | `page.faq` | Optional intro. The rows cover orders, tracking, sizing, shipping, returns, payments, availability and contact. Shipping and returns answers come from your store policies, and those rows hide until the policies exist. Add an authenticity or sourcing row only once you can state your sourcing accurately. |
+| Size guide | `size-guide` | `page.size-guide` | **Your size charts**, as tables per brand, using verified brand data. Keep the handle `size-guide`: the product page "Size guide" drawer loads this page. |
+| Contact | `contact` | `page.contact` | Short intro plus any verified contact details you want to publish. The form uses Shopify's contact form and sends to the store's sender email. |
+| Brands | `brands` | `page.brands` | Optional intro. The A–Z list is generated from the vendors of products in the `sneakers` collection. |
+| The Sneaker Edit | `sneaker-edit` | `page.sneaker-edit` | Editorial intro. Below it are curated cards for Lifestyle, Retro, Running and Basketball, a campaign block and a "Trending now" product row. |
 
-### Policies (Settings > Policies)
+### 2.5 Policies (Settings > Policies)
 
-Write shipping, refund, privacy and terms policies. The product page accordion ("Shipping",
-"Returns & exchanges"), the FAQ rows and the footer policy list read these directly; rows whose
-policy is empty are hidden on the storefront.
+Write or generate, then review, the **Refund**, **Privacy**, **Terms of service** and **Shipping**
+policies. They drive these parts of the theme:
 
-### Apps and store settings
+- the footer policy links;
+- the product page "Shipping" and "Returns & exchanges" accordion rows, which hide while the policy is empty;
+- the FAQ shipping and returns answers;
+- the home page "Made for your everyday" shipping and returns items, which hide while the policy is empty.
 
-- **Search & Discovery** (free Shopify app): enable filters (Availability, Price, Size, Color,
-  Brand/Vendor, Product type) and product recommendations. The collection and search pages
-  pick them up automatically.
-- **Settings > Store details**: store name (appears in `<title>` and the © line), currency and
-  markets, shipping rates, payment providers (drives the payment icons).
-- **Customer accounts**: on (used for "Where is my order?").
-- **Theme settings** (theme editor): Logo and favicon (upload a logo image or keep the text
-  wordmark; favicon), Colors > Accent colour, Badges > "New" badge window, announcement text,
-  social links (footer utilities block), hero and editorial imagery, Featured brands collections.
+The theme never invents delivery times or return guarantees.
 
-## 3. Preview and test
+### 2.6 Apps and store settings
+
+- **Search & Discovery** (free Shopify app): enable filters for Availability, Price, Size, Color,
+  Brand (Vendor) and Product type. Set up product recommendations for "You may also like".
+- **Settings > Store details**: the store name appears in page titles and order emails. Currency,
+  markets, shipping rates, taxes and payment providers drive the checkout and the footer payment
+  icons.
+- **Customer accounts**: on, if you want order tracking in accounts.
+- **Customer events / marketing**: newsletter sign-ups are saved as customers who accept email
+  marketing. Review email marketing consent settings for your region.
+- **Online Store > Preferences**: home page title and meta description, social sharing image
+  (1200×630), and remove the storefront password before launch.
+
+## 3. Theme editor configuration
+
+All homepage copy, images and links are editable in the theme editor (Online Store > Themes >
+Customize).
+
+| Area | Where |
+| --- | --- |
+| Announcement text | Header group > Announcement bar |
+| Logo / wordmark, favicon | Theme settings > Logo and favicon. The text wordmark comes from **Wordmark text**. Uploading a logo image replaces it. |
+| Colours, accent | Theme settings > Colors. **Accent colour** is the electric lime. |
+| Typography | Theme settings > Typography: Archivo and Inter |
+| Hero | Home > Hero. Pick **Image 1**, or video, for desktop, and enable "Custom mobile media" for a separate mobile crop. The **Bundled photo** setting shows the included CC0 photo until you choose your own. Edit the headline, text and both buttons. |
+| Ticker | Home > Marquee. Edit the three phrases. Motion stops automatically for visitors who prefer reduced motion. |
+| New arrivals / Most wanted | Home > Product list: collection, product count, heading, subtitle and "view all" label. The "view all" link only appears when the collection has more products than are shown. |
+| Find your style | Home > Category tiles: one tile per collection, with optional title, image or bundled photo |
+| Featured brands | Home > Brand list: "Brands from" collection, maximum 6. Add **Brand** blocks to hand-pick brands and upload authorised logos. |
+| Move different. | Home > Editorial campaign: image or bundled photo, eyebrow, headline, text and one button |
+| The Sneaker Edit | Home > Category tiles, "Editorial cards" style |
+| Made for your everyday | Home > Shopping confidence: up to 4 items, each linking to a page, a policy or a URL |
+| Newsletter | Home > Email signup section: heading, text and consent note |
+| Footer | Footer group: brand column (wordmark, tagline, newsletter, payment icons), three menu columns, social links (Utilities > Social links) |
+
+## 4. Preview and test
 
 ```sh
 git switch sneakrow
@@ -97,60 +150,42 @@ shopify theme dev --store i8yvqh-se.myshopify.com --port 9292   # or the SNEAKRO
 shopify theme check                                             # 6 pre-existing Horizon warnings only
 ```
 
-Open `http://127.0.0.1:9292`. Useful views on a store without SNEAKROW pages yet:
-`/pages/<any-page>?view=about`, `?view=faq`, `?view=size-guide`.
+Open `http://127.0.0.1:9292`. On a store without the SNEAKROW pages, alternate templates can be
+previewed on any existing page: `/pages/<page>?view=about`, `?view=faq`, `?view=size-guide`,
+`?view=brands` and `?view=sneaker-edit`.
 
-Theme editor: `shopify theme dev` prints the editor link (press `e`). Empty sections show
-placeholders only in the editor; on the storefront they are hidden until a collection is set.
+Empty sections show placeholders only inside the theme editor. On the storefront they stay hidden
+until their collection, menu, page or policy exists.
 
-## 4. Verification status (dev theme on the LUMERA dev store, 11 Oct 2026)
+## 5. What changed in the theme
 
-Verified = exercised on the rendered storefront (Playwright/Edge, desktop 1440×900 and iPhone 13
-emulation) or by rendered-HTML checks. The dev store only has LUMERA products, so product data
-checks used those products.
-
-| Item | Status |
-| --- | --- |
-| Theme Check (`shopify theme check`) | Verified: 6 warnings, all pre-existing in Horizon (header settings count, divider doc params) |
-| All templates / section groups valid JSON, every route renders without Liquid errors | Verified |
-| Header: wordmark, search, account, cart; mobile drawer opens and closes with Escape | Verified (menu links need the `sneakrow-main-menu` menu) |
-| Homepage sections render; empty sections hidden on storefront | Verified |
-| No horizontal overflow at 390px on home, collection, product, FAQ, cart | Verified |
-| Collection page: filters, sorting, grid density, result count, product cards with vendor, badges, price, quick add | Verified with LUMERA products |
-| Product page: gallery with thumbnails, vendor, title, price/compare-at, size buttons, size-guide drawer, stock status, quantity, add to cart, Buy it now, details accordion, recommendations | Verified |
-| Variant selection updates URL/price; add to cart opens drawer; cart count; quantity change; subtotal | Verified |
-| Checkout hand-off | Implemented, partially verified: the Checkout button navigates to the store domain, which redirected to `/password` because the dev store is password-protected. Check on the launch store. |
-| Predictive search and search results | Verified |
-| Cart page, 404 page, contact form rendering | Verified rendering; form submission not exercised |
-| Newsletter signup (Shopify customer form) | Implemented, not submitted during testing |
-| "New" / "Sale" / "Sold out" badges | Verified (New and Sale on LUMERA data; Sold out logic unchanged from Horizon) |
-| Store-policy block, accordion rows hiding when empty | Verified on dev store (policies empty → rows hidden); content display needs policies on the launch store |
-| Mega menu with collection images, footer menus | Implemented, blocked until menus exist |
-| Shop by category / Featured brands / New arrivals / Trending / Best sellers with real products | Implemented, blocked until collections exist |
-| Colour swatches on cards and product page | Implemented (Horizon swatches), blocked until products have a Color option |
-| Theme editor configuration pass | Not performed (no browser access to the editor from this environment); settings are standard Horizon schemas |
-| Non-default locale / RTL | Not tested; new strings have English fallbacks in all locale files |
-| Wishlist | Not implemented (not available in Horizon, no app installed) |
-| Track your order | Not implemented as a page; footer link points to the customer account |
-
-## 5. Placeholders to complete before launch
-
-- About page story: "[Add your founding story here …]" (theme editor > About page > Story section).
-- FAQ: "Are your sneakers authentic?" answer (theme editor > FAQ page > accordion row).
-- Announcement bar text ("Find Your Next Move.") – replace with a real shipping/promo message if wanted.
-- Social links, hero/editorial imagery, collection images, favicon (see `ASSET-MANIFEST.md`).
-- Translations: the new strings (`content.product_badge_new`, `blocks.store_policy.*`, new
-  theme-setting labels) were added to the other locale files in English.
-
-## 6. What changed in the theme (summary)
-
-- Settings: `logo_text` (text wordmark), `color_accent` (emits `--color-accent`), "New" badge
-  settings; SNEAKROW palette, Archivo/Inter typography, square geometry in `config/settings_data.json`.
-- New: `snippets/wordmark.liquid`, `snippets/product-badge-type.liquid`, `blocks/store-policy.liquid`,
-  templates `page.about`, `page.faq`, `page.size-guide`.
-- Extended: `hide_when_empty` on product-list, collection-list and collection-links; "New" badge in
-  `_product-card-gallery` / `card-gallery`; hero skips placeholder art on an opaque background;
-  placeholder artwork and placeholder page copy are editor-only (`resource-image`, `_image`, `page`);
-  accordion rows hide when their content is empty; header logo / logo block fall back to the wordmark text.
-- Rewritten templates: `index`, `collection`, `product`, `search`, `404`, `cart`, `page.contact`,
-  `sections/header-group.json`, `sections/footer-group.json`.
+- **Settings**: `logo_text` (text wordmark), `color_accent` (`--color-accent`) and "New" badge
+  settings. `config/settings_data.json` holds the SNEAKROW palette, Archivo/Inter typography and
+  square geometry.
+- **New sections**: `category-tiles` (photo tiles or numbered editorial cards), `brand-list`
+  (featured row or A–Z directory built from real vendors), `editorial-campaign` (split photo
+  campaign) and `shopping-confidence` (policy- and page-aware info columns).
+- **New blocks**: `breadcrumbs` (with BreadcrumbList JSON-LD), `store-policy`, `_category-tile`,
+  `_brand` and `_confidence-item`.
+- **New snippets**: `wordmark`, `product-badge-type` and `bundled-photo` (responsive CC0 photos from
+  `assets/sneakrow-photo-*.jpg`).
+- **Extended**:
+  - `hide_when_empty` on product-list, collection-list and collection-links.
+  - The hero has a "Bundled photo" fallback.
+  - Placeholder art and copy appear only in the editor.
+  - Accordion rows hide when empty.
+  - Footer menu columns hide when their menu has no links.
+  - A collection with no products shows its own empty state.
+  - The copyright line uses the wordmark text.
+  - The mobile menu toggle keeps a 44px touch target.
+  - The contact email field is `required`.
+  - Policy pages wrap long words on narrow screens.
+  - The page-view analytics event falls back to the page type when Shopify gives no template name.
+- **Accessibility fixes found by Lighthouse**:
+  - Slideshow dots and thumbnails use `aria-current` and have 24px dot targets.
+  - Recommendation skeletons are `aria-hidden`.
+  - The mobile sticky add-to-cart keeps a screen-reader label.
+  - Product card titles use heading level 2 on collection and search-result grids.
+- **Templates**: `index`, `collection`, `product`, `search`, `404`, `cart`, `page.contact`,
+  `page.about`, `page.faq`, `page.size-guide`, `page.brands`, `page.sneaker-edit`, and the header
+  and footer section groups.
