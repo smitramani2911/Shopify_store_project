@@ -6,22 +6,20 @@ menus, pages or policies. Everything under **Shopify admin setup** must be done 
 the store that will run SNEAKROW. Test results live in `QA-REPORT.md`, and imagery is documented
 in `ASSET-MANIFEST.md`.
 
-## 1. Where this should run
+## 1. Where this runs
 
-- The theme is built and previewed on the CLI development theme (#131083337774) of
-  `i8yvqh-se.myshopify.com`, which is the LUMERA store. Nothing was published, pushed or merged.
-  The live LUMERA theme and all LUMERA products, collections, menus, pages and settings were not
-  modified.
-- Launch SNEAKROW on a **separate Shopify store**; a free Partner development store is enough to
-  start. Search, `/collections/all`, checkout branding, the store name in page titles and emails,
-  currency, policies, pages and customer accounts are store-wide and cannot be split between two
-  brands in one store. On the shared dev store, SNEAKROW sections that point at SNEAKROW
-  collections stay hidden, but store-wide pages such as `/pages/contact`, `/pages/size-guide` and
-  `/pages/faq` still show LUMERA's page text.
-- To install the theme on the new store, run
-  `shopify theme push --store <sneakrow-store>.myshopify.com --unpublished`, then work through this
-  checklist. Publishing is a separate, explicit decision.
-- Do not merge `sneakrow` into `main`, which is LUMERA.
+- The theme is live on `i8yvqh-se.myshopify.com` as theme **SNEAKROW** (#131143729198), published on
+  14 October 2026. The store's previous apparel theme, `test-project/main`, is kept as an unpublished
+  theme and can be republished from Online Store > Themes.
+- The live theme was uploaded with Shopify CLI and is not connected to GitHub. To update it after a
+  change on this branch, run
+  `shopify theme push --store i8yvqh-se.myshopify.com --theme 131143729198`. Pull merchant edits
+  first with `shopify theme pull --store i8yvqh-se.myshopify.com --theme 131143729198` so theme
+  editor changes are not overwritten.
+- The store still holds products, collections, pages and policy text from its previous apparel
+  catalogue. The catalogue guard (section 5) keeps those products off the storefront. Store-wide
+  content must be replaced in Admin (section 5 lists what).
+- Do not merge `sneakrow` into `main`, which holds the previous apparel theme.
 
 ## 2. Shopify admin setup
 
@@ -49,8 +47,8 @@ changed later in the theme editor.
 - Brand links work without brand collections: they fall back to Shopify's automatic vendor page,
   `/collections/vendors?q=<brand>`. A brand collection with a matching handle gives a cleaner URL,
   a description and filters.
-- `new-in` is used instead of `new-arrivals` because that handle belongs to LUMERA on the shared
-  dev store. On a dedicated store, either handle works after updating the theme editor setting.
+- `new-in` is used instead of `new-arrivals` because an older collection on this store already
+  uses that handle. Either handle works after updating the theme editor setting.
 
 ### 2.2 Products
 
@@ -171,9 +169,8 @@ When it is off, anything without real data is hidden on the storefront, as befor
 
 ### Pre-launch checklist
 
-1. **Connect the correct store.** Create or choose the SNEAKROW store, log the CLI into it and confirm
-   the target with `shopify theme list --store <sneakrow-store>.myshopify.com`. Then run
-   `shopify theme push --store <sneakrow-store>.myshopify.com --unpublished`.
+1. **Confirm the target.** `shopify theme list --store i8yvqh-se.myshopify.com` should show SNEAKROW
+   (#131143729198) as `[live]`.
 2. **Add genuine products**, with brand vendors, the Sneakers product type, Size (and Color) options,
    tags, inventory tracking and real photography (section 2.2).
 3. **Create the collections** in section 2.1, with descriptions and images.
@@ -182,10 +179,9 @@ When it is off, anything without real data is hidden on the storefront, as befor
 5. **Set accurate policies and shipping**: refund, privacy, terms and shipping policies, shipping
    rates, payments and taxes (sections 2.5 and 2.6).
 6. **Disable demo mode**: Theme settings > Demo preview > untick **Show demo products**, then save.
-7. **Verify before publishing**: preview the unpublished theme, then check every menu link, a product
-   page, add to cart, cart, checkout with Shopify's test mode or a bogus gateway, the newsletter and
-   contact forms, policies and the 404 page. Run `shopify theme check`, remove the storefront password
-   and only then publish.
+7. **Verify before opening the store**: check every menu link, a product page, add to cart, cart,
+   checkout with Shopify's test mode or a bogus gateway, the newsletter and contact forms, policies
+   and the 404 page. Run `shopify theme check`, and only then remove the storefront password.
 
 ## 5. Catalogue guard (shared-store cleanup)
 
@@ -202,13 +198,16 @@ hidden with CSS. While it is set:
 - `/collections` only lists collections that contain a matching product;
 - the search empty states no longer fall back to `collections.all`.
 
-The guard can't change store content. On the shared LUMERA dev store, these still show LUMERA text
-and need a separate SNEAKROW store, because editing them would change the live LUMERA store:
+The guard can't change store content. These still hold the previous catalogue's text and must be
+rewritten or replaced in Admin:
 
-- the Pages `contact`, `faq`, `size-guide`, `shipping-returns` and `track-order`, including their
-  "| LUMERA" SEO titles;
-- the Shopify-generated privacy policy;
-- the store name in emails and checkout.
+- the Pages `contact`, `faq`, `size-guide`, `shipping-returns` and `track-order`, including their SEO
+  titles. SNEAKROW links to `contact` and `size-guide`, and the product page size-guide drawer loads
+  `size-guide`;
+- the privacy policy (Settings > Policies);
+- the store name, which appears in checkout and emails (Settings > Store details).
+
+Once those products are archived or removed in Admin, the setting can be emptied.
 
 Product and collection URLs still contain their handles, because that is the address the visitor
 opened.
@@ -217,7 +216,7 @@ opened.
 
 ```sh
 git switch sneakrow
-shopify theme dev --store i8yvqh-se.myshopify.com --port 9292   # or the SNEAKROW store
+shopify theme dev --store i8yvqh-se.myshopify.com --port 9292
 shopify theme check                                             # 6 pre-existing Horizon warnings only
 ```
 

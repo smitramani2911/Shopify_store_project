@@ -3,21 +3,22 @@
 Test date: 12 October 2026. Branch: `sneakrow`. Theme: Horizon 4.1.5 (confirmed in
 `config/settings_schema.json`). Environment: Shopify CLI development theme #131083337774 on
 `i8yvqh-se.myshopify.com`, served locally at `http://127.0.0.1:9292`. Nothing was published or
-pushed, and the live LUMERA theme was not touched.
+pushed during this pass. The theme was published on 14 October 2026; see `SNEAKROW-SETUP.md`
+section 1 for the current state.
 
 ## 1. What the test environment can and cannot prove
 
-- The dev store is the **LUMERA** store. It has 30 LUMERA ethnic-wear products and none of the
+- At test time the store held 30 products from its previous apparel catalogue and none of the
   SNEAKROW collections, menus, pages or policies. Everything wired to SNEAKROW data is hidden on
   the storefront by design until that data exists.
-- To exercise product grids, cards, filters, sorting, the product page and the cart, the tests use
-  LUMERA products. Populated homepage layouts were checked through a **temporary, uncommitted**
+- To exercise product grids, cards, filters, sorting, the product page and the cart, the tests used
+  those apparel products, before the catalogue guard existed. Populated homepage layouts were checked through a **temporary, uncommitted**
   template (`templates/index.qa.json`, viewed at `/?view=qa`). It pointed the same sections at
-  existing LUMERA collections and was deleted after testing.
+  existing collections and was deleted after testing.
 - The store is password-protected. The checkout button reaches Shopify, which redirects to
   `/password`, so the checkout page itself could not be loaded.
 - No newsletter sign-ups, contact messages or orders were submitted, because each one would write
-  data into the LUMERA store.
+  data into the store.
 - Console errors from Shopify platform scripts are counted separately. On `127.0.0.1` they are
   blocked by CORS: `origin_trials`, the shop.app login embed, and a Storefront API call. They are
   environmental, not theme errors.
@@ -41,8 +42,8 @@ four smallest use touch emulation.
 Routes:
 
 - home (`/`) and the populated QA home (`/?view=qa`);
-- collection (`/collections/festive`) and product (`/products/emerald-foil-print-indo-western-gown`);
-- search with results (`/search?q=saree`) and with none (`/search?q=zzqqxx`);
+- an existing collection and product page;
+- search with results (a term matching existing products) and with none (`/search?q=zzqqxx`);
 - cart (`/cart`), contact (`/pages/contact`) and 404 (`/does-not-exist`);
 - FAQ, About, Size guide, Brands and Sneaker Edit (`/pages/contact?view=faq|about|size-guide|brands|sneaker-edit`);
 - privacy policy (`/policies/privacy-policy`).
@@ -114,7 +115,7 @@ correctly.
 | Cart | Checkout hand-off reaches Shopify checkout | **Blocked**: store password page (`/password`) |
 | Forms | Newsletter email has a label, is required, and rejects invalid input client-side | Pass |
 | Forms | Contact fields all labelled; email `required` and type `email` | Pass |
-| Forms | Newsletter and contact submission | **Blocked**: not submitted, because it would write to the LUMERA store |
+| Forms | Newsletter and contact submission | **Blocked**: not submitted, because it would write to the store |
 | Links | 25 internal header, footer and template links checked; none broken unexpectedly | Pass |
 | Links | `/collections/sneakers`, `/collections/new-in`, `/pages/sneaker-edit` | **Blocked**: 404 until created in Admin |
 | Mobile | Menu drawer opens and closes with Escape | Pass |
@@ -193,7 +194,7 @@ Implemented performance measures:
 | Empty search fell back to all store products | Fallback set to the `best-sellers` collection (theme setting `empty_state_collection`) |
 | FAQ showed a bracketed placeholder answer and lacked payments and availability topics | Placeholder removed; rows for orders, tracking, sizing, shipping, returns, payments, availability and contact |
 | About page showed a bracketed founding-story placeholder | Neutral brand copy with no invented facts; founding story listed as a merchant task |
-| © line showed the store name "lumeras" | Uses the wordmark text setting (falls back to the store name) |
+| © line showed the store's old name | Uses the wordmark text setting (falls back to the store name) |
 
 ## 7. Known remaining issues and limitations
 
@@ -201,9 +202,10 @@ Implemented performance measures:
   store. Header navigation, footer menus and these sections stay hidden until they do: New
   Arrivals, Find your style, Brands, Most Wanted, Sneaker Edit cards, and the shipping and returns
   items.
-- **Shared store.** The store name ("lumeras") appears in page titles. Search and `/collections/all`
-  list LUMERA products, and `/pages/contact`, `/pages/faq` and `/pages/size-guide` show LUMERA page
-  text. Use a separate store for SNEAKROW.
+- **Previous catalogue.** At test time search and `/collections/all` listed the store's older apparel
+  products. The catalogue guard added afterwards (`SNEAKROW-SETUP.md` section 5) keeps them off the
+  storefront. The pages `contact`, `faq` and `size-guide`, the privacy policy and the store name
+  still need SNEAKROW content in Admin.
 - **Account menu.** The header account popover logs a console notice because the
   `customer-account-main-menu` menu does not exist on this store.
 - **Bundled photography.** The six CC0 photos are placeholders. Replace them with the merchant's own
@@ -222,7 +224,7 @@ Implemented performance measures:
 
 See `SNEAKROW-SETUP.md` section 2. In short:
 
-1. Create the separate SNEAKROW store.
+1. Replace the old pages, privacy policy and store name with SNEAKROW content.
 2. Add products with brand vendors, Size and Color options, tags and inventory.
 3. Create the collections: `sneakers`, `men`, `women`, `new-in`, `best-sellers`, `trending`,
    `lifestyle`, `running`, `basketball`, `retro`, and brand collections.
@@ -232,4 +234,4 @@ See `SNEAKROW-SETUP.md` section 2. In short:
 7. Install Search & Discovery and enable filters.
 8. Set the store name, currency, shipping and payments.
 9. Remove the storefront password.
-10. Push the theme as unpublished, review it in the Theme Editor, and replace the bundled photos.
+10. Review the live theme in the Theme Editor and replace the bundled photos.
