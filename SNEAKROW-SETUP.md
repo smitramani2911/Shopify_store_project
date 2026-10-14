@@ -9,8 +9,7 @@ in `ASSET-MANIFEST.md`.
 ## 1. Where this runs
 
 - The theme is live on `i8yvqh-se.myshopify.com` as theme **SNEAKROW** (#131143729198), published on
-  14 October 2026. The store's previous apparel theme, `test-project/main`, is kept as an unpublished
-  theme and can be republished from Online Store > Themes.
+  14 October 2026. The store's previous apparel themes were deleted the same day.
 - The live theme was uploaded with Shopify CLI and is not connected to GitHub. To update it after a
   change on this branch, run
   `shopify theme push --store i8yvqh-se.myshopify.com --theme 131143729198`. Pull merchant edits
@@ -19,7 +18,7 @@ in `ASSET-MANIFEST.md`.
 - The store still holds products, collections, pages and policy text from its previous apparel
   catalogue. The catalogue guard (section 5) keeps those products off the storefront. Store-wide
   content must be replaced in Admin (section 5 lists what).
-- Do not merge `sneakrow` into `main`, which holds the previous apparel theme.
+- `main` and `sneakrow` on GitHub both hold this SNEAKROW code.
 
 ## 2. Shopify admin setup
 
